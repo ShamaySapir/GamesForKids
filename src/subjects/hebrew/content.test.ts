@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { LETTERS, SOUND_LABEL } from './content/letters'
-import { CV_UNITS, DAGESH_GROUPS, SAME_SOUND_GROUPS, SYLLABLE_WORDS, WORDS } from './content/words'
+import { CV_UNITS, DAGESH_GROUPS, MILEL, SAME_SOUND_GROUPS, SYLLABLE_WORDS, WORDS } from './content/words'
 import { Q, cvPhrase, letterPhrase, soundPhrase, syllablesPhrase, wordPhrase } from './ids'
 import { phrases } from './phrases'
 import type { SoundId } from './types'
@@ -25,6 +25,7 @@ function units(text: string): Unit[] {
   return out
 }
 
+const VOWEL_CLASS: Record<string, string> = { '\u05B4': 'i', '\u05B5': 'e', '\u05B6': 'e', '\u05B7': 'a', '\u05B8': 'a', '\u05B2': 'a', '\u05B9': 'o', '\u05BA': 'o', '\u05BB': 'u', '\u05B1': 'e', '\u05B3': 'o' }
 const NONE: Unit = { ch: '', marks: '' }
 const firstUnit = (text: string): Unit => units(text)[0] ?? NONE
 const lastUnit = (text: string): Unit => units(text).at(-1) ?? NONE
@@ -94,8 +95,9 @@ describe('words', () => {
     }
   })
 
-  it('every consonant sound except h opens at least 4 words', () => {
-    for (const s of SOUNDS.filter(x => x !== 'h')) {
+  it('every consonant sound except h and f opens at least 4 words', () => {
+    // h: words starting with ה have no first sound. f: an initial soft פ only occurs in loan words (פַקְס).
+    for (const s of SOUNDS.filter(x => x !== 'h' && x !== 'f')) {
       expect(WORDS.filter(w => w.first === s).length, s).toBeGreaterThanOrEqual(4)
     }
   })
@@ -120,6 +122,34 @@ describe('words', () => {
       lastByGroup.set(w.rhyme, set)
     }
     for (const [group, lasts] of lastByGroup) expect(lasts.size, group).toBe(1)
+  })
+
+  it('rhymes match from the stressed vowel to the end, and never mix milel with milra', () => {
+    const milel = new Set(MILEL)
+    for (const id of MILEL) expect(byId.has(id), id).toBe(true)
+    const vowelOf = (syllable: string): string => {
+      const us = units(syllable)
+      const own = us[0]?.marks.replace(/[\u05BC\u05C1\u05C2]/g, '')
+      if (own) return VOWEL_CLASS[own.at(-1) ?? ''] ?? ''
+      return us[1]?.ch === 'ו' ? (us[1].marks.includes(DAGESH) ? 'u' : 'o') : ''
+    }
+    const codaOf = (syllable: string): string => {
+      const rest = units(syllable).slice(1)
+      return rest.filter((u, i) => !(i === 0 && u.ch === 'ו') && !(i === 0 && u.ch === 'י' && u.marks === '')).map(u => soundOf(u) ?? '').join('')
+    }
+    const rime = (syllable: string) => vowelOf(syllable) + codaOf(syllable)
+    const byGroup = new Map<string, string[]>()
+    for (const w of WORDS) if (w.rhyme) byGroup.set(w.rhyme, [...(byGroup.get(w.rhyme) ?? []), w.id])
+    for (const [group, ids] of byGroup) {
+      expect(new Set(ids.map(id => milel.has(id))).size, `${group} mixes milel and milra`).toBe(1)
+      const keys = ids.map(id => {
+        const syl = byId.get(id)?.syllables ?? []
+        const last = syl.at(-1) ?? ''
+        if (milel.has(id)) return `${vowelOf(syl.at(-2) ?? '')}|${last.replace(/\u05BC/g, '')}`
+        return rime(last)
+      })
+      expect(new Set(keys).size, `${group}: ${keys.join(' / ')}`).toBe(1)
+    }
   })
 
   it('has enough words of each syllable count', () => {
@@ -155,6 +185,16 @@ describe('CV units and syllable words', () => {
     for (const id of SYLLABLE_WORDS) expect(byId.has(id), id).toBe(true)
     const counts = new Set(SYLLABLE_WORDS.map(id => byId.get(id)?.syllables.length))
     for (const n of [1, 2, 3, 4]) expect(counts.has(n), `${n} syllables`).toBe(true)
+    expect(SYLLABLE_WORDS.filter(id => byId.get(id)?.syllables.length === 4).length).toBeGreaterThanOrEqual(6)
+  })
+
+  it('syllable words have an unambiguous clap count: no initial shva, no final patach genuvah', () => {
+    for (const id of SYLLABLE_WORDS) {
+      const text = byId.get(id)?.text ?? ''
+      expect(firstUnit(text).marks.includes('\u05B0'), `${id} starts with a shva`).toBe(false)
+      const end = lastUnit(text)
+      expect(['ח', 'ע', 'ה'].includes(end.ch) && end.marks.includes('\u05B7') && units(text).length > 3, `${id} ends in patach genuvah`).toBe(false)
+    }
   })
 })
 
