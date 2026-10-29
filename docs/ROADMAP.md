@@ -52,7 +52,7 @@ with pictures, dictation by dragging letters.
 **Read-along books:** a book is split into pages; each page is recorded in the studio (page-level recording
 mode) and words are highlighted while the page is read. Needs a long-recording mode and word timings in the studio.
 
-## Stage 4 – Math: kindergarten – 2nd grade ⬜
+## Stage 4 – Math: kindergarten – 2nd grade 🟡 spec in progress
 Counting and comparing, number line, add/subtract to 10 → 20 → 100, place value, ten-frames, ½ and ¼, length.
 
 ## Stage 5 – Math: 3rd – 6th grade ⬜
