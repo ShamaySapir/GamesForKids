@@ -36,18 +36,18 @@ computer-first with touch support.
 | UI & app shell | ✅ | Theme tokens + dark mode, owl mascot, profiles, world map, island path, play screen, sticker book |
 | Clock island | ✅ built, ⏳ awaiting user play-test | 7 skills, 5 games; spec `docs/specs/clock.md` |
 | Recording studio | ✅ dev-only | `#/studio` under `npm run dev`; 0 of 91 phrases recorded so far (TTS fallback in use) |
-| Hebrew / Math / English islands | ⬜ placeholders | `comingSoon` stubs in `src/subjects/*/index.ts` |
+| Hebrew letters island | 🟡 building | Spec approved; T0 done (`src/subjects/hebrew/types.ts`, Noto Sans Hebrew, `.he-text`/`.he-letter`); T1–T3 in parallel |
+| Math / English islands | ⬜ placeholders | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
-| Git | ⚠️ | Stage 0–1 work is on branch `stage0/foundation`, not yet committed or merged |
+| Git | ✅ | Stage 0–1 merged to `main` (PR #1). Current work: `stage2/hebrew-letters-spec` |
 
-Current stage: **Stage 1 – Clock island**, waiting for the user's play-test.
+Current stage: **Stage 1** awaiting the user's play-test; **Stage 2** building.
 
 ## Next steps
 
-1. User plays the clock island and approves (or lists changes); user records phrases in the studio.
-2. Commit `stage0/foundation`, merge to `main` with the user's approval; delete `legacy/`.
+1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
+2. Stage 2: finish T1–T3 (parallel), then T4 (wire `index.ts`, E2E, screenshots); user records ~250 phrases.
 3. Set up GitHub Pages deployment (user approval needed).
-4. Stage 2 (Hebrew letters): planner writes `docs/specs/hebrew-letters.md`, user approves, builders run in parallel.
 
 ## Commands
 

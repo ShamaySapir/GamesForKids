@@ -98,6 +98,10 @@ h1 { font-size: 34px; margin: 4px 0; }
 .opt:hover:not(:disabled) { border-color: var(--c, var(--abc)); }
 .opt.ok { background: var(--okbg); border-color: var(--ok); }
 .opt.bad { background: var(--badbg); border-color: var(--bad); animation: shake .35s; opacity: .7; cursor: default; }
+.he-text, .he-letter { font-family: 'Noto Sans Hebrew Variable', 'Rubik Variable', sans-serif; }
+/* Hebrew with nikud for young readers: large and widely spaced (curriculum digital guidance). */
+.he-text { font-size: 44px; font-weight: 600; letter-spacing: .06em; line-height: 1.6; }
+.he-letter { font-size: 104px; font-weight: 700; line-height: 1.1; }
 .digi { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
 .fb { min-height: 32px; font-weight: 600; font-size: 22px; margin-top: 14px; text-align: center; }
 

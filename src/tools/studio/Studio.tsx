@@ -13,9 +13,12 @@ interface DirHandle {
 type DirPicker = (opts?: { mode?: 'readwrite'; id?: string }) => Promise<DirHandle>
 
 const EXT = 'webm'
+// Phrases TTS can't say reliably (isolated sounds, syllables) are listed first.
+const PRIORITY = [/\.sound\./, /\.cv\./, /\.syl\./]
+const rank = (id: string) => { const i = PRIORITY.findIndex(r => r.test(id)); return i < 0 ? PRIORITY.length : i }
 
 export default function Studio() {
-  const ids = useMemo(() => Object.keys(phrases).sort(), [])
+  const ids = useMemo(() => Object.keys(phrases).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
   const [filter, setFilter] = useState<'missing' | 'all'>('missing')
   const [saved, setSaved] = useState<Record<string, string>>({})
   const [recording, setRecording] = useState<string | null>(null)
