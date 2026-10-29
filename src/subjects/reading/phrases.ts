@@ -32,8 +32,8 @@ export const phrases: PhraseMap = {
   ...instructions,
   ...Object.fromEntries(UNITS.map(u => [unitPhrase(u.key), u.spellings[0]])),
   ...Object.fromEntries(SENTENCES.map(s => [sentencePhrase(s.id), s.text])),
-  // The gap is read as "מָה" (what), so the child hears a question.
-  ...Object.fromEntries(CLOZES.map(c => [clozePhrase(c.id), c.text.replace('___', 'מָה')])),
+  // The gap becomes a pause (…) in the recording and in TTS.
+  ...Object.fromEntries(CLOZES.map(c => [clozePhrase(c.id), c.text.replace('___', '…')])),
   ...Object.fromEntries(STORIES.flatMap(s => s.sentences.map((text, n) => [storyPhrase(s.id, n), text]))),
   ...Object.fromEntries(
     BOOKS.flatMap(b => [

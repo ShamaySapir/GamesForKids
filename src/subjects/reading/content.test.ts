@@ -37,7 +37,7 @@ function clusters(text: string): Cluster[] {
 
 /** Hebrew words of a text: punctuation, quotes and the cloze gap are dropped. */
 function hebrewWords(text: string): string[] {
-  return text.split(/\s+/).map(w => w.replace(/[.,?!"'״]/g, '')).filter(w => w && w !== '___')
+  return text.split(/\s+/).map(w => w.replace(/[.,?!"'״]/g, '')).filter(w => w && w !== '___' && w !== '…')
 }
 
 const hasVowelMark = (marks: string) => /[\u05B0-\u05BB]/.test(marks)
@@ -91,11 +91,11 @@ function spellingProblems(word: string): string[] {
 function vowelClasses(word: string): Set<Vowel> {
   const out = new Set<Vowel>()
   for (const c of clusters(word)) {
-    if (/[ֲַָ]/.test(c.marks)) out.add('a')
+    if (/[ֲַָ]/.test(c.marks)) out.add('a')
     if (c.marks.includes('ִ')) out.add('i')
-    if (/[ֳֹֺ]/.test(c.marks)) out.add('o')
+    if (/[ֳֹֺ]/.test(c.marks)) out.add('o')
     if (c.marks.includes('ֻ') || (c.ch === 'ו' && c.marks === DAGESH)) out.add('u')
-    if (/[ֱֵֶ]/.test(c.marks)) out.add('e')
+    if (/[ֱֵֶ]/.test(c.marks)) out.add('e')
   }
   return out
 }
@@ -375,11 +375,11 @@ describe('phrases', () => {
     expect(expected).toHaveLength(new Set(expected).size)
   })
 
-  it('says a unit as its first spelling, a cloze with מָה in the gap, and a page on one line', () => {
+  it('says a unit as its first spelling, a cloze with … in the gap, and a page on one line', () => {
     for (const u of UNITS) expect(phrases[unitPhrase(u.key)]).toBe(u.spellings[0])
     for (const c of CLOZES) {
       expect(phrases[clozePhrase(c.id)], c.id).not.toContain('___')
-      expect(phrases[clozePhrase(c.id)], c.id).toContain('מָה')
+      expect(phrases[clozePhrase(c.id)], c.id).toContain('…')
     }
     for (const b of BOOKS) for (const [i, p] of b.pages.entries()) expect(phrases[pagePhrase(b.id, i)], b.id).toBe(p.text.replace(/\s*\n\s*/g, ' '))
   })
