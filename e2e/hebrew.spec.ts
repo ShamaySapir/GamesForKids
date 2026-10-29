@@ -5,7 +5,8 @@ import { DAGESH_GROUPS, WORDS } from '../src/subjects/hebrew/content/words'
 
 const byEmoji = (emoji: string) => WORDS.find(w => w.emoji === emoji)!
 const byText = (text: string) => WORDS.find(w => w.text === text)!
-const NEXT_QUESTION_MS = 1300
+/** Wait for the round to reach question i (fixed sleeps were flaky under parallel load). */
+const atQuestion = (page: Page, i: number) => expect(page.locator('.dot.done')).toHaveCount(i)
 
 async function startOnIsland(page: Page) {
   await page.goto('/')
@@ -34,6 +35,7 @@ test('rhyme: a full round of picking the rhyming picture', async ({ page }) => {
   await startOnIsland(page)
   await page.getByRole('link', { name: /מה מתחרז/ }).click()
   for (let i = 0; i < 6; i++) {
+    await atQuestion(page, i)
     const target = byEmoji(await page.locator('.hb-prompt .hb-picture').innerText())
     const answer = WORDS.find(w => w.id !== target.id && w.rhyme === target.rhyme && w.rhyme)
     const rhymes = WORDS.filter(w => w.id !== target.id && w.rhyme === target.rhyme).map(w => w.emoji)
@@ -41,7 +43,6 @@ test('rhyme: a full round of picking the rhyming picture', async ({ page }) => {
     for (const opt of await page.locator('.hb-opt').all()) {
       if (rhymes.includes((await opt.getAttribute('aria-label'))!)) { await opt.click(); break }
     }
-    await page.waitForTimeout(NEXT_QUESTION_MS)
   }
   await expect(page.getByText('אלופים! שלושה כוכבים!')).toBeVisible()
 })
@@ -50,12 +51,12 @@ test('syllables: clapping with the keyboard', async ({ page }) => {
   await startOnIsland(page)
   await page.getByRole('link', { name: /מוחאים כפיים/ }).click()
   for (let i = 0; i < 6; i++) {
+    await atQuestion(page, i)
     const word = byText(await page.locator('.hb-word').first().innerText())
     await page.locator('body').click({ position: { x: 5, y: 5 } })
     for (let c = 0; c < word.syllables.length; c++) await page.keyboard.press('Space')
     await expect(page.locator('.hb-clap-dot.on')).toHaveCount(word.syllables.length)
     await page.locator('.hb-actions .cta').click()
-    await page.waitForTimeout(NEXT_QUESTION_MS)
   }
   await expect(page.getByText('אלופים! שלושה כוכבים!')).toBeVisible()
 })
@@ -65,6 +66,8 @@ test('dagesh: sorting cards into baskets with the keyboard', async ({ page }) =>
   await master(page, ['hebrew.letter-picture'])
   await page.goto('/#/play/hebrew/hebrew.dagesh/sort')
   for (let board = 0; board < 3; board++) {
+    await atQuestion(page, board)
+    await expect(page.locator('.hb-card')).toHaveCount(6)
     const bins = await page.locator('.hb-basket-label').evaluateAll(els => els.map(e => e.getAttribute('aria-label')!))
     for (let n = 0; n < 6; n++) {
       const card = page.locator('.hb-card').first()
@@ -75,7 +78,6 @@ test('dagesh: sorting cards into baskets with the keyboard', async ({ page }) =>
       await page.keyboard.press(bin === 0 ? 'ArrowRight' : 'ArrowLeft')
       await page.keyboard.press('Enter')
     }
-    await page.waitForTimeout(NEXT_QUESTION_MS)
   }
   await expect(page.getByText('אלופים! שלושה כוכבים!')).toBeVisible()
 })
