@@ -215,9 +215,9 @@ export function findLetterQuestion(ctx: GenContext, letters: readonly Letter[], 
   })
 }
 
-/** Game B: see a big letter, pick its name from 3 spoken buttons (they all show a speaker, not a letter). */
+/** Game B: see a big letter, pick its name from 3 buttons that show and say the name. */
 export function nameLetterQuestion(ctx: GenContext, letters: readonly Letter[], group: LetterGroup): PickQ {
-  const btn = (l: Letter): PickOption => ({ id: l.char, kind: 'sound', label: '🔊', say: letterPhrase(l.char) })
+  const btn = (l: Letter): PickOption => ({ id: l.char, kind: 'sound', say: letterPhrase(l.char) })
   return make(ctx, letterGroup(letters, group), l => l.char, target => {
     const wrong = take(ctx.rng, letterTiers(letters, group, target), 2, l => l.name, [target.name])
     if (!wrong) return null

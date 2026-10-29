@@ -136,7 +136,6 @@ export const WORDS: readonly Word[] = [
   { id: 'sakit', text: 'שַׂקִּית', emoji: '🛍️', syllables: ['שַׂ', 'קִּית'], opening: 'שַׂ', first: 's', last: 't', rhyme: 'it' },
   { id: 'sear', text: 'שֵׂעָר', emoji: '💇', syllables: ['שֵׂ', 'עָר'], opening: 'שֵׂ', first: 's', last: 'r', rhyme: 'ar' },
   { id: 'se', text: 'שֶׂה', emoji: '🐑', syllables: ['שֶׂה'], opening: 'שֶׂ', first: 's', last: null },
-  { id: 'smiya', text: 'שְׂמִיכָה', emoji: '🛏️', syllables: ['שְׂמִי', 'כָה'], opening: 'שְׂ', first: 's', last: null },
   { id: 'perax', text: 'פֶּרַח', emoji: '🌸', syllables: ['פֶּ', 'רַח'], opening: 'פֶּ', first: 'p', last: 'x' },
   { id: 'pil', text: 'פִּיל', emoji: '🐘', syllables: ['פִּיל'], opening: 'פִּי', first: 'p', last: 'l', rhyme: 'il' },
   { id: 'pitsa', text: 'פִּיצָה', emoji: '🍕', syllables: ['פִּי', 'צָה'], opening: 'פִּי', first: 'p', last: null },
@@ -223,11 +222,11 @@ export const DAGESH_GROUPS: Record<'בּ' | 'ב' | 'כּ' | 'כ' | 'פּ' | 'פ'
   'בּ': ['bayit', 'balon', 'banana', 'beitza', 'barvaz', 'batsal', 'barbur'],
   'ב': ['gvina', 'dov', 'dvora', 'dubdevan', 'dvash', 'zeev', 'xalav', 'kelev', 'koba', 'kochav', 'kvish', 'lev', 'levena', 'miktav', 'tsav', 'tsvi', 'tsivoni', 'tseva', 'rakevet', 'avatiax', 'arnevet', 'anav', 'axavish'],
   'כּ': ['kadur', 'kelev', 'kise', 'kapit', 'koba', 'kinor', 'kvish'],
-  'כ': ['mexonit', 'maxnasayim', 'melex', 'miktav', 'malax', 'smiya', 'akbar', 'axavish'],
+  'כ': ['mexonit', 'maxnasayim', 'melex', 'miktav', 'malax', 'akbar', 'axavish'],
   'פּ': ['perax', 'pil', 'pitsa', 'parpar', 'para', 'pe', 'paamon', 'panas', 'popcorn', 'pilpel', 'pasta', 'pax'],
   'פ': ['xof', 'telefon', 'tof', 'yanshuf', 'kof', 'kufsa', 'mafteax', 'mishkafayim', 'melafefon', 'sefer', 'sfina', 'faks', 'flamingo', 'tsfardea', 'tsedef', 'af', 'afroax', 'of'],
   'שׁ': ['shemesh', 'shaon', 'shual', 'sheleg', 'shinayim', 'shor', 'shokolad', 'shaxmat', 'shalom', 'sharsheret'],
-  'שׂ': ['simla', 'sade', 'sakit', 'sear', 'se', 'smiya'],
+  'שׂ': ['simla', 'sade', 'sakit', 'sear', 'se'],
 }
 
 /**
@@ -240,7 +239,7 @@ export const SAME_SOUND_GROUPS: Record<'ט' | 'ת' | 'כ' | 'ח' | 'ס' | 'שׂ'
   'כ': [],
   'ח': ['xatul', 'xalon', 'xalav', 'xipushit', 'xamanit', 'xof', 'xut', 'xanukiya', 'xets', 'xazir', 'xatsil'],
   'ס': ['sus', 'sabon', 'sefer', 'sulam', 'sakin', 'sfina', 'sira', 'salat', 'sandal'],
-  'שׂ': ['simla', 'sade', 'sakit', 'sear', 'se', 'smiya'],
+  'שׂ': ['simla', 'sade', 'sakit', 'sear', 'se'],
   'ב': [],
   'ו': ['vered', 'video', 'vespa', 'varod'],
   'א': ['arie', 'etsba', 'otobus', 'esh', 'ozen', 'af', 'agas', 'avatiax', 'arnevet', 'afroax'],

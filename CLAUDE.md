@@ -35,19 +35,20 @@ computer-first with touch support.
 | Core | ✅ | Contracts, session, adaptive + Leitner, progress, IndexedDB store, audio with TTS fallback |
 | UI & app shell | ✅ | Theme tokens + dark mode, owl mascot, profiles, world map, island path, play screen, sticker book |
 | Clock island | ✅ built, ⏳ awaiting user play-test | 7 skills, 5 games; spec `docs/specs/clock.md` |
-| Recording studio | ✅ dev-only | `#/studio` under `npm run dev`; 0 of 91 phrases recorded so far (TTS fallback in use) |
-| Hebrew letters island | 🟡 building | Spec approved; T0 done (`src/subjects/hebrew/types.ts`, Noto Sans Hebrew, `.he-text`/`.he-letter`); T1–T3 in parallel |
+| Recording studio | ✅ dev-only | `#/studio` under `npm run dev`; hard-to-synthesize phrases listed first; nothing recorded yet (TTS fallback in use) |
+| Hebrew letters island | ✅ built, ⏳ awaiting user play-test | 13 skills, 3 game components, 190 words; spec `docs/specs/hebrew-letters.md`; 0 of 324 phrases recorded |
 | Math / English islands | ⬜ placeholders | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
 | Git | ✅ | Stage 0–1 merged to `main` (PR #1). Current work: `stage2/hebrew-letters-spec` |
 
-Current stage: **Stage 1** awaiting the user's play-test; **Stage 2** building.
+Current stage: **Stages 1 and 2** built, awaiting the user's play-test and recordings.
 
 ## Next steps
 
 1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
-2. Stage 2: finish T1–T3 (parallel), then T4 (wire `index.ts`, E2E, screenshots); user records ~250 phrases.
-3. Set up GitHub Pages deployment (user approval needed).
+2. User plays the letters island; records its phrases (studio lists isolated sounds and syllables first).
+3. Decide Stage 2b (letter tracing: print or cursive first) or move on to Stage 3 (nikud and reading).
+4. Set up GitHub Pages deployment (user approval needed).
 
 ## Commands
 

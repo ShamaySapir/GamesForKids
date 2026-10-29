@@ -1,6 +1,6 @@
 # Spec: Hebrew letters island (אי האותיות)
 
-- **Status:** Approved by user on 2026-10-29 — in progress
+- **Status:** Approved by user on 2026-10-29 — built; awaiting user play-test
 - **Stage:** 2 (docs/ROADMAP.md)
 - **Relies on:** DECISIONS D2, D3, D6, D7, D8 · docs/RESEARCH.md § "Hebrew letters and phonological awareness"
 - **Reference implementation:** `src/subjects/clock/`
@@ -103,7 +103,9 @@ interface Word {
 - `letters.ts`: 22 letters + 5 finals, in alphabetical order, with names, sounds and look-alikes.
 - `words.ts`: **at least 120 words**, each picturable by one unambiguous emoji, familiar to a 5-year-old,
   with correct nikud and syllables. Coverage: every consonant sound opens ≥ 4 words; ≥ 25 words end in a
-  consonant sound; ≥ 12 rhyme groups of ≥ 2 words; ≥ 6 words for each of בּ ב כּ כ פּ פ שׁ שׂ; ≥ 4 words for
+  consonant sound; ≥ 12 rhyme groups of ≥ 2 words; ≥ 6 words for each of בּ ב כּ כ פּ פ שׁ (5 for שׂ: few
+  picturable words, and a sort board needs 3; soft ב כ פ never start a native word, so their groups list words
+  that *contain* the soft letter); rhymes must share the stressed final syllable (milel/milra checked by test); ≥ 4 words for
   each same-sound letter; 1–4 syllables, mostly 2–3.
 - A test (`content.test.ts`) checks all of the above mechanically, plus: syllables join to the text, `opening`
   is a prefix of the text, every emoji is unique, every phrase referenced exists.

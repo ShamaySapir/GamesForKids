@@ -35,8 +35,8 @@ Sequential, done by the planner alone, because it defines the contracts builders
 | Merge to `main` | ✅ PR #1 |
 | Delete `legacy/`, deploy to GitHub Pages | ⏳ needs user approval |
 
-## Stage 2 – Hebrew: letters (kindergarten – 1st grade) 🟡
-Spec approved 2026-10-29: `docs/specs/hebrew-letters.md`. T0 (types, nikud font, studio priority) ✅ · T1 content, T2 generators, T3 games 🟡 in parallel · T4 wiring + E2E ⬜.
+## Stage 2 – Hebrew: letters (kindergarten – 1st grade) ✅ built
+Spec approved 2026-10-29: `docs/specs/hebrew-letters.md`. T0 ✅ · T1 content ✅ · T2 generators ✅ · T3 games ✅ (built in parallel) · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · 324 recordings ⏳.
 
 Letter ↔ picture, opening/closing sound, rhyme and syllables, final letters, same-sound letters,
 dagesh pairs, letter tracing with hand-authored SVG stroke paths.

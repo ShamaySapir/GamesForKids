@@ -39,6 +39,7 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
 
 function optionFace(o: PickOption) {
   if (o.kind === 'picture') return <span className="hb-emoji" aria-hidden="true">{o.emoji}</span>
+  if (o.kind === 'sound' && o.label === undefined) return <span className="he-text hb-opt-name">{phrases[o.say]}</span>
   return <span className="he-letter hb-opt-letter">{o.label}</span>
 }
 
@@ -82,7 +83,7 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
           return (
             <div key={o.id} className="hb-opt-wrap" onPointerEnter={e => hoverStart(e, o)} onPointerLeave={hoverEnd}>
               <button type="button" className={`opt hb-opt hb-opt-${o.kind}${cls}`} disabled={wrong.includes(o.id)}
-                aria-label={o.kind === 'picture' ? o.emoji : o.label} onClick={() => choose(o.id)}>
+                aria-label={o.kind === 'picture' ? o.emoji : o.kind === 'sound' ? o.label ?? phrases[o.say] : o.label} onClick={() => choose(o.id)}>
                 {optionFace(o)}
               </button>
               {o.kind !== 'letter' && <SayButton id={o.say} />}

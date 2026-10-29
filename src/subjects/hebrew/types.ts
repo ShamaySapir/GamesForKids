@@ -44,11 +44,14 @@ export interface Word {
 
 /* ---------- questions (T2 produces them, T3 renders them) ---------- */
 
-/** What a pick option shows. A 'sound' option is a button that plays `say` and shows `label` (a letter). */
+/**
+ * What a pick option shows. A 'sound' option answers on click and has a separate 🔊 that plays `say`; it shows
+ * `label` (a letter), or without a label the text of its single `say` phrase (e.g. a letter's name, "בֵּית").
+ */
 export type PickOption =
   | { id: string; kind: 'picture'; emoji: string; say: PhraseRef }
   | { id: string; kind: 'letter'; label: string }
-  | { id: string; kind: 'sound'; label: string; say: PhraseRef }
+  | { id: string; kind: 'sound'; label?: string; say: string }
 
 export interface PickPrompt {
   /** Big picture (emoji). */
