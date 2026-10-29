@@ -40,7 +40,9 @@ export function OrderGame({ question, onAttempt }: GameProps<OrderQ>) {
 
   const place = (tile: Tile) => {
     if (done) return
-    if (tile.id === answer[placed.length]) {
+    // Identical-looking tiles (the two פּוֹ in הִיפּוֹפּוֹטָם) are interchangeable: compare by text, not id.
+    const expected = byId.get(answer[placed.length]!)
+    if (tile.id === expected?.id || tile.text === expected?.text) {
       const next = [...placed, tile.id]
       setPlaced(next)
       setLive(tile.text)

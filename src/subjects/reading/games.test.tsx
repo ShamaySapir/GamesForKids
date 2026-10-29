@@ -125,6 +125,20 @@ describe('OrderGame', () => {
     expect(onAttempt).toHaveBeenCalledTimes(1)
   })
 
+  it('accepts either of two identical-looking tiles', async () => {
+    const onAttempt = vi.fn()
+    const q: OrderQ = {
+      ...orderQ(), answer: ['פּוֹ#1', 'פּוֹ#2', 'טָם#3'],
+      tiles: [{ id: 'טָם#3', text: 'טָם', say: 'x' }, { id: 'פּוֹ#2', text: 'פּוֹ', say: 'x' }, { id: 'פּוֹ#1', text: 'פּוֹ', say: 'x' }],
+    }
+    render(<OrderGame question={q} aid={false} onAttempt={onAttempt} />)
+    // The first פּוֹ in the tray is #2, which the answer lists second: it must still be accepted first.
+    await userEvent.click(screen.getAllByRole('button', { name: 'פּוֹ' })[0]!)
+    await userEvent.click(screen.getByRole('button', { name: 'פּוֹ' }))
+    await userEvent.click(tileButton('טָם'))
+    expect(onAttempt.mock.calls).toEqual([[true]])
+  })
+
   it('numbers the slots in the sentences layout', () => {
     const { container } = render(<OrderGame question={orderQ('sentences')} aid={false} onAttempt={vi.fn()} />)
     expect([...container.querySelectorAll('.rb-num')].map(n => n.textContent)).toEqual(['1', '2'])

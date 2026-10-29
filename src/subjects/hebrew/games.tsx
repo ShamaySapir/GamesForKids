@@ -43,6 +43,10 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
   )
 }
 
+/** Options can be silent (e.g. pictures whose sentence would give the answer away): `say` absent or empty. */
+const hasSay = (o: PickOption): o is Exclude<PickOption, { kind: 'letter' }> & { say: PhraseRef } =>
+  o.kind !== 'letter' && !!o.say && (typeof o.say === 'string' || o.say.length > 0)
+
 function optionFace(o: PickOption) {
   if (o.kind === 'picture') return <span className="hb-emoji" aria-hidden="true">{o.emoji}</span>
   if (o.kind === 'sound' && o.label === undefined) return <span className="he-text hb-opt-name">{phrases[o.say]}</span>
@@ -72,7 +76,7 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
     onAttempt(ok)
   }
   const hoverStart = (e: ReactPointerEvent, o: PickOption) => {
-    if (e.pointerType !== 'mouse' || o.kind === 'letter' || !o.say) return
+    if (e.pointerType !== 'mouse' || !hasSay(o)) return
     const ref = o.say
     hover.current = setTimeout(() => void say(ref), HOVER_SAY_MS)
   }
@@ -94,7 +98,7 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
                 aria-label={o.kind === 'picture' ? o.emoji : o.kind === 'sound' ? o.label ?? phrases[o.say] : o.label} onClick={() => choose(o.id)}>
                 {optionFace(o)}
               </button>
-              {(o.kind === 'picture' || o.kind === 'sound' || (o.kind === 'text' && o.say)) && <SayButton id={o.say!} />}
+              {hasSay(o) && <SayButton id={o.say} />}
             </div>
           )
         })}
