@@ -11,9 +11,12 @@ const phraseFiles = import.meta.glob(['/src/subjects/*/phrases.ts', '/src/app/ph
   eager: true, import: 'phrases',
 }) as Record<string, PhraseMap>
 
+// In dev a re-recorded take keeps its file name, so the browser would replay a cached copy: bust it per page load.
+const devBust = import.meta.env.DEV ? `?t=${Date.now()}` : ''
+
 /** Phrase ID → recording URL. */
 export const recordings: ReadonlyMap<string, string> = new Map(
-  Object.entries(recordingFiles).map(([path, url]) => [path.replace(/^.*\/([^/]+)\.\w+$/, '$1'), url]),
+  Object.entries(recordingFiles).map(([path, url]) => [path.replace(/^.*\/([^/]+)\.\w+$/, '$1'), url + devBust]),
 )
 
 /** Every phrase declared in the app, by ID. */

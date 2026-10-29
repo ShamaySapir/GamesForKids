@@ -5,7 +5,7 @@ import './studio.css'
 
 // Dev-only page for recording phrases (docs/DECISIONS.md D3, D10, D12); excluded from production builds.
 // Each recording is sent to the dev server (scripts/studio-plugin.ts), which writes src/audio/he/<id>.<ext> and
-// replaces any earlier take. The new file then reloads the page, so ✅ always reflects a file in the project.
+// replaces any earlier take; ✅ appears only after the server confirms the file was written.
 
 // Phrases TTS can't say reliably (isolated sounds, syllables, units) are listed first.
 const PRIORITY = [/\.sound\./, /\.cv\./, /\.unit\./, /\.syl\./]
@@ -17,10 +17,13 @@ export default function Studio() {
   const [recording, setRecording] = useState<string | null>(null)
   const [saving, setSaving] = useState<string | null>(null)
   const [error, setError] = useState('')
+  // Takes saved during this visit, played from memory: the file keeps its name, so the browser would replay the old one.
+  const [fresh, setFresh] = useState<Record<string, string>>({})
   const rec = useRef<MediaRecorder | null>(null)
 
-  const shown = ids.filter(id => filter === 'all' || !recordings.has(id))
-  const done = ids.filter(id => recordings.has(id)).length
+  const has = (id: string) => recordings.has(id) || !!fresh[id]
+  const shown = ids.filter(id => filter === 'all' || !has(id))
+  const done = ids.filter(has).length
 
   const save = async (id: string, blob: Blob) => {
     setSaving(id)
@@ -29,6 +32,7 @@ export default function Studio() {
         method: 'POST', headers: { 'Content-Type': blob.type }, body: blob,
       })
       if (!res.ok) throw new Error(await res.text())
+      setFresh(f => ({ ...f, [id]: URL.createObjectURL(blob) }))
     } catch (e) {
       setError(`Not saved: ${(e as Error).message}`)
     } finally {
@@ -61,6 +65,11 @@ export default function Studio() {
     }
   }
 
+  const play = (id: string) => {
+    if (fresh[id]) void new Audio(fresh[id]).play()
+    else void say(id)
+  }
+
   return (
     <div dir="ltr" className="studio">
       <header className="top">
@@ -83,12 +92,12 @@ export default function Studio() {
             <tr key={id} className={recording === id ? 'rec' : undefined}>
               <td><code>{id}</code></td>
               <td dir="rtl" className="studio-text">{phrases[id]}</td>
-              <td>{saving === id ? '⏳' : recordings.has(id) ? '✅' : '—'}</td>
+              <td>{saving === id ? '⏳' : has(id) ? '✅' : '—'}</td>
               <td className="studio-actions">
                 <button className="pill" onClick={() => toggle(id)} disabled={(!!recording && recording !== id) || !!saving}>
-                  {recording === id ? '⏹ Stop' : recordings.has(id) ? '⏺ Re-record' : '⏺ Record'}
+                  {recording === id ? '⏹ Stop' : has(id) ? '⏺ Re-record' : '⏺ Record'}
                 </button>
-                <button className="pill" onClick={() => void say(id)} title="Plays the recording if saved, otherwise TTS">▶</button>
+                <button className="pill" onClick={() => play(id)} title="Plays the latest take, otherwise TTS">▶</button>
               </td>
             </tr>
           ))}
