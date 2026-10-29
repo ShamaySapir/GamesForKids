@@ -1,46 +1,82 @@
-# לומדים ומשחקים
+# Lomdim Vemsachakim (Learn & Play)
 
-משחקי לימוד לילדים בעברית: שעון, אותיות ומספרים וחשבון.
+Playful learning games for Israeli kids from kindergarten to 6th grade: telling time, Hebrew,
+math and English. Hebrew RTL UI, an owl guide, and a world map of subject islands.
+Runs fully in the browser with no server. Progress is saved locally on each device.
 
-האפליקציה היא אתר סטטי: HTML, CSS ו-JavaScript בלבד.
-אין צורך בשרת, במסד נתונים או בהתקנת חבילות כדי שהיא תעבוד.
+- What exists today and the rules for contributing: [`CLAUDE.md`](CLAUDE.md)
+- Work stages and status: [`docs/ROADMAP.md`](docs/ROADMAP.md)
+- Decisions and why they were made: [`docs/DECISIONS.md`](docs/DECISIONS.md)
 
-## מבנה הקבצים
+## Working on another computer
 
-- `index.html` - מבנה הדף
-- `style.css` - עיצוב וצבעים (כולל מצב כהה)
-- `app.js` - המשחקים והלוגיקה
-- `package.json` - לא חובה, רק לפקודת `npm start`
+### 1. Install once
 
-## הרצה מקומית
+- **Git**, with access to `git@github.com:ShamaySapir/GamesForKids.git` (add the computer's SSH key to GitHub).
+- **Node.js 22 LTS or newer** (Vite needs ≥ 20.19 or ≥ 22.12). Check with `node -v`.
+- **Claude Code** (optional, for working with the agents), signed in to your account.
 
-הדפדפן יכול לפתוח את `index.html` ישירות, אבל עדיף להריץ שרת מקומי.
+### 2. Get the code
 
-עם Python:
+```sh
+git clone git@github.com:ShamaySapir/GamesForKids.git
+cd GamesForKids
+npm ci                       # installs the exact versions from package-lock.json
+npx playwright install       # only needed for end-to-end tests
+```
 
-    python3 -m http.server 8000
+If the work you want is on a branch, switch to it: `git switch <branch>`. List branches with `git branch -a`.
 
-עם Node:
+### 3. Run
 
-    npm start
+```sh
+npm run dev      # dev server, open the printed http://localhost URL
+npm run check    # lint + typecheck + unit tests, must pass before merging
+npm run e2e      # end-to-end tests (Playwright)
+npm run build    # production build into dist/
+```
 
-ואז לפתוח את http://localhost:8000 (עם Python) או את הכתובת ש-serve מדפיס (עם Node).
+### 4. Before switching computers
 
-## פרסום ב-GitHub Pages
+Commit and push your work, then pull on the other computer:
 
-1. להעלות את הקבצים למאגר ב-GitHub.
-2. Settings > Pages.
-3. Source: Deploy from a branch, ענף `main`, תיקייה `/ (root)`.
-4. אחרי דקה-שתיים האתר זמין בכתובת `https://USERNAME.github.io/REPO/`.
+```sh
+git add -A && git commit -m "..." && git push    # on the computer you are leaving
+git pull                                          # on the computer you are moving to
+```
 
-## איפה משנים דברים
+Anything not pushed stays on the old computer only.
 
-- אותיות ומילים: מערך `LET` ב-`app.js`
-- אמוג'י של חיבור וחיסור: מערך `FRU`
-- מספר השאלות בכל סבב: `N`
-- רמות וחוקי השאלות: האובייקט `games`
-- צבעים: משתני `:root` ב-`style.css`
+### What does *not* move with the repo
 
-## שמירת נתונים
+- **Kids' progress and profiles** live in each browser's local storage. They don't sync between computers.
+- **Claude Code's personal memory and plan files** (under `~/.claude/` on each computer) are local.
+  Everything the agents need to continue is in the repo: `CLAUDE.md`, `docs/ROADMAP.md`, `docs/DECISIONS.md`.
+  Starting Claude Code in the repo folder loads `CLAUDE.md` automatically.
+- **Audio recordings** move only once they are committed to `src/audio/he/`.
 
-הכוכבים נשמרים ב-localStorage של הדפדפן, לכל מכשיר בנפרד.
+## Audio recordings
+
+Every spoken phrase has an ID. A recording at `src/audio/he/<phrase-id>.<mp3|m4a|ogg|webm|wav>` is
+played if it exists; otherwise the browser's text-to-speech reads the phrase. With `npm run dev` running, open
+`http://localhost:5173/#/studio` to see which phrases are still missing and record them. The studio is
+dev-only and is not part of the published site.
+
+## Project layout
+
+```
+src/
+  app/        app shell, routes, screens, shared phrases
+  core/       engine contracts, adaptive logic, progress, storage, audio
+  ui/         theme tokens, owl mascot
+  subjects/   one folder per island (clock, hebrew, math, english), each self-registering
+  tools/      recording studio
+  audio/he/   recordings, named by phrase ID
+legacy/       original static prototype, kept for reference until the clock island fully replaces it
+docs/         roadmap, decisions, specs
+```
+
+## Deploying
+
+The build is static and uses hash routing, so `dist/` can be served from GitHub Pages or any static host.
+Deploying requires the owner's approval.

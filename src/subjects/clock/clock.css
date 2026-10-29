@@ -1,0 +1,16 @@
+.clock .hand-active { cursor: grab; }
+.clock .hand-drag { cursor: grabbing; }
+.clock .hand-active:hover line:last-of-type, .clock .hand-active:focus-visible line:last-of-type { filter: drop-shadow(0 0 4px var(--sun)); }
+.clock .hand:focus-visible { outline: none; }
+.clock .hand-active:focus-visible circle { stroke: var(--sun); stroke-width: 4; }
+.clock-stage { display: grid; justify-items: center; gap: 10px; }
+.clock-q { font-size: 26px; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.clock-target { font-size: 30px; font-weight: 800; }
+.clock-scene { font-size: 72px; line-height: 1; }
+.clock-hint { color: var(--mute); font-size: 17px; margin: 0; }
+.clock-opt-text { font-size: 16px; font-weight: 600; color: var(--mute); }
+.match { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
+.match-card { padding: 8px; min-height: 80px; }
+.match-card.sel { border-color: var(--sun); box-shadow: 0 0 0 4px var(--sun); }
+.match-card.done { background: var(--okbg); border-color: var(--ok); cursor: default; }
+@media (max-width: 700px) { .match { grid-template-columns: repeat(2, 1fr); } }
