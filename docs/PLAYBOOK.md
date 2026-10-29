@@ -46,6 +46,7 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | Reload sent the child back to the profile picker | E2E reload step | Async load must finish before rendering routes |
 | At 12:00 both clock hands overlap, so the hour hand can't be grabbed | E2E drag | Check interactive starting states, not just end states |
 | Decorative map path didn't line up with mirrored RTL islands | Screenshot | Look at every screen in RTL |
+| Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off
 
