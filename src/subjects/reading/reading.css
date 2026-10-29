@@ -1,0 +1,84 @@
+.rb-stage { display: grid; justify-items: center; gap: 16px; }
+.rb-q { font-size: 32px; font-weight: 700; margin: 0; text-align: center; }
+.rb-picture { font-size: 112px; line-height: 1.1; text-align: center; }
+.rb-scene { font-size: 128px; line-height: 1.1; text-align: center; }
+.rb-word-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.rb-say {
+  min-width: var(--tap); min-height: var(--tap); border-radius: 999px; border: 3px solid var(--line);
+  background: var(--card); font-size: 26px; cursor: pointer;
+}
+.rb-say:hover { border-color: var(--read); }
+.rb-live { min-height: 24px; margin: 0; color: var(--mute); font-size: 18px; }
+
+/* ---------- OrderGame ---------- */
+.rb-slots { display: flex; gap: 14px; justify-content: center; width: 100%; direction: rtl; }
+.rb-slots-units { flex-direction: row; flex-wrap: wrap; }
+.rb-slots-sentences { flex-direction: column; align-items: stretch; max-width: 640px; }
+.rb-slot {
+  position: relative; min-inline-size: 96px; min-block-size: 128px; padding-inline: 12px;
+  border: 4px dashed var(--line); border-radius: 24px; background: var(--card);
+  display: grid; place-items: center;
+}
+.rb-slots-sentences .rb-slot { min-block-size: 96px; padding-inline: 64px 16px; }
+.rb-slot.next { border-color: var(--read); }
+.rb-slot.filled { border-style: solid; border-color: var(--read); }
+.rb-slot.ok { background: var(--okbg); border-color: var(--ok); border-style: solid; }
+.rb-num {
+  position: absolute; inset-inline-start: 14px; inset-block-start: 50%; transform: translateY(-50%);
+  inline-size: 40px; block-size: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--read); color: var(--sun-ink); font-weight: 800; font-size: 22px;
+}
+.rb-unit { font-size: 64px; line-height: 1.3; }
+.rb-line { font-size: 32px; line-height: 1.5; }
+.rb-assembled { font-size: 72px; line-height: 1.3; color: var(--ok); }
+
+.rb-tray { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; width: 100%; }
+.rb-tray-sentences { flex-direction: column; align-items: stretch; max-width: 640px; }
+.rb-tile-wrap { display: flex; gap: 8px; align-items: center; position: relative; flex-direction: column; }
+.rb-tray-sentences .rb-tile-wrap { flex-direction: row; }
+.rb-tile-wrap.dragging { z-index: 10; }
+.rb-tile-wrap.dragging .rb-tile { box-shadow: 0 12px 24px var(--line); cursor: grabbing; }
+.rb-tile { min-inline-size: 96px; min-block-size: 112px; touch-action: none; cursor: grab; user-select: none; padding-inline: 14px; }
+.rb-tray-sentences .rb-tile { flex: 1; min-block-size: var(--tap); }
+
+/* ---------- BookGame ---------- */
+.rb-title { margin: 0; font-size: 52px; text-align: center; }
+.rb-start { font-size: 28px; padding-inline: 48px; min-height: 80px; }
+.rb-text { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; margin: 0; max-inline-size: 760px; }
+.rb-word {
+  font: inherit; letter-spacing: inherit; color: var(--ink); background: transparent; border: 0;
+  border-radius: 16px; padding: 0 10px; min-block-size: var(--tap); cursor: pointer;
+}
+.rb-word:hover { background: var(--bg-sea); }
+.rb-word.hl { background: var(--sun); color: var(--sun-ink); outline: 4px solid var(--sun-ink); }
+.rb-read {
+  min-inline-size: 96px; min-block-size: 80px; border-radius: 999px; border: 4px solid var(--read);
+  background: var(--card); font-size: 40px; cursor: pointer; box-shadow: 0 6px 0 var(--read);
+}
+.rb-read.on { background: var(--read); }
+.rb-slow { min-block-size: var(--tap); padding-inline: 24px; font-size: 22px; }
+.rb-slow.on { background: var(--sun); color: var(--sun-ink); border-color: var(--sun); }
+.rb-nav { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.rb-navbtn { min-block-size: var(--tap); min-inline-size: 140px; font-size: 24px; justify-content: center; }
+.rb-pages { font-size: 24px; font-weight: 700; color: var(--mute); }
+.rb-prompt { margin: 0; font-size: 40px; text-align: center; }
+.rb-opts { width: 100%; max-width: 760px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.rb-opt { min-block-size: 140px; display: grid; place-items: center; align-content: center; gap: 4px; }
+.rb-opt-scene { font-size: 80px; line-height: 1.1; }
+.rb-opt-text { font-size: 36px; line-height: 1.4; }
+
+@media (max-width: 600px) {
+  .rb-picture { font-size: 88px; }
+  .rb-scene { font-size: 96px; }
+  .rb-unit { font-size: 48px; }
+  .rb-assembled { font-size: 56px; }
+  .rb-slot { min-inline-size: 76px; min-block-size: 104px; }
+  .rb-slots, .rb-tray { gap: 10px; }
+  .rb-tile { min-inline-size: 76px; }
+  .rb-title { font-size: 40px; }
+  .rb-text.he-text { font-size: 36px; }
+  .rb-prompt { font-size: 32px; }
+  .rb-opts { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .rb-navbtn { min-inline-size: 110px; font-size: 20px; }
+  .rb-line { font-size: 26px; }
+}
