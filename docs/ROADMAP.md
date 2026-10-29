@@ -41,6 +41,9 @@ Spec approved 2026-10-29: `docs/specs/hebrew-letters.md`. T0 ✅ · T1 content �
 Letter ↔ picture, opening/closing sound, rhyme and syllables, final letters, same-sound letters,
 dagesh pairs, letter tracing with hand-authored SVG stroke paths.
 
+## Stage 2b – Letter tracing ⬜
+Print letters first (D13); cursive later. Needs hand-authored stroke paths for 27 forms (no official chart exists).
+
 ## Stage 3 – Hebrew: nikud and reading (1st – 2nd grade) ✅ built
 Spec approved 2026-10-29: `docs/specs/reading.md`. T0 ✅ · T1 content ✅ (full Hebrew review, 25 findings fixed) · T2 ✅ · T3 ✅ · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
 

@@ -48,7 +48,7 @@ Current stage: **Stages 1–3** built; awaiting the user's play-test and recordi
 
 1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
 2. User plays the letters island; records its phrases (studio lists isolated sounds and syllables first).
-3. Next: Stage 4 (math, kindergarten–2nd grade). Stage 2b (letter tracing) waits for the user's choice of print or cursive.
+3. Next: Stage 4 (math, kindergarten–2nd grade). Stage 2b (letter tracing) will use print letters first (D13).
 4. Set up GitHub Pages deployment (user approval needed).
 
 ## Commands
