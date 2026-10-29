@@ -21,6 +21,36 @@ About 20% of math time is geometry and measurement; word problems appear in ever
 Sources: `https://meyda.education.gov.il/files/mazkirut_pedagogit/matematika/tochnyotlemud/kita1.pdf` … `kita6.pdf`;
 `https://meyda.education.gov.il/files/Mazkirut_Pedagogit/math/primary-school/math2025/mafmar_yesodi2025.pdf`
 
+### Math, kindergarten – 2nd grade: NEW curriculum (read 2026-10-29)
+
+⚠️ The 2006 grade documents in the table above are **superseded for grades 1–3**: the new curriculum applies to
+grade 1 from 2024‑25, grade 2 from 2025‑26 and grade 3 from 2026‑27 (2025 letter p.2; 2026 letter p.2). Use these:
+grade 1 `https://meyda.education.gov.il/files/Mazkirut_Pedagogit/math/primary-school/math2023/Newprogramgrade1.pdf`,
+grade 2 `https://meyda.education.gov.il/files/Mazkirut_Pedagogit/math/primary-school/math2023/Newprogramgrade2.pdf`,
+kindergarten (2010) `https://meyda.education.gov.il/files/Mazkirut_Pedagogit/Matematika/TochnitKdamYesodiHeb.pdf`.
+
+- **Gan (pp.12–14):** count aloud 1–30 and back from 10; count objects to 20; compare groups by matching and counting;
+  ordinals to 6th; estimate; symbols 0–10 (ext. 20), zero after the others; join/separate within 10 with objects;
+  equal sharing to 10; "half" only as everyday language; dot dice; patterns, shapes, informal measuring, coins.
+- **Grade 1:** numbers to 100 and 0 (~45h), operations within 100 (~45h), shapes, length, time (whole hours), data.
+  Count forward/back to 100, by 10s/5s/2s; subitizing; grouping into 10s; read/write numbers incl. digit direction;
+  number line (exact and approximate placement, misplaced number); between/before/after/closer to.
+  Add/subtract within 10 then 20, any strategy; **firm command of all splits of 10**; = as "same amount"; missing
+  numbers on either side; whole tens to 100 by analogy; money to 20 ₪ with change.
+  **Not in grade 1:** ×/÷, odd/even, < > signs (all moved later).
+- **Grade 2:** numbers to 1,000, place value and flexible splits, < >; counting by 10/20/50/100; odd/even (0 is even);
+  **full command of facts within 20**; two-digit add/subtract in a row then columns; estimating, error finding;
+  comparison word problems; multiplication as repeated addition/arrays — **2, 4, 5, 10 tables + division** (sharing
+  and grouping); cm/m, perimeter; solids; clock to the half hour. **Not in grade 2:** parentheses, divisibility,
+  fractions ½ ¼, area, weight.
+- **Representations named:** number line, hundred chart, abacus, place-value "house", bundled sticks, coins, arrays,
+  dot dice, digital manipulatives. Ten-frame and base-ten blocks are *not* named. Any reasonable strategy is accepted.
+- **Item formats:** "who am I?" clues; missing numbers on a line or chart; misplaced number; missing addend on either
+  side; build an exercise for a target; compare without solving; odd one out; open problems with several answers; money change.
+- **Fluency** is framed as command/automatic recall, never speed — consistent with our no-timer rule.
+- **Follow-up for the clock island:** the new grade 2 teaches the clock to the *half* hour; our `clock.quarter` skill is
+  tagged grade 2 from the old curriculum — re-check its grade against the new grade 3 document.
+
 ### Hebrew (1st grade guidance, 2025–26)
 
 - **Vowel order is not fixed nationally** ("varies between reading methods"). Ministry practice boards group:

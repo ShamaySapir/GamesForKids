@@ -41,3 +41,6 @@ Why: avoids duplicating 190 words with nikud and a tested component; keeps one s
 **D12 · 2026-10-29 · user** — The studio saves recordings through a dev-server endpoint (`scripts/studio-plugin.ts`)
 straight into `src/audio/he/`, one file per phrase (a new take replaces the old). Replaces the folder picker / Downloads flow.
 Why: recordings were landing in Downloads while the studio showed ✅; this works in every browser and ✅ means a real file.
+
+**D13 · 2026-10-29 · user** — Letter tracing (Stage 2b) starts with print letters (דפוס); cursive (כתב) may follow later.
+Why: the user's choice; print matches the letters children see in books and in the app.
