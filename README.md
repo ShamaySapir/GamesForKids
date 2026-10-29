@@ -59,8 +59,9 @@ Anything not pushed stays on the old computer only.
 
 Every spoken phrase has an ID. A recording at `src/audio/he/<phrase-id>.<mp3|m4a|ogg|webm|wav>` is
 played if it exists; otherwise the browser's text-to-speech reads the phrase. With `npm run dev` running, open
-`http://localhost:5173/#/studio` to see which phrases are still missing and record them. The studio is
-dev-only and is not part of the published site.
+`http://localhost:5173/#/studio` to see which phrases are still missing and record them. Each recording is saved straight into
+`src/audio/he/` (a new take replaces the old one); commit the files to keep them. The studio is dev-only and is
+not part of the published site.
 
 ## Project layout
 

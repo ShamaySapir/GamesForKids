@@ -37,3 +37,7 @@ Why: no server means no real admin login, and recordings must be saved into the 
 (the reading island reuses the letters island's words, `PickGame` and phrases). The owning island stays the only
 place they are edited; contract changes go through the planner.
 Why: avoids duplicating 190 words with nikud and a tested component; keeps one source of truth.
+
+**D12 · 2026-10-29 · user** — The studio saves recordings through a dev-server endpoint (`scripts/studio-plugin.ts`)
+straight into `src/audio/he/`, one file per phrase (a new take replaces the old). Replaces the folder picker / Downloads flow.
+Why: recordings were landing in Downloads while the studio showed ✅; this works in every browser and ✅ means a real file.

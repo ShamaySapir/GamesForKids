@@ -2,12 +2,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { studioPlugin } from './scripts/studio-plugin'
 
 export default defineConfig({
   // Relative base so the build works under any GitHub Pages sub-path (routing is hash-based).
   base: './',
   plugins: [
     react(),
+    studioPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'audio/**/*'],
