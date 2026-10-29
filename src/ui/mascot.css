@@ -1,0 +1,19 @@
+.mascot { display: flex; align-items: center; gap: 14px; }
+.mascot-owl { background: none; border: 0; padding: 0; cursor: pointer; flex-shrink: 0; }
+.mascot-owl:disabled { cursor: default; }
+.mascot-owl svg { display: block; width: 100%; height: auto; animation: bob 3s ease-in-out infinite; }
+.mood-happy .mascot-owl svg { animation: pop .6s; }
+.mood-happy .wing-r { transform-origin: 20px 70px; animation: flap .3s 3; }
+.mood-happy .wing-l { transform-origin: 100px 70px; animation: flap-l .3s 3; }
+.beak-talk { animation: talk .25s infinite alternate; transform-origin: 60px 76px; }
+.bubble {
+  position: relative; background: var(--card); border: 3px solid var(--line); border-radius: 22px;
+  padding: 12px 18px; font-size: 22px; font-weight: 600; margin: 0; max-width: 460px;
+}
+.bubble::before {
+  content: ''; position: absolute; inset-inline-start: -14px; top: 50%; translate: 0 -50%;
+  border: 10px solid transparent; border-inline-end-color: var(--line);
+}
+@keyframes flap { 50% { transform: rotate(-25deg); } }
+@keyframes flap-l { 50% { transform: rotate(25deg); } }
+@keyframes talk { to { transform: scaleY(.4); } }

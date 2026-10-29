@@ -1,0 +1,7 @@
+.studio table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; }
+.studio th, .studio td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+.studio tr.rec { background: var(--badbg); }
+.studio-text { font-size: 20px; text-align: right !important; }
+.studio-actions { display: flex; gap: 8px; }
+.studio-bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
+.studio-err { color: var(--bad); font-weight: 600; }
