@@ -61,6 +61,29 @@ Sources: **[C]** curriculum gan–2nd (תשפ"ו) `…/Yesodi/tohnit-limudim-saf
   כ/ח, ו/ז, ק/כ, ת/ט); opening consonant — hear a sound, pick 1 of 4 pictures; closing consonant — see a picture,
   say the last sound; opening consonant+vowel — hear "סִי", pick סירה among 4 pictures.
 
+### Nikud and reading, 1st–2nd grade (read 2026-10-29)
+
+Sources as above, plus **[F]** ministry reading-fluency test for grades 2–6 (2021)
+`https://meyda.education.gov.il/files/Mazkirut_Pedagogit/HebrewPrimary/assessment/fluency-assessment-2021.pdf`.
+
+- **Nikud order is explicitly not binding** ("סדר סימני הניקוד אינו מחייב", [G] p.29); most methods start with /a/.
+  Practice each sign alone (בָּנָה), then mixed (סִפֵּר). Units are taught as letter+sign (שִׁ) and letter+vowel letter (שִׁי) ([G] p.27).
+  Drills: unit lists where only the letter or only the sign changes; matching a word-opening unit to pictures.
+- **Vowel letters:** אהו"י as consonants and vowels (ו in ורד vs שוק); final /a/ /e/ written as sign + ה (שָׁנָה);
+  contrast פר/פרה ([G] p.27–28). No grade 1–2 guidance on shva na/nach was found.
+- **Decoding path (grade 1):** unit → word (פִּי/צָה → פיצה); words built from units; linear blending first
+  (מִ-שְׁ-קֶ-פֶ-ת), larger chunks by end of grade 1. Always check meaning, "not reading for the sake of practice" ([G] p.28–29, [H] p.7, 32).
+- **End of grade 1:** all letters, all nikud signs, אהו"י, homophones and homographs ([G] p.26).
+- **Grade 2:** more automatic word recognition; prefixes (ו ה ש ב כ ל מ) and endings (ים/ות) read as units; a few
+  frequent words without nikud; nikud removed formally only in grade 3 ([G] p.34–35, [H] p.5).
+- **Fluency test [F]:** 80 pointed words, score = correct in 45 s; story read aloud with words-per-minute. No national norms.
+  *Not used:* timed tasks are excluded for grades ≤ 2 by CLAUDE.md rules.
+- **Item formats to mirror ([G], [R]):** match words and sentences to pictures; cloze in sentences (incl. homophones על/אל);
+  semantic sorting / odd-one-out; build sentences from cards; order sentences into a story; missing unit beside a picture.
+- **Shared and digital reading:** read-aloud and dialogic shared reading are "especially important in grade 1" ([H] p.15);
+  books with prominent words in the signs already learned ([G] p.29). Digital: simple closed interface, large font,
+  wide spacing; narration with word highlighting and adjustable speed are named as useful; extras only when tied to the plot ([C] p.157–160).
+
 ### English (Curriculum 2020, elementary)
 
 - Mandatory from 3rd grade. Pre-A1 (Pre-Foundation) in 3rd and early 4th: listening and speaking first,

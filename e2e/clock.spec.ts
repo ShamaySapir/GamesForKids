@@ -20,7 +20,8 @@ test('a child can create a profile, play a round, and keep progress after reload
     await expect(page.locator('.dot.done')).toHaveCount(i)
     const prompt = await page.locator('.clock-q').innerText()
     const hand = prompt.includes('הקצר') ? 'מחוג השעות' : 'מחוג הדקות'
-    await page.getByRole('button', { name: hand }).click()
+    // Click the tip, as a child would: near the hub the two hands are close together.
+    await page.getByRole('button', { name: hand }).locator('circle').click()
   }
   await expect(page.getByText('אלופים! שלושה כוכבים!')).toBeVisible()
   await expect(page.locator('.stars')).toHaveText('⭐ 3')

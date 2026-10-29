@@ -3,51 +3,41 @@ import { Link } from 'react-router-dom'
 import { hasHebrewVoice, phrases, recordings, say } from '../../core/audio/audio'
 import './studio.css'
 
-// Dev-only page for recording phrases (docs/DECISIONS.md D3, D10); excluded from production builds.
-// Chrome/Edge: pick the repo's src/audio/he folder once and recordings are written straight into it.
-// Other browsers: each recording downloads; move the files into src/audio/he/.
+// Dev-only page for recording phrases (docs/DECISIONS.md D3, D10, D12); excluded from production builds.
+// Each recording is sent to the dev server (scripts/studio-plugin.ts), which writes src/audio/he/<id>.<ext> and
+// replaces any earlier take; ✅ appears only after the server confirms the file was written.
 
-interface DirHandle {
-  getFileHandle(name: string, opts: { create: boolean }): Promise<{ createWritable(): Promise<{ write(b: Blob): Promise<void>; close(): Promise<void> }> }>
-}
-type DirPicker = (opts?: { mode?: 'readwrite'; id?: string }) => Promise<DirHandle>
-
-const EXT = 'webm'
-// Phrases TTS can't say reliably (isolated sounds, syllables) are listed first.
-const PRIORITY = [/\.sound\./, /\.cv\./, /\.syl\./]
+// Phrases TTS can't say reliably (isolated sounds, syllables, units) are listed first.
+const PRIORITY = [/\.sound\./, /\.cv\./, /\.unit\./, /\.syl\./]
 const rank = (id: string) => { const i = PRIORITY.findIndex(r => r.test(id)); return i < 0 ? PRIORITY.length : i }
 
 export default function Studio() {
   const ids = useMemo(() => Object.keys(phrases).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
   const [filter, setFilter] = useState<'missing' | 'all'>('missing')
-  const [saved, setSaved] = useState<Record<string, string>>({})
   const [recording, setRecording] = useState<string | null>(null)
-  const [dir, setDir] = useState<DirHandle | null>(null)
+  const [saving, setSaving] = useState<string | null>(null)
   const [error, setError] = useState('')
+  // Takes saved during this visit, played from memory: the file keeps its name, so the browser would replay the old one.
+  const [fresh, setFresh] = useState<Record<string, string>>({})
   const rec = useRef<MediaRecorder | null>(null)
 
-  const has = (id: string) => recordings.has(id) || !!saved[id]
+  const has = (id: string) => recordings.has(id) || !!fresh[id]
   const shown = ids.filter(id => filter === 'all' || !has(id))
   const done = ids.filter(has).length
-  const picker = (window as unknown as { showDirectoryPicker?: DirPicker }).showDirectoryPicker
 
-  const chooseDir = async () => {
-    try { setDir(await picker!({ mode: 'readwrite', id: 'audio-he' })) } catch { /* cancelled */ }
-  }
-
-  const store = async (id: string, blob: Blob) => {
-    const name = `${id}.${EXT}`
-    if (dir) {
-      const w = await (await dir.getFileHandle(name, { create: true })).createWritable()
-      await w.write(blob)
-      await w.close()
-    } else {
-      const a = document.createElement('a')
-      a.href = URL.createObjectURL(blob)
-      a.download = name
-      a.click()
+  const save = async (id: string, blob: Blob) => {
+    setSaving(id)
+    try {
+      const res = await fetch(`/__studio/save?id=${encodeURIComponent(id)}`, {
+        method: 'POST', headers: { 'Content-Type': blob.type }, body: blob,
+      })
+      if (!res.ok) throw new Error(await res.text())
+      setFresh(f => ({ ...f, [id]: URL.createObjectURL(blob) }))
+    } catch (e) {
+      setError(`Not saved: ${(e as Error).message}`)
+    } finally {
+      setSaving(null)
     }
-    setSaved(s => ({ ...s, [id]: URL.createObjectURL(blob) }))
   }
 
   const toggle = async (id: string) => {
@@ -64,7 +54,7 @@ export default function Studio() {
         stream.getTracks().forEach(t => t.stop())
         rec.current = null
         setRecording(null)
-        await store(id, new Blob(chunks, { type: r.mimeType }))
+        await save(id, new Blob(chunks, { type: r.mimeType.split(';')[0] }))
       }
       rec.current = r
       setRecording(id)
@@ -76,8 +66,7 @@ export default function Studio() {
   }
 
   const play = (id: string) => {
-    const url = saved[id]
-    if (url) void new Audio(url).play()
+    if (fresh[id]) void new Audio(fresh[id]).play()
     else void say(id)
   }
 
@@ -87,15 +76,15 @@ export default function Studio() {
         <h1>🎙️ Recording studio</h1>
         <Link className="pill" to="/">Back to app</Link>
       </header>
-      <p className="sub">{done} / {ids.length} phrases recorded · Hebrew TTS voice on this device: {hasHebrewVoice() ? 'yes' : 'no'}</p>
+      <p className="sub">
+        {done} / {ids.length} phrases recorded · saved to <code>src/audio/he/</code> · a new take replaces the old one ·
+        Hebrew TTS voice on this device: {hasHebrewVoice() ? 'yes' : 'no'}
+      </p>
       <div className="studio-bar">
-        {picker
-          ? <button className="pill" onClick={chooseDir}>{dir ? '✅ Saving into chosen folder' : '📁 Choose src/audio/he folder'}</button>
-          : <span>Files will download — move them into <code>src/audio/he/</code>.</span>}
         <label><input type="radio" checked={filter === 'missing'} onChange={() => setFilter('missing')} /> Missing</label>
         <label><input type="radio" checked={filter === 'all'} onChange={() => setFilter('all')} /> All</label>
       </div>
-      {error && <p className="studio-err">{error}</p>}
+      {error && <p className="studio-err" role="alert">⚠️ {error}</p>}
       <table>
         <thead><tr><th>ID</th><th>Text</th><th>Status</th><th /></tr></thead>
         <tbody>
@@ -103,12 +92,12 @@ export default function Studio() {
             <tr key={id} className={recording === id ? 'rec' : undefined}>
               <td><code>{id}</code></td>
               <td dir="rtl" className="studio-text">{phrases[id]}</td>
-              <td>{has(id) ? '✅' : '—'}</td>
+              <td>{saving === id ? '⏳' : has(id) ? '✅' : '—'}</td>
               <td className="studio-actions">
-                <button className="pill" onClick={() => toggle(id)} disabled={!!recording && recording !== id}>
-                  {recording === id ? '⏹ Stop' : '⏺ Record'}
+                <button className="pill" onClick={() => toggle(id)} disabled={(!!recording && recording !== id) || !!saving}>
+                  {recording === id ? '⏹ Stop' : has(id) ? '⏺ Re-record' : '⏺ Record'}
                 </button>
-                <button className="pill" onClick={() => play(id)}>▶</button>
+                <button className="pill" onClick={() => play(id)} title="Plays the latest take, otherwise TTS">▶</button>
               </td>
             </tr>
           ))}
