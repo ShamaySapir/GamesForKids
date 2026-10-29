@@ -52,6 +52,8 @@ export type PickOption =
   | { id: string; kind: 'picture'; emoji: string; say: PhraseRef }
   | { id: string; kind: 'letter'; label: string }
   | { id: string; kind: 'sound'; label?: string; say: string }
+  /** Readable text with nikud (a unit, word or short phrase); optional 🔊 reads it. Used by the reading island. */
+  | { id: string; kind: 'text'; label: string; say?: PhraseRef }
 
 export interface PickPrompt {
   /** Big picture (emoji). */
@@ -60,6 +62,8 @@ export interface PickPrompt {
   letter?: string
   /** Word with nikud; `blank` marks the missing letter position ('start' | 'end'). */
   word?: { text: string; blank?: 'start' | 'end' }
+  /** A sentence with nikud for the child to read; '___' marks a gap. 🔊 reads it only when `say` is given. */
+  sentence?: { text: string; say?: PhraseRef }
 }
 
 /** Answer is the correct option's id. */

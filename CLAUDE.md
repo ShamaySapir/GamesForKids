@@ -37,17 +37,19 @@ computer-first with touch support.
 | Clock island | ✅ built, ⏳ awaiting user play-test | 7 skills, 5 games; spec `docs/specs/clock.md` |
 | Recording studio | ✅ dev-only | `#/studio` under `npm run dev`; hard-to-synthesize phrases listed first; nothing recorded yet (TTS fallback in use) |
 | Hebrew letters island | ✅ built, ⏳ awaiting user play-test | 13 skills, 3 game components, 190 words; spec `docs/specs/hebrew-letters.md`; 0 of 324 phrases recorded |
+| Reading island | 🟡 building | Spec approved; T0 done (`narrate` in core audio, `src/subjects/reading/{types,ids}.ts`); T1–T3 in parallel |
 | Math / English islands | ⬜ placeholders | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
-| Git | ✅ | Stage 0–1 merged to `main` (PR #1). Current work: `stage2/hebrew-letters-spec` |
+| Git | ✅ | Stages 0–2 merged to `main` (PR #1, #2). Current work: `stage3/nikud-reading` |
 
-Current stage: **Stages 1 and 2** built, awaiting the user's play-test and recordings.
+Current stage: **Stage 3** building; Stages 1–2 await the user's play-test and recordings.
 
 ## Next steps
 
 1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
 2. User plays the letters island; records its phrases (studio lists isolated sounds and syllables first).
-3. Decide Stage 2b (letter tracing: print or cursive first) or move on to Stage 3 (nikud and reading).
+3. Stage 3 (nikud and reading + read-along books): planner writes `docs/specs/reading.md` → user approves → parallel build.
+   Stage 2b (letter tracing) waits for the user's choice of print or cursive first.
 4. Set up GitHub Pages deployment (user approval needed).
 
 ## Commands

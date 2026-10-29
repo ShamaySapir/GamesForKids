@@ -21,7 +21,7 @@ function SayButton({ id, label = '🔊', className = '' }: { id: PhraseRef; labe
 /* ---------- PickGame ---------- */
 
 function PromptView({ prompt }: { prompt: PickPrompt }) {
-  const { picture, letter, word } = prompt
+  const { picture, letter, word, sentence } = prompt
   return (
     <div className="hb-prompt">
       {picture && <div className="hb-picture" aria-hidden="true">{picture}</div>}
@@ -33,6 +33,12 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
           {word.blank === 'end' && <span className="hb-blank" aria-label="_">_</span>}
         </div>
       )}
+      {sentence && (
+        <div className="hb-word-row">
+          <p className="he-text hb-sentence" dir="rtl">{sentence.text}</p>
+          {sentence.say && <SayButton id={sentence.say} />}
+        </div>
+      )}
     </div>
   )
 }
@@ -40,6 +46,7 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
 function optionFace(o: PickOption) {
   if (o.kind === 'picture') return <span className="hb-emoji" aria-hidden="true">{o.emoji}</span>
   if (o.kind === 'sound' && o.label === undefined) return <span className="he-text hb-opt-name">{phrases[o.say]}</span>
+  if (o.kind === 'text') return <span className="he-text hb-opt-name" dir="rtl">{o.label}</span>
   return <span className="he-letter hb-opt-letter">{o.label}</span>
 }
 
@@ -65,8 +72,9 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
     onAttempt(ok)
   }
   const hoverStart = (e: ReactPointerEvent, o: PickOption) => {
-    if (e.pointerType !== 'mouse' || o.kind === 'letter') return
-    hover.current = setTimeout(() => void say(o.say), HOVER_SAY_MS)
+    if (e.pointerType !== 'mouse' || o.kind === 'letter' || !o.say) return
+    const ref = o.say
+    hover.current = setTimeout(() => void say(ref), HOVER_SAY_MS)
   }
   const hoverEnd = () => { if (hover.current) clearTimeout(hover.current) }
 
@@ -86,7 +94,7 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
                 aria-label={o.kind === 'picture' ? o.emoji : o.kind === 'sound' ? o.label ?? phrases[o.say] : o.label} onClick={() => choose(o.id)}>
                 {optionFace(o)}
               </button>
-              {o.kind !== 'letter' && <SayButton id={o.say} />}
+              {(o.kind === 'picture' || o.kind === 'sound' || (o.kind === 'text' && o.say)) && <SayButton id={o.say!} />}
             </div>
           )
         })}

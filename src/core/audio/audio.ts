@@ -86,6 +86,78 @@ export async function say(ref: PhraseRef): Promise<void> {
   if (mine === token) await flush()
 }
 
+/* ---------- narration with word highlighting (read-along books) ---------- */
+
+const NIKUD = /[֑-ׇ]/g
+const TTS_MS_PER_LETTER = 90
+const TICK_MS = 50
+
+/** Fraction of the phrase at which each word starts, weighted by letter count (nikud ignored). */
+export function wordStarts(text: string): number[] {
+  const weights = text.split(/\s+/).filter(Boolean).map(w => w.replace(NIKUD, '').length + 1)
+  const total = weights.reduce((a, b) => a + b, 0)
+  let acc = 0
+  return weights.map(w => { const start = acc / total; acc += w; return start })
+}
+
+/** Index of the word being spoken at `fraction` (0–1) of the phrase. */
+export const wordAt = (starts: readonly number[], fraction: number) =>
+  Math.max(0, starts.findLastIndex(s => s <= fraction))
+
+/** Character offset → word index, for Web Speech boundary events. */
+export function wordAtChar(text: string, charIndex: number): number {
+  const wordStartChars = [...text.matchAll(/\S+/g)].map(m => m.index)
+  return Math.max(0, wordStartChars.findLastIndex(start => start <= charIndex))
+}
+
+/**
+ * Read a phrase aloud and report which word is being spoken. With a recording, word times are estimated in
+ * proportion to word length; with TTS, boundary events are used when the voice sends them.
+ * `rate` < 1 reads slower. Interrupted by `stop()` or any other playback.
+ */
+export async function narrate(id: string, onWord: (index: number) => void, rate = 1): Promise<void> {
+  stop()
+  const mine = token
+  const text = textOf(id)
+  const starts = wordStarts(text)
+  let last = -1
+  const report = (i: number) => {
+    if (mine === token && i !== last) onWord((last = i))
+  }
+  report(0)
+  const url = recordings.get(id)
+  if (url) {
+    const a = new Audio(url)
+    a.playbackRate = rate
+    current = a
+    const timer = setInterval(() => { if (a.duration) report(wordAt(starts, a.currentTime / a.duration)) }, TICK_MS)
+    await new Promise<void>(resolve => {
+      a.onended = a.onerror = () => resolve()
+      a.play().catch(() => resolve())
+    })
+    clearInterval(timer)
+  } else {
+    await new Promise<void>(resolve => {
+      try {
+        const u = new SpeechSynthesisUtterance(text)
+        u.lang = 'he-IL'
+        u.rate = 0.9 * rate
+        const voice = hebrewVoice()
+        if (voice) u.voice = voice
+        // Estimate by time until the voice proves it sends word boundaries.
+        let boundaries = false
+        const t0 = Date.now()
+        const estimate = (TTS_MS_PER_LETTER * text.replace(NIKUD, '').length) / rate
+        const timer = setInterval(() => { if (!boundaries) report(wordAt(starts, Math.min(1, (Date.now() - t0) / estimate))) }, TICK_MS)
+        u.onboundary = e => { if (e.name === 'word') { boundaries = true; report(wordAtChar(text, e.charIndex)) } }
+        u.onend = u.onerror = () => { clearInterval(timer); resolve() }
+        speechSynthesis.speak(u)
+      } catch { resolve() }
+    })
+  }
+  report(starts.length - 1)
+}
+
 /* ---------- sound effects (synthesized, ported from the prototype) ---------- */
 
 let ctx: AudioContext | null = null

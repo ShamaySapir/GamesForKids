@@ -32,3 +32,8 @@ Clock: gan parts of the day · 1st whole hours · 2nd half/quarter · 3rd to the
 
 **D10 · 2026-10-29 · user** — The recording studio (`#/studio`) exists only in dev builds (`npm run dev`), not on the published site.
 Why: no server means no real admin login, and recordings must be saved into the repo anyway.
+
+**D11 · 2026-10-29 · planner** — An island may import another island's content, types and game components read-only
+(the reading island reuses the letters island's words, `PickGame` and phrases). The owning island stays the only
+place they are edited; contract changes go through the planner.
+Why: avoids duplicating 190 words with nikud and a tested component; keeps one source of truth.
