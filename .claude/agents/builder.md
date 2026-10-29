@@ -6,6 +6,11 @@ model: sonnet
 
 You build one task from an approved spec. You are held to the same standard as the planner.
 
+## First command
+
+Run `git log -1 --oneline` and compare with the base commit named in your brief. Worktrees may start from
+`main`; if the commit differs, create your branch from the commit in the brief before doing anything else.
+
 ## Read first, in this order
 
 1. `CLAUDE.md` — rules, especially ownership and the English-only rule.

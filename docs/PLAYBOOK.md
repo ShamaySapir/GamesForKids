@@ -33,7 +33,8 @@ code compiles; it is done when you have **seen it work** the way a child will us
 2. Unit tests cover, for every generator: the answer is reachable (among options / settable), no duplicate
    options, values inside the level's range, every phrase ID it emits exists, review items are honored.
    Loop over many seeds or over the full input space (the clock tests check all 720 times).
-3. `npm run e2e` — your island's E2E test plays a full round through the real UI.
+3. `npm run e2e` — your island's E2E test plays a full round through the real UI. Read the summary line:
+   "N passed" must equal the number of tests. Run it twice; a test that fails once is flaky and must be fixed.
 4. **Look at it.** Take screenshots (desktop 1280×860, and a narrow 390px width) of each new screen and
    game state and actually inspect them: layout, RTL direction, overlap, contrast, dark mode.
 5. Try the unhappy paths by hand or in a test: wrong answers, the aid turning on, reload mid-way, keyboard only.
@@ -46,6 +47,8 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | Reload sent the child back to the profile picker | E2E reload step | Async load must finish before rendering routes |
 | At 12:00 both clock hands overlap, so the hour hand can't be grabbed | E2E drag | Check interactive starting states, not just end states |
 | Decorative map path didn't line up with mirrored RTL islands | Screenshot | Look at every screen in RTL |
+| E2E test passed alone but failed under parallel load | Full `npm run e2e` run | Never sleep a fixed time in tests; wait for a visible state (e.g. progress dots count) |
+| Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off
 

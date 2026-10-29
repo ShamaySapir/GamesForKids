@@ -35,6 +35,32 @@ Sources: `https://meyda.education.gov.il/files/Pop/0files/ivrit_hinuch_leshoni/Y
 `https://meyda.education.gov.il/files/Pop/0files/ivrit_hinuch_leshoni/Yesodi/tohnit-limudim-safa.pdf`;
 `https://pop.education.gov.il/tchumey_daat/ivrit_chinhch_leshony/yesodi/pedagogy-hebrew-linguistic-education/teaching-hebrew-grade1`
 
+### Hebrew letters and phonological awareness, gan to 1st grade (read 2026-10-29)
+
+Sources: **[C]** curriculum gan–2nd (תשפ"ו) `…/Yesodi/tohnit-limudim-safa.pdf` · **[G]** required goals by age
+`https://meyda.education.gov.il/files/Pop/0files/ivrit_hinuch_leshoni/Yesodi/acquisition-reading-writing.pdf` ·
+**[H]** 1st-grade guidance `…/Yesodi/horaa.pdf` · **[R]** RAMA 1st-grade reading test, teacher guide
+`https://meyda.education.gov.il/files/Rama/Yesodot_heb_1_teacher_instructions.pdf` · **[K]** gan letter-knowledge booklet
+`https://meyda.education.gov.il/files/PreSchool/alef-bet1.pdf`
+
+- **Ages 3–5** ([G] p.7, 10–11): rhyme; split words into syllables and blend them; opening syllable.
+- **Ages 5–6, end of gan** ([G] p.16–19): segment/blend below the syllable (consonant+vowel units like בָּ);
+  isolate the opening consonant+vowel; isolate the **closing consonant** (what ends דבש?); opening consonant tied to
+  the letter's name and shape; syllable deletion (כפתור without כף → תור). Letter names matched to shapes.
+  No required letter count; children arrive in 1st grade knowing ~18 of 22 on average ([C] p.77).
+- **Teaching order hints:** full phoneme segmentation is "unnatural" in Hebrew; consonant+vowel is the accessible
+  unit ([C] p.72). Start opening-sound work with continuous sounds ש ז ס ל ר מ נ ח ([G] p.18).
+- **Names vs sounds:** teach both; a letter's name begins with its sound; activities may use either ([C] p.74, [G] p.18).
+- **1st grade** ([G] p.26–31, [H]): no fixed letter order (depends on the school's reading method); all letters,
+  finals during the year, same-sound letters ט/ת כ/ח ס/ש ב/ו א/ע/ה כ/ק, and בּ/ב כּ/כ פּ/פ שׁ/שׂ (sort words by
+  hard/soft sound, right/left shin). Explicit teaching done within about six months.
+- **Handwriting:** both print and cursive are taught in 1st grade, with emphasis on cursive (כתב עגול); letters grouped
+  by stroke direction (arcs: ר ה ת ח ק ב; top-down: י ו מ נ ן). **No official stroke-order chart was found** — it lives in textbooks.
+- **Digital use** ([C] p.157–160): simple, short, focused; large fonts, wide letter spacing, immediate feedback, no distracting effects.
+- **RAMA assessment items to mirror** ([R]): letter names (22 cards; name or sound accepted; common confusions
+  כ/ח, ו/ז, ק/כ, ת/ט); opening consonant — hear a sound, pick 1 of 4 pictures; closing consonant — see a picture,
+  say the last sound; opening consonant+vowel — hear "סִי", pick סירה among 4 pictures.
+
 ### English (Curriculum 2020, elementary)
 
 - Mandatory from 3rd grade. Pre-A1 (Pre-Foundation) in 3rd and early 4th: listening and speaking first,

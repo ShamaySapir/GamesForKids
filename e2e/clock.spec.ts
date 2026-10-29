@@ -16,10 +16,11 @@ test('a child can create a profile, play a round, and keep progress after reload
 
   // "Which hand?" — read the prompt and click the matching hand, six times.
   for (let i = 0; i < 6; i++) {
+    // Wait for the round to reach question i rather than sleeping: fixed delays were flaky under load.
+    await expect(page.locator('.dot.done')).toHaveCount(i)
     const prompt = await page.locator('.clock-q').innerText()
     const hand = prompt.includes('הקצר') ? 'מחוג השעות' : 'מחוג הדקות'
     await page.getByRole('button', { name: hand }).click()
-    await page.waitForTimeout(1300)
   }
   await expect(page.getByText('אלופים! שלושה כוכבים!')).toBeVisible()
   await expect(page.locator('.stars')).toHaveText('⭐ 3')
