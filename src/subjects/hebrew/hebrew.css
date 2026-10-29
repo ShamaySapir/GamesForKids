@@ -1,0 +1,76 @@
+.hb-stage { display: grid; justify-items: center; gap: 12px; }
+.hb-q { font-size: 26px; font-weight: 700; margin: 0; text-align: center; }
+.hb-prompt { display: grid; justify-items: center; }
+.hb-picture { font-size: 112px; line-height: 1.1; }
+.hb-big-letter { font-size: 128px; }
+.hb-word { display: flex; justify-content: center; align-items: center; gap: .08em; }
+.hb-blank {
+  display: inline-block; min-inline-size: 1.1em; text-align: center; color: var(--abc);
+  border-block-end: 5px solid var(--abc); line-height: 1.1; margin-inline: .1em;
+}
+.hb-hint { border-color: var(--sun); min-height: var(--tap); }
+
+.hb-opts { width: 100%; margin-top: 8px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.hb-opt-wrap { display: grid; gap: 8px; justify-items: center; align-content: start; }
+.hb-opt { width: 100%; min-height: 128px; }
+.hb-emoji { font-size: 76px; line-height: 1.1; }
+.hb-opt-letter { font-size: 72px; }
+.hb-say {
+  min-width: var(--tap); min-height: var(--tap); border-radius: 999px; border: 3px solid var(--line);
+  background: var(--card); font-size: 26px; cursor: pointer;
+}
+.hb-say:hover { border-color: var(--abc); }
+.hb-say-wide { padding-inline: 20px; font-weight: 800; }
+
+.hb-word-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.hb-syllables { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.hb-syl { background: var(--card); border: 3px solid var(--sun); border-radius: 16px; padding: 0 16px; line-height: 1.5; }
+.hb-drum {
+  width: 168px; height: 168px; border-radius: 50%; border: 6px solid var(--clock); background: var(--card);
+  font-size: 84px; cursor: pointer; box-shadow: 0 8px 0 var(--clock); display: grid; place-items: center; padding: 0;
+}
+.hb-drum:active:not(:disabled) { transform: translateY(6px); box-shadow: 0 2px 0 var(--clock); }
+.hb-drum:disabled { opacity: .6; cursor: default; }
+.hb-claps { display: flex; gap: 12px; margin-block: 6px; }
+.hb-clap-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--line); }
+.hb-clap-dot.on { background: var(--sun); outline: 3px solid var(--sun-ink); animation: pop .3s; }
+.hb-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
+
+.hb-baskets { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
+.hb-basket {
+  background: var(--sand); border: 4px dashed var(--line); border-radius: 28px; padding: 8px;
+  min-height: 200px; display: grid; grid-template-rows: auto 1fr; justify-items: center; gap: 4px;
+}
+.hb-basket.ready { border-color: var(--abc); cursor: pointer; }
+.hb-basket.aim { border-style: solid; box-shadow: 0 0 0 4px var(--sun); }
+.hb-basket-label {
+  font-size: 72px; line-height: 1.2; background: transparent; border: 0; padding: 0 16px;
+  min-height: var(--tap); min-width: var(--tap); cursor: inherit;
+}
+.hb-basket-label:disabled { color: var(--ink); }
+.hb-basket-cards { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-content: start; width: 100%; }
+.hb-chip {
+  display: inline-flex; align-items: center; gap: 4px; background: var(--okbg); border: 3px solid var(--ok);
+  border-radius: 16px; padding: 2px 10px; font-size: 32px;
+}
+.hb-chip-text { font-size: 24px; line-height: 1.4; letter-spacing: .03em; }
+.hb-tray { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; width: 100%; }
+.hb-card-wrap { display: grid; gap: 6px; justify-items: center; position: relative; }
+.hb-card-wrap.dragging { z-index: 10; }
+.hb-card-wrap.dragging .hb-card { box-shadow: 0 12px 24px var(--line); cursor: grabbing; }
+.hb-card { width: 100%; min-height: 120px; touch-action: none; cursor: grab; user-select: none; }
+.hb-card .hb-emoji { font-size: 52px; }
+.hb-card.sel { border-color: var(--sun); box-shadow: 0 0 0 4px var(--sun); }
+.hb-live { min-height: 24px; margin: 0; color: var(--mute); font-size: 18px; }
+
+@media (max-width: 600px) {
+  .hb-picture { font-size: 88px; }
+  .hb-big-letter { font-size: 104px; }
+  .hb-word.he-text { font-size: 40px; }
+  .hb-opts { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .hb-opt-wrap:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 5px); justify-self: center; }
+  .hb-basket-label { font-size: 56px; }
+  .hb-tray { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .hb-card { padding: 8px 2px; }
+  .hb-chip-text { font-size: 20px; letter-spacing: 0; }
+}
