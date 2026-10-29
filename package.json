@@ -1,0 +1,9 @@
+{
+  "name": "lomdim-vemsachakim",
+  "version": "1.0.0",
+  "description": "משחקי לימוד לילדים: שעון, אותיות ומספרים",
+  "private": true,
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
