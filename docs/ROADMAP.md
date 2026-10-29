@@ -41,8 +41,8 @@ Spec approved 2026-10-29: `docs/specs/hebrew-letters.md`. T0 ✅ · T1 content �
 Letter ↔ picture, opening/closing sound, rhyme and syllables, final letters, same-sound letters,
 dagesh pairs, letter tracing with hand-authored SVG stroke paths.
 
-## Stage 3 – Hebrew: nikud and reading (1st – 2nd grade) 🟡
-Spec approved 2026-10-29: `docs/specs/reading.md`. T0 (narration with word highlighting, types, PickGame text options) ✅ · T1–T3 🟡 in parallel · T4 ⬜.
+## Stage 3 – Hebrew: nikud and reading (1st – 2nd grade) ✅ built
+Spec approved 2026-10-29: `docs/specs/reading.md`. T0 ✅ · T1 content ✅ (full Hebrew review, 25 findings fixed) · T2 ✅ · T3 ✅ · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
 
 Configurable vowel order, letter+vowel syllables, blending into words, reading words and sentences
 with pictures, dictation by dragging letters.

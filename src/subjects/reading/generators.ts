@@ -207,7 +207,8 @@ export function storyOrderQuestion(ctx: GenContext, stories: readonly Story[]): 
     const shuffled = shuffleTiles(ctx.rng, tiles)
     if (!shuffled) return null
     return {
-      itemKey: story.id, answer: tiles.map(t => t.id), say: R.order, instruction: R.order, picture: story.scene, layout: 'sentences', tiles: shuffled,
+      // No scene picture: the story's emoji are in story order and would give the answer away.
+      itemKey: story.id, answer: tiles.map(t => t.id), say: R.order, instruction: R.order, layout: 'sentences', tiles: shuffled,
     }
   })
 }

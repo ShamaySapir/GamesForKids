@@ -1,6 +1,6 @@
 # Spec: Reading island (אי הקריאה)
 
-- **Status:** Approved by user on 2026-10-29 — in progress
+- **Status:** Approved by user on 2026-10-29 — built; awaiting user play-test
 - **Stage:** 3 (docs/ROADMAP.md)
 - **Relies on:** DECISIONS D3, D6, D7, D8, D11 · docs/RESEARCH.md § "Nikud and reading, 1st–2nd grade"
 - **Builds on:** the letters island (`src/subjects/hebrew/`) — its words, letters, types and `PickGame`

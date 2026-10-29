@@ -48,6 +48,9 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | At 12:00 both clock hands overlap, so the hour hand can't be grabbed | E2E drag | Check interactive starting states, not just end states |
 | Decorative map path didn't line up with mirrored RTL islands | Screenshot | Look at every screen in RTL |
 | E2E test passed alone but failed under parallel load | Full `npm run e2e` run | Never sleep a fixed time in tests; wait for a visible state (e.g. progress dots count) |
+| Reading content passed every test but had gender errors, cloze items with two right answers, stories with two valid orders | Separate reviewer read every item as a Hebrew editor | Child-facing text always gets a full human-style content review, not samples and not just tests |
+| A story's emoji scene listed the events in order, so the child could solve it without reading | Screenshot | Check that pictures and hints never give the answer away |
+| Wiring that imported not-yet-merged content broke the whole app (islands load together) | User saw the app fail | Keep the working tree compiling at all times; park unmerged wiring outside `src/` |
 | Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off

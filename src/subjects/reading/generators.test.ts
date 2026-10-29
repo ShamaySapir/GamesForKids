@@ -372,10 +372,10 @@ describe('story order', () => {
   it('tiles are the three sentences, never in order, each says its story phrase', () => {
     for (const seed of SEEDS) {
       const q = storyOrderQuestion(ctx(seed), STORIES)
+      expect(q.picture, 'the scene would reveal the order').toBeUndefined()
       expectOrder(q)
       const story = STORIES.find(s => s.id === q.itemKey)!
       expect(q.layout).toBe('sentences')
-      expect(q.picture).toBe(story.scene)
       expect(q.say).toBe(R.order)
       expect(q.answer.map(id => q.tiles.find(t => t.id === id)!.text)).toEqual([...story.sentences])
       for (const t of q.tiles) expect(t.say).toBe(storyPhrase(story.id, Number(t.id.split('.').pop())))

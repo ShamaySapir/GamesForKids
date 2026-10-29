@@ -24,6 +24,8 @@ interface Props {
 const C = 120
 const FACE = 94
 const SVG_PT = 240
+/** Hand grab areas start this far from the center, so one hand's area never covers the other near the hub. */
+const GRAB_FROM = 22
 
 const polar = (deg: number, r: number) => {
   const a = (deg * Math.PI) / 180
@@ -72,6 +74,7 @@ export function Clock({ time, onChange, snap = 5, movable = ['hour', 'minute'], 
     const isHour = which === 'hour'
     const deg = isHour ? hourAngle(t) : minuteAngle(t)
     const [x, y] = polar(deg, isHour ? 48 : 76)
+    const [gx, gy] = polar(deg, GRAB_FROM)
     const color = isHour ? 'var(--clock)' : 'var(--abc)'
     if (opts.ghost) return <line key={`g-${which}`} x1={C} y1={C} x2={x} y2={y} stroke={color} strokeWidth={isHour ? 10 : 6} strokeLinecap="round" opacity={0.25} strokeDasharray="4 6" />
     const active = (interactive && movable.includes(which)) || !!onHandClick
@@ -82,8 +85,8 @@ export function Clock({ time, onChange, snap = 5, movable = ['hour', 'minute'], 
         role={active ? (onHandClick ? 'button' : 'slider') : undefined}
         aria-label={isHour ? 'מחוג השעות' : 'מחוג הדקות'}
         aria-valuetext={active && !onHandClick ? timeText(time) : undefined}>
-        {/* Wide transparent stroke = comfortable grab area. */}
-        <line x1={C} y1={C} x2={x} y2={y} stroke="transparent" strokeWidth={28} strokeLinecap="round" />
+        {/* Wide transparent grab area, starting away from the center where the two hands always meet. */}
+        <line x1={gx} y1={gy} x2={x} y2={y} stroke="transparent" strokeWidth={28} strokeLinecap="round" />
         <line x1={C} y1={C} x2={x} y2={y} stroke={color} strokeWidth={isHour ? 10 : 6} strokeLinecap="round" />
         {active && <circle cx={x} cy={y} r={isHour ? 9 : 8} fill={color} />}
       </g>
