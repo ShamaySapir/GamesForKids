@@ -38,7 +38,7 @@ export const M = {
   place: 'math.q.place', //           "גִּרְרוּ אֶת הַחֵץ לַמִּסְפָּר…" + number
   whichNumber: 'math.q.whichNumber', // "אֵיזֶה מִסְפָּר מְסֻמָּן?"
   misplaced: 'math.q.misplaced', //   "מָצְאוּ אֶת הַמִּסְפָּר שֶׁלֹּא בַּמָּקוֹם"
-  hidden: 'math.q.hidden', //         "כַּמָּה מִתְחַבְּאִים מִתַּחַת לַכּוֹס?"
+  hidden: 'math.q.hidden', //         "כַּמָּה מִתְחַבְּאוֹת מִתַּחַת לַכּוֹס?" (things are feminine)
   allSplits: 'math.q.allSplits', //   "מָצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁיַּחַד הֵם עֶשֶׂר"
   solve: 'math.q.solve', //           "כַּמָּה זֶה?"
   missing: 'math.q.missing', //       "אֵיזֶה מִסְפָּר חָסֵר?"
