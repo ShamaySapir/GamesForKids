@@ -1,0 +1,59 @@
+/* Coins game and pairs board (math island). Metal tones are neutral and read in light and dark. */
+.mc-coin { display: block; }
+.mc-silver { --rim: #b9c0cc; --face: #dfe4ec; --edge: #7d8696; }
+.mc-steel { --rim: #a7b0c0; --face: #cdd5e2; --edge: #6e7a8f; }
+.mc-pewter { --rim: #98a2b6; --face: #bcc6d8; --edge: #5f6b82; }
+.mc-gold { --rim: #d9a514; --face: #f6d56a; --edge: #9a6f00; }
+.mc-rim { fill: var(--rim); stroke: var(--edge); stroke-width: 3; }
+.mc-ring { fill: var(--face); stroke: var(--edge); stroke-width: 2; }
+.mc-gold .mc-rim { fill: #e3e6ec; }
+.mc-gold .mc-ring { fill: var(--rim); stroke-width: 3; }
+.mc-shine { fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; opacity: .7; }
+.mc-num, .mc-sym { fill: #1f2a5c; font-weight: 800; font-family: 'Rubik Variable', 'Segoe UI', Arial, sans-serif; }
+
+.mc-stage { display: grid; justify-items: center; gap: 14px; width: 100%; }
+.mc-shop { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center; }
+.mc-item { font-size: 88px; line-height: 1.1; }
+.mc-tag {
+  display: inline-flex; align-items: center; gap: 6px; background: var(--sun); color: var(--sun-ink);
+  border-radius: 16px; padding: 4px 18px; font-size: 48px; font-weight: 800;
+}
+.mc-tray { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; align-items: flex-end; }
+.mc-coin-wrap { position: relative; touch-action: none; }
+.mc-coin-wrap.dragging { z-index: 10; pointer-events: none; opacity: .9; }
+.mc-coin-btn {
+  background: transparent; border: 3px solid transparent; border-radius: 50%; padding: 2px; cursor: grab;
+  min-width: var(--tap); min-height: var(--tap); display: grid; place-items: center; touch-action: none;
+}
+.mc-coin-btn:hover:not(:disabled) { border-color: var(--num); }
+.mc-wallet {
+  width: 100%; min-height: 168px; background: var(--sand); border: 4px dashed var(--line); border-radius: 28px;
+  padding: 10px; display: grid; grid-template-rows: auto 1fr; gap: 8px; justify-items: center;
+}
+.mc-wallet.aim { border-color: var(--num); border-style: solid; box-shadow: 0 0 0 4px var(--sun); }
+.mc-wallet.bad { animation: shake .35s; border-color: var(--bad); }
+.mc-wallet.ok { border-color: var(--ok); border-style: solid; background: var(--okbg); }
+.mc-wallet-head { display: flex; align-items: center; gap: 12px; }
+.mc-purse { font-size: 40px; line-height: 1; }
+.mc-total { font-size: 48px; font-weight: 800; min-width: 3ch; text-align: center; }
+.mc-wallet-coins { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-content: start; }
+.mc-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.mc-actions .pill { min-height: var(--tap); font-size: 22px; }
+.mc-actions .pill:disabled { opacity: .5; cursor: default; }
+
+.pr-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 12px; width: 100%; max-width: 640px; }
+.pr-card { min-height: 96px; font-size: 52px; }
+.pr-card.sel { border-color: var(--abc); box-shadow: 0 0 0 4px var(--sun); }
+.pr-card.found { background: var(--okbg); border-color: var(--ok); cursor: default; }
+.pr-found { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; min-height: 52px; margin: 0; padding: 0; list-style: none; }
+.pr-eq {
+  background: var(--okbg); border: 3px solid var(--ok); border-radius: 16px; padding: 2px 14px;
+  font-size: 30px; font-weight: 800;
+}
+@media (max-width: 600px) {
+  .mc-item { font-size: 72px; }
+  .mc-tag { font-size: 40px; }
+  .mc-tray { gap: 6px; }
+  .mc-coin-btn { padding: 0; }
+  .pr-board { grid-template-columns: repeat(3, 1fr); }
+}
