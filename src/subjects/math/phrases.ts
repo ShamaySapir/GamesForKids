@@ -72,7 +72,7 @@ export const STORY_TEXT: Record<string, { start: string; middle: string; end: st
   'sep-farm': separate('בַּמִּשְׁק הָיוּ', 'הָלְכוּ'),
   'sep-pond': separate('עַל הַסֶּלַע יָשְׁבוּ', 'קָפְצוּ'),
   'sep-plate': separate('עַל הַצַּלַּחַת הָיוּ', 'אָכַלְנוּ'),
-  'sep-party': separate('עַל הַשֻּׁלְחָן הָיוּ', 'לָקְחוּ הַיְלָדִים'),
+  'sep-party': separate('עַל הַשֻּׁלְחָן הָיוּ', 'הַיְלָדִים לָקְחוּ'),
   'sep-garden': separate('בַּגִּנָּה צָמְחוּ', 'קָטַפְנוּ'),
   'sep-train': separate('בַּתַּחֲנָה עָמְדוּ', 'נָסְעוּ'),
   'sep-closet': separate('בָּאָרוֹן הָיוּ', 'לָקַחְנוּ'),
