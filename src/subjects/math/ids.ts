@@ -1,5 +1,6 @@
 // Phrase-ID contract between content (T1), generators (T2) and games (T3a, T3b).
 // Numbers: numberPhrase(n) in ./numbers.ts (blocks in content/numbers.ts, written in T0).
+// Prices: pricePhrase(n), a whole recorded phrase per price 1–20 (שֶׁקֶל is masculine; don't compose it from number blocks).
 // T1 declares every other ID below in phrases.ts, which must keep spreading NUMBER_PHRASES.
 //
 // Content exports (T1), passed into generators by index.ts (T4):
@@ -16,7 +17,6 @@ export const OP = {
   plus: 'math.op.plus', //     "וְעוֹד"
   minus: 'math.op.minus', //   "פָּחוֹת"
   equals: 'math.op.equals', // "שָׁוֶה"
-  shekel: 'math.op.shekel', // "שְׁקָלִים"
 } as const
 
 /** Instructions and labels. */
@@ -42,7 +42,7 @@ export const M = {
   allSplits: 'math.q.allSplits', //   "מָצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁיַּחַד הֵם עֶשֶׂר"
   solve: 'math.q.solve', //           "כַּמָּה זֶה?"
   missing: 'math.q.missing', //       "אֵיזֶה מִסְפָּר חָסֵר?"
-  pay: 'math.q.pay', //               "שַׁלְּמוּ בְּדִיּוּק…" + number + shekel
+  pay: 'math.q.pay', //               "שַׁלְּמוּ בְּדִיּוּק…" + pricePhrase(price)
   change: 'math.q.change', //         "כַּמָּה עֹדֶף תְּקַבְּלוּ?"
   check: 'math.ui.check', //          "בְּדִיקָה"
   reset: 'math.ui.reset', //          "מֵהַתְחָלָה"

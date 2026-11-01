@@ -4,3 +4,9 @@ export function numberPhrase(n: number): string[] {
   if (n < 20 || n % 10 === 0) return [`math.n.${n}`]
   return [`math.n.${n - (n % 10)}`, `math.and.${n % 10}`]
 }
+
+/** Phrase ID that says a price of `n` shekels (1–20), with correct masculine agreement. */
+export function pricePhrase(n: number): string {
+  if (!Number.isInteger(n) || n < 1 || n > 20) throw new Error(`pricePhrase: ${n} is out of range 1–20`)
+  return `math.price.${n}`
+}
