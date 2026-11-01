@@ -58,9 +58,24 @@ Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ (sha
 ## Stage 4b – Math: 2nd grade ⬜
 Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).
 
-## Idea – Thinking island (ages 4–6) ⬜ proposed
-From the user's workbook for ages 4–5: visual discrimination (odd one out, a figure facing the other way), symmetry
-(match picture halves), patterns (what comes next), spatial thinking. Also opens a pre-gan-chova level. Needs the user's go-ahead.
+## Stage 4c – Thinking island (ages 4–6) ⬜ approved by the user, spec after Stage 4
+Started from the user's son's workbook for ages 4–5. Each idea needs **at least 5–6 examples**, with **original
+drawings** suited to the age (SVG illustrations; emoji only where unambiguous). Opens a pre-gan-chova level (age 4).
+
+| Idea | What the child does |
+|---|---|
+| Odd one out | Find the one that differs — by direction (a figure facing the other way), color, size, shape or kind |
+| Symmetry | Match the two halves of a drawing; complete the missing half |
+| Patterns | What comes next: AB, AAB, ABC, then growing patterns (●, ●●, ●●●) |
+| Identical twin | Find the picture exactly like the sample among very similar ones |
+| Spot the difference | Two drawings, find 3–5 differences |
+| Shadows | Match an object to its silhouette |
+| Sequencing in pictures | Order 3–4 pictures of a process (seed → sprout → flower) |
+| Sorting into groups | Fruits / vehicles / animals; then by a rule (color, size) |
+| Where is it? | Spatial words: on, under, inside, next to, between (עַל, מִתַּחַת, בְּתוֹךְ, לְיַד, בֵּין) |
+| Paths and mazes | Lead a character through a simple maze |
+| Memory pairs | Classic turn-two-cards memory game |
+| What's missing? | A familiar drawing with a part missing (a chair with three legs) |
 
 ## Stage 5 – Math: 3rd – 6th grade ⬜
 Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
