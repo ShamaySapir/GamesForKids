@@ -1,0 +1,82 @@
+/* Numbers island: number pad, number line, tap-to-build. Tokens only; --num is the island accent. */
+
+/* Number pad */
+.pd-stage { gap: 14px; }
+.pd-aid { width: 100%; max-width: 560px; }
+.pd-answer {
+  min-width: 200px; min-height: 84px; padding: 4px 24px; display: flex; align-items: center; justify-content: center;
+  font-size: 56px; font-weight: 800; background: var(--card); border: 4px solid var(--num); border-radius: 20px;
+}
+.pd-answer.bad { background: var(--badbg); border-color: var(--bad); animation: shake .35s; }
+.pd-answer.ok { background: var(--okbg); border-color: var(--ok); }
+.pd-caret { color: var(--mute); opacity: .6; }
+.pd-pad { display: grid; grid-template-columns: repeat(3, 76px); gap: 10px; direction: ltr; }
+.pd-key {
+  min-width: var(--tap); min-height: 72px; border-radius: 20px; border: 3px solid var(--line); background: var(--card);
+  font-size: 34px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 var(--line);
+}
+.pd-key:hover:not(:disabled) { border-color: var(--num); }
+.pd-key:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--line); }
+.pd-key:disabled { opacity: .5; cursor: default; }
+.pd-key.go { background: var(--sun); color: var(--sun-ink); border-color: var(--sun); box-shadow: 0 4px 0 #d9a514; }
+
+/* Number line */
+.ml-stage { width: 100%; }
+.ml-wrap { width: 100%; max-width: 760px; }
+.ml-svg { display: block; max-width: 100%; user-select: none; -webkit-user-select: none; }
+.ml-marker { cursor: grab; outline: none; }
+.ml-marker.drag { cursor: grabbing; }
+.ml-marker:focus-visible .ml-bubble { stroke: var(--abc); stroke-width: 4; }
+.ml-bubble { fill: var(--card); stroke: var(--num); stroke-width: 3; }
+.ml-value { fill: var(--ink); }
+.ml-tri { fill: var(--num); stroke: var(--card); stroke-width: 2; stroke-linejoin: round; }
+.ml-marker.ok .ml-tri { fill: var(--ok); }
+.ml-marker.ok .ml-bubble { fill: var(--okbg); stroke: var(--ok); }
+.ml-marker.bad { animation: shake .35s; }
+.ml-marker.bad .ml-tri { fill: var(--bad); }
+.ml-check { margin-top: 8px; }
+.ml-lab { cursor: pointer; outline: none; }
+.ml-lab rect { fill: var(--card); stroke: var(--line); stroke-width: 3; }
+.ml-lab text { fill: var(--ink); }
+.ml-lab:hover rect, .ml-lab:focus-visible rect { stroke: var(--num); }
+.ml-lab:focus-visible rect { stroke: var(--abc); stroke-width: 4; }
+.ml-lab.ok rect { fill: var(--okbg); stroke: var(--ok); }
+.ml-lab.bad { cursor: default; opacity: .7; animation: shake .35s; }
+.ml-lab.bad rect { fill: var(--badbg); stroke: var(--bad); }
+
+/* Tap to build */
+.tb-stage { gap: 10px; }
+.tb-show { font-size: 96px; line-height: 1.1; color: var(--num); }
+.tb-tray {
+  width: 100%; max-width: 420px; min-height: calc(var(--tap) * 2 + 20px); display: grid; align-content: start; justify-items: center; gap: 6px;
+  padding: 8px; background: var(--card); border: 3px dashed var(--line); border-radius: var(--radius);
+}
+.tb-tray.bad { border-color: var(--bad); background: var(--badbg); animation: shake .35s; }
+.tb-tray.ok { border-color: var(--ok); background: var(--okbg); }
+.tb-row { display: flex; gap: 4px; direction: ltr; }
+.tb-obj {
+  width: var(--tap); height: var(--tap); padding: 0; font-size: 44px; line-height: 1; background: transparent;
+  border: 0; border-radius: 16px; cursor: pointer;
+}
+.tb-obj:hover:not(:disabled) { background: var(--bg); }
+.tb-obj:disabled { cursor: default; }
+.tb-basket {
+  position: relative; min-width: 112px; min-height: 96px; padding: 4px 20px; font-size: 64px; line-height: 1;
+  background: var(--sand); border: 3px solid var(--line); border-radius: var(--radius); cursor: pointer;
+}
+.tb-basket:hover:not(:disabled) { border-color: var(--num); }
+.tb-basket:active:not(:disabled) { transform: translateY(3px); }
+.tb-basket:disabled { opacity: .5; cursor: default; }
+.tb-plus {
+  position: absolute; inset-block-start: -10px; inset-inline-end: -10px; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--num); color: var(--card); font-size: 26px; font-weight: 800; display: grid; place-items: center;
+}
+.tb-actions { display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+
+@media (max-width: 600px) {
+  .pd-answer { font-size: 48px; min-height: 72px; }
+  .pd-pad { grid-template-columns: repeat(3, 72px); }
+  .tb-show { font-size: 80px; }
+  .tb-tray { padding: 4px; }
+  .tb-obj { font-size: 40px; }
+}
