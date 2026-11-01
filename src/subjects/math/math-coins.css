@@ -1,15 +1,15 @@
 /* Coins game and pairs board (math island). Metal tones are neutral and read in light and dark. */
 .mc-coin { display: block; }
-.mc-silver { --rim: #b9c0cc; --face: #dfe4ec; --edge: #7d8696; }
-.mc-steel { --rim: #a7b0c0; --face: #cdd5e2; --edge: #6e7a8f; }
-.mc-pewter { --rim: #98a2b6; --face: #bcc6d8; --edge: #5f6b82; }
-.mc-gold { --rim: #d9a514; --face: #f6d56a; --edge: #9a6f00; }
+.mc-silver { --rim: var(--coin-silver-rim); --face: var(--coin-silver-face); --edge: var(--coin-silver-edge); }
+.mc-steel { --rim: var(--coin-steel-rim); --face: var(--coin-steel-face); --edge: var(--coin-steel-edge); }
+.mc-pewter { --rim: var(--coin-pewter-rim); --face: var(--coin-pewter-face); --edge: var(--coin-pewter-edge); }
+.mc-gold { --rim: var(--coin-gold-rim); --face: var(--coin-gold-face); --edge: var(--coin-gold-edge); }
 .mc-rim { fill: var(--rim); stroke: var(--edge); stroke-width: 3; }
 .mc-ring { fill: var(--face); stroke: var(--edge); stroke-width: 2; }
-.mc-gold .mc-rim { fill: #e3e6ec; }
+.mc-gold .mc-rim { fill: var(--coin-gold-ring); }
 .mc-gold .mc-ring { fill: var(--rim); stroke-width: 3; }
-.mc-shine { fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; opacity: .7; }
-.mc-num, .mc-sym { fill: #1f2a5c; font-weight: 800; font-family: 'Rubik Variable', 'Segoe UI', Arial, sans-serif; }
+.mc-shine { fill: none; stroke: var(--coin-shine); stroke-width: 4; stroke-linecap: round; opacity: .7; }
+.mc-num, .mc-sym { fill: var(--coin-ink); font-weight: 800; font-family: 'Rubik Variable', 'Segoe UI', Arial, sans-serif; }
 
 .mc-stage { display: grid; justify-items: center; gap: 14px; width: 100%; }
 .mc-shop { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center; }

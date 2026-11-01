@@ -11,6 +11,12 @@
   --num: #17a683;
   --eng: #ff9f1c;
   --read: #2d9cdb;
+  /* Coins look like metal in both themes, so these have no dark-mode override. */
+  --coin-silver-rim: #b9c0cc; --coin-silver-face: #dfe4ec; --coin-silver-edge: #7d8696;
+  --coin-steel-rim: #a7b0c0; --coin-steel-face: #cdd5e2; --coin-steel-edge: #6e7a8f;
+  --coin-pewter-rim: #98a2b6; --coin-pewter-face: #bcc6d8; --coin-pewter-edge: #5f6b82;
+  --coin-gold-rim: #d9a514; --coin-gold-face: #f6d56a; --coin-gold-edge: #9a6f00; --coin-gold-ring: #e3e6ec;
+  --coin-ink: #1f2a5c; --coin-shine: #fff;
   --sun: #ffc93c;
   --sun-ink: #3b2f00;
   --ok: #1fa971;
