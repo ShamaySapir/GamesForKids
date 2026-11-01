@@ -36,11 +36,11 @@ test('rhyme: a full round of picking the rhyming picture', async ({ page }) => {
   await page.getByRole('link', { name: /מה מתחרז/ }).click()
   for (let i = 0; i < 6; i++) {
     await atQuestion(page, i)
-    const target = byEmoji(await page.locator('.hb-prompt .hb-picture').innerText())
+    const target = byEmoji(await page.locator('.pk-prompt .pk-picture').innerText())
     const answer = WORDS.find(w => w.id !== target.id && w.rhyme === target.rhyme && w.rhyme)
     const rhymes = WORDS.filter(w => w.id !== target.id && w.rhyme === target.rhyme).map(w => w.emoji)
     expect(answer, target.text).toBeTruthy()
-    for (const opt of await page.locator('.hb-opt').all()) {
+    for (const opt of await page.locator('.pk-opt').all()) {
       if (rhymes.includes((await opt.getAttribute('aria-label'))!)) { await opt.click(); break }
     }
   }
@@ -52,7 +52,7 @@ test('syllables: clapping with the keyboard', async ({ page }) => {
   await page.getByRole('link', { name: /מוחאים כפיים/ }).click()
   for (let i = 0; i < 6; i++) {
     await atQuestion(page, i)
-    const word = byText(await page.locator('.hb-word').first().innerText())
+    const word = byText(await page.locator('.pk-word').first().innerText())
     await page.locator('body').click({ position: { x: 5, y: 5 } })
     for (let c = 0; c < word.syllables.length; c++) await page.keyboard.press('Space')
     await expect(page.locator('.hb-clap-dot.on')).toHaveCount(word.syllables.length)

@@ -44,3 +44,7 @@ Why: recordings were landing in Downloads while the studio showed ✅; this work
 
 **D13 · 2026-10-29 · user** — Letter tracing (Stage 2b) starts with print letters (דפוס); cursive (כתב) may follow later.
 Why: the user's choice; print matches the letters children see in books and in the app.
+
+**D14 · 2026-11-01 · planner** — `PickGame` and its question types move from the letters island to shared UI
+(`src/ui/pick/`), with prompt kinds for counting objects and LTR exercises and number options. Shared classes use the `pk-` prefix.
+Why: the letters, reading and numbers islands all use it; shared code belongs to the planner, not to one island.

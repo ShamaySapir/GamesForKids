@@ -1,111 +1,15 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import { phrases, say, sfx } from '../../core/audio/audio'
-import type { GameProps, PhraseRef } from '../../core/engine/types'
+import type { GameProps } from '../../core/engine/types'
 import { Q, wordPhrase } from './ids'
-import type { ClapQ, PickOption, PickPrompt, PickQ, SortCard, SortQ } from './types'
+import { SayButton } from '../../ui/pick/SayButton'
+import type { ClapQ, SortCard, SortQ } from './types'
 import './hebrew.css'
 
 // Components keep per-question state; PlayScreen remounts them via `key` on each new question.
 
-const HOVER_SAY_MS = 400
 const MAX_CLAPS = 6
 const DRAG_THRESHOLD = 8
-
-/** Small replay button. Always a separate control, so playing a sound never answers or selects. */
-function SayButton({ id, label = '🔊', className = '' }: { id: PhraseRef; label?: string; className?: string }) {
-  return (
-    <button type="button" className={`hb-say ${className}`} aria-label="🔊" onClick={() => void say(id)}>{label}</button>
-  )
-}
-
-/* ---------- PickGame ---------- */
-
-function PromptView({ prompt }: { prompt: PickPrompt }) {
-  const { picture, letter, word, sentence } = prompt
-  return (
-    <div className="hb-prompt">
-      {picture && <div className="hb-picture" aria-hidden="true">{picture}</div>}
-      {letter && <div className="he-letter hb-big-letter">{letter}</div>}
-      {word && (
-        <div className="he-text hb-word" dir="rtl">
-          {word.blank === 'start' && <span className="hb-blank" aria-label="_">_</span>}
-          <span>{word.text}</span>
-          {word.blank === 'end' && <span className="hb-blank" aria-label="_">_</span>}
-        </div>
-      )}
-      {sentence && (
-        <div className="hb-word-row">
-          <p className="he-text hb-sentence" dir="rtl">{sentence.text}</p>
-          {sentence.say && <SayButton id={sentence.say} />}
-        </div>
-      )}
-    </div>
-  )
-}
-
-/** Options can be silent (e.g. pictures whose sentence would give the answer away): `say` absent or empty. */
-const hasSay = (o: PickOption): o is Exclude<PickOption, { kind: 'letter' }> & { say: PhraseRef } =>
-  o.kind !== 'letter' && !!o.say && (typeof o.say === 'string' || o.say.length > 0)
-
-function optionFace(o: PickOption) {
-  if (o.kind === 'picture') return <span className="hb-emoji" aria-hidden="true">{o.emoji}</span>
-  if (o.kind === 'sound' && o.label === undefined) return <span className="he-text hb-opt-name">{phrases[o.say]}</span>
-  if (o.kind === 'text') return <span className="he-text hb-opt-name" dir="rtl">{o.label}</span>
-  return <span className="he-letter hb-opt-letter">{o.label}</span>
-}
-
-export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
-  const [wrong, setWrong] = useState<string[]>([])
-  const [right, setRight] = useState(false)
-  const hover = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const hinted = useRef(false)
-
-  useEffect(() => {
-    if (aid && question.hint && !hinted.current) {
-      hinted.current = true
-      void say(question.hint)
-    }
-  }, [aid, question.hint])
-  useEffect(() => () => { if (hover.current) clearTimeout(hover.current) }, [])
-
-  const choose = (id: string) => {
-    if (right || wrong.includes(id)) return
-    const ok = id === question.answer
-    if (ok) setRight(true)
-    else setWrong(w => [...w, id])
-    onAttempt(ok)
-  }
-  const hoverStart = (e: ReactPointerEvent, o: PickOption) => {
-    if (e.pointerType !== 'mouse' || !hasSay(o)) return
-    const ref = o.say
-    hover.current = setTimeout(() => void say(ref), HOVER_SAY_MS)
-  }
-  const hoverEnd = () => { if (hover.current) clearTimeout(hover.current) }
-
-  return (
-    <div className="hb-stage">
-      <p className="hb-q">{phrases[question.instruction]}</p>
-      <PromptView prompt={question.prompt} />
-      {aid && question.hint && (
-        <button type="button" className="pill hb-hint" aria-label="🔊" onClick={() => void say(question.hint as PhraseRef)}>💡 🔊</button>
-      )}
-      <div className="opts hb-opts">
-        {question.options.map(o => {
-          const cls = right && o.id === question.answer ? ' ok' : wrong.includes(o.id) ? ' bad' : ''
-          return (
-            <div key={o.id} className="hb-opt-wrap" onPointerEnter={e => hoverStart(e, o)} onPointerLeave={hoverEnd}>
-              <button type="button" className={`opt hb-opt hb-opt-${o.kind}${cls}`} disabled={wrong.includes(o.id)}
-                aria-label={o.kind === 'picture' ? o.emoji : o.kind === 'sound' ? o.label ?? phrases[o.say] : o.label} onClick={() => choose(o.id)}>
-                {optionFace(o)}
-              </button>
-              {hasSay(o) && <SayButton id={o.say} />}
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
 
 /* ---------- ClapGame ---------- */
 
@@ -140,11 +44,11 @@ export function ClapGame({ question, aid, onAttempt }: GameProps<ClapQ>) {
   }
 
   return (
-    <div className="hb-stage">
-      <p className="hb-q">{phrases[Q.clap]}</p>
-      <div className="hb-picture" aria-hidden="true">{word.emoji}</div>
-      <div className="hb-word-row">
-        <div className="he-text hb-word" dir="rtl">{word.text}</div>
+    <div className="pk-stage">
+      <p className="pk-q">{phrases[Q.clap]}</p>
+      <div className="pk-picture" aria-hidden="true">{word.emoji}</div>
+      <div className="pk-word-row">
+        <div className="he-text pk-word" dir="rtl">{word.text}</div>
         <SayButton id={wordPhrase(word.id)} />
       </div>
       {(aid || done) && (
@@ -161,7 +65,7 @@ export function ClapGame({ question, aid, onAttempt }: GameProps<ClapQ>) {
       <div className="hb-actions">
         <button type="button" className="pill" onClick={() => setClaps(0)} disabled={done || claps === 0}>↺ {phrases[Q.reset]}</button>
         <button type="button" className="cta" onClick={check} disabled={done || claps === 0}>✔ {phrases[Q.check]}</button>
-        {aid && <SayButton id={question.syllablesSay} label={`🔊 ${word.syllables.join('·')}`} className="hb-say-wide" />}
+        {aid && <SayButton id={question.syllablesSay} label={`🔊 ${word.syllables.join('·')}`} className="pk-say-wide" />}
       </div>
     </div>
   )
@@ -267,8 +171,8 @@ export function SortGame({ question, onAttempt }: GameProps<SortQ>) {
   const activeBin = drag?.over ?? aim
 
   return (
-    <div className="hb-stage">
-      <p className="hb-q">{phrases[Q.sort]}</p>
+    <div className="pk-stage">
+      <p className="pk-q">{phrases[Q.sort]}</p>
       <div className="hb-baskets">
         {([0, 1] as const).map(bin => (
           <div key={bin} ref={el => { baskets.current[bin] = el }}
@@ -295,7 +199,7 @@ export function SortGame({ question, onAttempt }: GameProps<SortQ>) {
                 onClick={() => select(c)} onKeyDown={e => onCardKey(e, c)}
                 onPointerDown={e => onDown(e, c)} onPointerMove={onMove} onPointerUp={e => onUp(e, c)}
                 onPointerCancel={() => setDrag(null)}>
-                <span className="hb-emoji" aria-hidden="true">{c.emoji}</span>
+                <span className="pk-emoji" aria-hidden="true">{c.emoji}</span>
                 <span className="he-text hb-chip-text">{c.text}</span>
               </button>
               <SayButton id={c.say} />

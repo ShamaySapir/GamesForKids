@@ -38,11 +38,12 @@ computer-first with touch support.
 | Recording studio | ✅ dev-only | `#/studio` under `npm run dev`; saves via the dev server straight into `src/audio/he/` (D12); user has started recording |
 | Hebrew letters island | ✅ built, ⏳ awaiting user play-test | 13 skills, 3 game components, 190 words; spec `docs/specs/hebrew-letters.md`; 0 of 324 phrases recorded |
 | Reading island | ✅ built, ⏳ awaiting user play-test | 11 skills (5 nikud signs, build, word/sentence reading, cloze, story order, 5 read-along books); spec `docs/specs/reading.md`; ~273 phrases to record |
-| Math / English islands | ⬜ placeholders | `comingSoon` stubs in `src/subjects/*/index.ts` |
+| Shared pick UI | ✅ | `src/ui/pick/` — `PickGame`, `SayButton`, `Objects`, `PickQ` (D14) |
+| Math / English islands | 🟡 / ⬜ | math K–1 building; English placeholder | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
 | Git | ✅ | Stages 0–3 merged to `main` (PR #1–#3). Current work: `stage4/math-k2` |
 
-Current stage: **Stage 4** (math, kindergarten–2nd grade): research done (`docs/RESEARCH.md`, new 2024–26 curriculum), spec next; Stages 1–3 await the user's play-test and recordings.
+Current stage: **Stage 4** (math, kindergarten–1st grade) building — spec `docs/specs/math-k2.md`, T0 done; Stages 1–3 await the user's play-test and recordings.
 
 ## Next steps
 

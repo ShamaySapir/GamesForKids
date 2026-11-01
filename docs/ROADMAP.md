@@ -52,11 +52,14 @@ with pictures, dictation by dragging letters.
 **Read-along books:** a book is split into pages; each page is recorded in the studio (page-level recording
 mode) and words are highlighted while the page is read. Needs a long-recording mode and word timings in the studio.
 
-## Stage 4 – Math: kindergarten – 2nd grade 🟡 spec in progress
-Counting and comparing, number line, add/subtract to 10 → 20 → 100, place value, ten-frames, ½ and ¼, length.
+## Stage 4 – Math: kindergarten – 1st grade 🟡
+Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ (shared PickGame, number phrases, contract) · T1, T2, T3a, T3b 🟡 in parallel · T4 ⬜.
+
+## Stage 4b – Math: 2nd grade ⬜
+Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).
 
 ## Stage 5 – Math: 3rd – 6th grade ⬜
-Multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
+Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
 percent and ratio, area / perimeter / volume, word problems.
 
 ## Stage 6 – English (mainly 3rd grade and up) ⬜

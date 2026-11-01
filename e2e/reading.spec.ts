@@ -28,11 +28,11 @@ test('vowels: a round of hear-the-unit completes', async ({ page }) => {
   // The unit is only spoken, so try options until the right one is accepted.
   for (let i = 0; i < 6; i++) {
     await atQuestion(page, i)
-    await expect(page.locator('.hb-opt')).toHaveCount(4)
-    for (const opt of await page.locator('.hb-opt').all()) {
+    await expect(page.locator('.pk-opt')).toHaveCount(4)
+    for (const opt of await page.locator('.pk-opt').all()) {
       if (await opt.isDisabled()) continue
       await opt.click()
-      if (await page.locator('.hb-opt.ok').count()) break
+      if (await page.locator('.pk-opt.ok').count()) break
     }
   }
   await expect(page.getByRole('button', { name: 'שחקו שוב' })).toBeVisible()
