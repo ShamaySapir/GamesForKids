@@ -58,6 +58,10 @@ Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ (sha
 ## Stage 4b – Math: 2nd grade ⬜
 Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).
 
+## Idea – Thinking island (ages 4–6) ⬜ proposed
+From the user's workbook for ages 4–5: visual discrimination (odd one out, a figure facing the other way), symmetry
+(match picture halves), patterns (what comes next), spatial thinking. Also opens a pre-gan-chova level. Needs the user's go-ahead.
+
 ## Stage 5 – Math: 3rd – 6th grade ⬜
 Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
 percent and ratio, area / perimeter / volume, word problems.

@@ -30,8 +30,8 @@ ministry curriculum for grade 1 (from 2024‑25) and the kindergarten curriculum
 | # | ID | Title (child-facing) | Grade | Requires | Sticker | Games |
 |---|---|---|---|---|---|---|
 | 1 | `math.count-10` | סוֹפְרִים עַד 10 | Gan | — | 🍎 | how-many, show-me |
-| 2 | `math.numerals-10` | מַכִּירִים מִסְפָּרִים | Gan | — | 🔢 | hear-number, match |
-| 3 | `math.compare` | אֵיפֹה יוֹתֵר? | Gan | count-10 | ⚖️ | more-less |
+| 2 | `math.numerals-10` | מַכִּירִים מִסְפָּרִים | Gan | — | 🔢 | hear-number, match, domino |
+| 3 | `math.compare` | אֵיפֹה יוֹתֵר? | Gan | count-10 | ⚖️ | more-less, most |
 | 4 | `math.stories-10` | סִפּוּרֵי חֶשְׁבּוֹן | Gan | count-10 | 🧺 | join-separate |
 | 5 | `math.count-100` | סוֹפְרִים עַד 100 | 1 | numerals-10 | 💯 | next-before, skip-count, who-am-i |
 | 6 | `math.number-line` | יְשַׁר הַמִּסְפָּרִים | 1 | count-100 | 📏 | place, which-number, misplaced |
@@ -51,9 +51,12 @@ ministry curriculum for grade 1 (from 2024‑25) and the kindergarten curriculum
    number of 3–4. Small quantities (≤ 5) in dice patterns invite subitizing. show-me: hear/see a number, tap a basket
    to add objects (tap an object to remove), then Check. Distractors: ±1, ±2.
 2. **Numerals to 10.** hear-number: hear "שֶׁבַע", pick 7 of 4 (look-alike digits 6/9, 1/7 among distractors).
-   match: a numeral and 3 quantity pictures.
-3. **More / fewer.** Two groups (≤ 10 each, never equal); "where are there more/fewer?" Aid: pairs lines between
-   items (one-to-one matching), as the gan curriculum describes.
+   match: a numeral and 3 quantity pictures. domino: a domino-style dot pattern (1–6, dice layout); pick the one of 3
+   with the same number of dots, drawn in a *different* arrangement (scatter or row), so the child matches quantity, not shape.
+   (Added 2026-11-01 from the user's workbook for ages 4–5.)
+3. **More / fewer.** more-less: two groups (≤ 10 each, never equal); "where are there more/fewer?" Aid: pairs lines
+   between items (one-to-one matching), as the gan curriculum describes. most: three groups of the same object, all
+   different counts (differences ≥ 1, ≤ 10); "where are there the most?" (Added from the user's workbook.)
 4. **Join/separate stories within 10.** A short spoken story with objects ("3 birds on the tree, 2 more came")
    shown as pictures; pick the result. Separation shows the leaving objects faded. No symbols in gan.
 5. **Count to 100.** next-before: "what comes after 39?" / before; skip-count: a sequence by 10s, 5s or 2s with a
@@ -82,7 +85,7 @@ Numbers are always shown in digits, LTR; exercises use `+ − × ÷ = < >`, LTR 
 
 | Component | Where | Used by |
 |---|---|---|
-| `PickGame` | promoted from the letters island to shared UI (T0), extended with prompt kinds `objects` (count + layout) and `expr` (LTR exercise) and `number` options | 1, 2, 3, 4, 6 (which) |
+| `PickGame` | promoted from the letters island to shared UI (T0), extended with prompt kinds `objects` (count + layout) and `expr` (LTR exercise) and `number` / `objects` options | 1, 2 (incl. domino), 3 (incl. most), 4, 6 (which) |
 | `NumberPadGame` | new | 5, 7 (hidden), 8, 9, 10 (change) |
 | `NumberLineGame` | new | 6 (place, misplaced) |
 | `TapBuildGame` | new: tap to add/remove objects, then Check | 1 (show-me) |
