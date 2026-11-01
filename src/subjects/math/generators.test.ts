@@ -421,15 +421,15 @@ describe('misplaced', () => {
 /* ---------- 7. splits of 10 ---------- */
 
 describe('hidden', () => {
-  it('ten objects, 1–9 hidden (faded); answer is the number hidden', () => {
+  it('ten objects, 1–9 hidden under cups; answer is the number hidden', () => {
     each(c => hiddenQuestion(c, THINGS), q => {
       const g = q.prompt.objects![0]!
       expect(q.prompt.objects).toHaveLength(1)
       expect(g.count).toBe(10)
-      expect(g.faded).toBeGreaterThanOrEqual(1)
-      expect(g.faded).toBeLessThanOrEqual(9)
-      expect(q.answer).toBe(g.faded)
-      expect(q.itemKey).toBe(`hide:${10 - g.faded!}`)
+      expect(g.covered).toBeGreaterThanOrEqual(1)
+      expect(g.covered).toBeLessThanOrEqual(9)
+      expect(q.answer).toBe(g.covered)
+      expect(q.itemKey).toBe(`hide:${10 - g.covered!}`)
       expect(hiddenAccepts(q.itemKey)).toBe(true)
       expect(q.maxDigits).toBe(2)
       expectKnown([q.say, q.instruction])
@@ -607,5 +607,16 @@ describe('purity', () => {
       expect(acc('nonsense')).toBe(false)
     expect(dominoAccepts('num:7')).toBe(false)
     expect(solveAccepts('3+4')).toBe(false)
+  })
+})
+
+describe('place: every target is reachable', () => {
+  it('the marker can stop within tolerance of the target (regression: 0–100 snapped to tens)', () => {
+    for (let seed = 0; seed < 400; seed++) {
+      const q = placeQuestion(ctx(seed))
+      const unit = q.line.snap ?? q.line.step
+      const nearest = q.line.min + Math.round((q.target - q.line.min) / unit) * unit
+      expect(Math.abs(nearest - q.target), `${q.target} on 0–${q.line.max}`).toBeLessThanOrEqual(q.tolerance)
+    }
   })
 })

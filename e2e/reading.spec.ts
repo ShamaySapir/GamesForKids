@@ -1,26 +1,15 @@
 import { expect, test, type Page } from '@playwright/test'
+import { atQuestion, createProfile, master } from './helpers'
 import { WORDS } from '../src/subjects/hebrew/content/words'
 import { BOOKS } from '../src/subjects/reading/content/books'
 
-// Plays full rounds of the reading island through the real UI, using content data to know the right answers.
-
-const atQuestion = (page: Page, i: number) => expect(page.locator('.dot.done')).toHaveCount(i)
-
 async function startWithMastered(page: Page, skillIds: string[]) {
-  await page.goto('/')
-  await page.getByLabel('שם').fill('נועה')
-  await page.getByRole('button', { name: 'יאללה!' }).click()
-  await page.getByRole('button', { name: /אִי הַקְּרִיאָה/ }).waitFor()
-  await page.evaluate(async ids => {
-    const db = await new Promise<IDBDatabase>(res => { const r = indexedDB.open('keyval-store'); r.onsuccess = () => res(r.result) })
-    const store = () => db.transaction('keyval', 'readwrite').objectStore('keyval')
-    const profiles = await new Promise<{ id: string }[]>(res => { const r = store().get('profiles'); r.onsuccess = () => res(r.result) })
-    const skills = Object.fromEntries(ids.map(id => [id, { rounds: [], mastered: true, bestStars: 3 }]))
-    await new Promise(res => { const r = store().put({ skills, leitner: {}, stickers: [], totalStars: 0 }, `progress:${profiles[0]!.id}`); r.onsuccess = res })
-  }, skillIds)
-  await page.reload()
+  await createProfile(page)
+  await master(page, skillIds)
   await page.getByRole('button', { name: /אִי הַקְּרִיאָה/ }).click()
 }
+
+// Plays full rounds of the reading island through the real UI, using content data to know the right answers.
 
 test('vowels: a round of hear-the-unit completes', async ({ page }) => {
   await startWithMastered(page, ['hebrew.letters-4'])

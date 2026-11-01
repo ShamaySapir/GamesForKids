@@ -31,7 +31,8 @@
 }
 .pk-opt-name { font-size: 36px; }
 .pk-sentence { margin: 0; text-align: center; max-width: 22ch; }
-.pk-groups { display: flex; gap: 28px; align-items: center; justify-content: center; flex-wrap: wrap; }
+/* Groups follow the LTR exercise they illustrate (40 + 20 → the 40 group on the left). */
+.pk-groups { direction: ltr; display: flex; gap: 28px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .pk-objs-rows { display: grid; gap: 6px; justify-items: center; }
 .pk-objs-row { display: flex; gap: 4px; }
 .pk-objs-box { position: relative; }
@@ -39,6 +40,11 @@
 [dir='rtl'] .pk-obj-at { translate: 50% -50%; }
 .pk-obj { line-height: 1.1; }
 .pk-obj.faded { opacity: .25; filter: grayscale(1); }
-.pk-expr { font-size: 64px; font-weight: 800; }
+.pk-expr { font-size: 64px; font-weight: 800; white-space: pre-line; text-align: center; line-height: 1.25; }
 .pk-opt-number { font-size: 56px; font-weight: 800; }
 .pk-opt-objects { min-height: 150px; }
+.pk-objs-cover { flex-wrap: wrap; justify-content: center; align-items: flex-end; max-width: 520px; }
+.pk-cup {
+  display: inline-grid; place-items: center; width: 1.3em; height: 1.2em; margin-inline-start: .15em;
+  background: var(--clock); color: var(--card); border-radius: .2em .2em .5em .5em; font-weight: 800; font-size: inherit;
+}

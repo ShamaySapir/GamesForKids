@@ -1,5 +1,5 @@
 import type { PhraseRef, Question } from '../../core/engine/types'
-import type { ObjectGroup, PickPrompt } from '../../ui/pick/types'
+import type { ObjectGroup, PickPrompt, PickQ } from '../../ui/pick/types'
 
 // Shared by content (T1), generators (T2) and games (T3a, T3b) — fixed before parallel work starts.
 // Spec: docs/specs/math-k2.md. Pick questions use the shared PickQ (DECISIONS D14).
@@ -22,14 +22,23 @@ export interface PadQ extends MathQ<number> {
   aidLine?: { max: number; from: number; jumps: readonly number[] }
 }
 
-/** A number line drawn left-to-right from `min` to `max`, ticks every `step`, labels every `labelEvery`. */
-export interface Line { min: number; max: number; step: number; labelEvery: number }
+/**
+ * A number line drawn left-to-right from `min` to `max`, ticks every `step`, labels every `labelEvery`.
+ * The marker moves in units of `snap` (default `step`), so 0–100 can have ticks every 10 but reach 45.
+ */
+export interface Line { min: number; max: number; step: number; labelEvery: number; snap?: number }
 
 /** Drag the marker to where `target` belongs. Correct within `tolerance`. */
 export interface PlaceQ extends MathQ<number> {
   line: Line
   target: number
   tolerance: number
+}
+
+/** A point is marked on the line; pick its number (a PickQ shown under the line). */
+export interface WhichNumberQ extends PickQ {
+  line: Line
+  marked: number
 }
 
 /** One label on the line is wrong; tap it. Answer = index of the wrong label in `labels`. */

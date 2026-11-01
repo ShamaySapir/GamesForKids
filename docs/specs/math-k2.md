@@ -1,6 +1,6 @@
 # Spec: Numbers island, kindergarten – 1st grade (אִי הַמִּסְפָּרִים)
 
-- **Status:** Approved by user on 2026-11-01 for skills 1–10 (kindergarten + 1st grade); skills 11–14 (2nd grade) moved to Stage 4b
+- **Status:** Built (skills 1–10), awaiting user play-test. Approved by user on 2026-11-01 for skills 1–10 (kindergarten + 1st grade); skills 11–14 (2nd grade) moved to Stage 4b
 - **Stage:** 4 (docs/ROADMAP.md)
 - **Relies on:** DECISIONS D3, D6, D7, D8, D11 · docs/RESEARCH.md § "Math, kindergarten – 2nd grade: NEW curriculum"
 - **Replaces:** the `comingSoon` placeholder in `src/subjects/math/`

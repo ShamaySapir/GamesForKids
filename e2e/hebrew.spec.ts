@@ -1,35 +1,19 @@
 import { expect, test, type Page } from '@playwright/test'
+import { atQuestion, createProfile, master } from './helpers'
 import { DAGESH_GROUPS, WORDS } from '../src/subjects/hebrew/content/words'
 
 // Plays full rounds through the real UI, using the content data to know the right answers.
 
-const byEmoji = (emoji: string) => WORDS.find(w => w.emoji === emoji)!
-const byText = (text: string) => WORDS.find(w => w.text === text)!
-/** Wait for the round to reach question i (fixed sleeps were flaky under parallel load). */
-const atQuestion = (page: Page, i: number) => expect(page.locator('.dot.done')).toHaveCount(i)
-
 async function startOnIsland(page: Page) {
-  await page.goto('/')
-  await page.getByLabel('שם').fill('נועה')
-  await page.getByRole('button', { name: 'יאללה!' }).click()
+  await createProfile(page)
   await page.getByRole('button', { name: /אי האותיות/ }).click()
 }
 
+const byEmoji = (emoji: string) => WORDS.find(w => w.emoji === emoji)!
+const byText = (text: string) => WORDS.find(w => w.text === text)!
+/** Wait for the round to reach question i (fixed sleeps were flaky under parallel load). */
+
 /** Mark skills mastered directly in IndexedDB (idb-keyval's default store) to unlock later skills. */
-async function master(page: Page, skillIds: string[]) {
-  await page.evaluate(async ids => {
-    const db = await new Promise<IDBDatabase>((res, rej) => {
-      const r = indexedDB.open('keyval-store')
-      r.onsuccess = () => res(r.result)
-      r.onerror = () => rej(r.error)
-    })
-    const store = () => db.transaction('keyval', 'readwrite').objectStore('keyval')
-    const profiles = await new Promise<{ id: string }[]>(res => { const r = store().get('profiles'); r.onsuccess = () => res(r.result) })
-    const skills = Object.fromEntries(ids.map(id => [id, { rounds: [], mastered: true, bestStars: 3 }]))
-    await new Promise(res => { const r = store().put({ skills, leitner: {}, stickers: [], totalStars: 0 }, `progress:${profiles[0]!.id}`); r.onsuccess = res })
-  }, skillIds)
-  await page.reload()
-}
 
 test('rhyme: a full round of picking the rhyming picture', async ({ page }) => {
   await startOnIsland(page)

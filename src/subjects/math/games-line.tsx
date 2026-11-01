@@ -3,7 +3,8 @@ import { phrases } from '../../core/audio/audio'
 import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake, useWidth } from './games-pad'
 import { M } from './ids'
-import type { Line, MisplacedQ, PlaceQ } from './types'
+import { PickGame } from '../../ui/pick/PickGame'
+import type { Line, MisplacedQ, PlaceQ, WhichNumberQ } from './types'
 import './math.css'
 
 // Lines are laid out in pixels (not a scaled viewBox) so numbers stay readable on a phone.
@@ -11,8 +12,8 @@ const PAD_START = 40
 const PAD_END = 52
 
 /** Snap to the nearest step and keep inside the line. */
-export function snap(v: number, { min, max, step }: Line) {
-  const s = min + Math.round((v - min) / step) * step
+export function snap(v: number, { min, max, step, snap: unit = step }: Line) {
+  const s = min + Math.round((v - min) / unit) * unit
   return Math.min(max, Math.max(min, s))
 }
 
@@ -85,7 +86,7 @@ export function PlaceGame({ question, aid, onAttempt }: GameProps<PlaceQ>) {
     const dir = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -1 : 0
     if (dir) {
       e.preventDefault()
-      setValue(v => snap(v + dir * line.step, line))
+      setValue(v => snap(v + dir * (line.snap ?? line.step), line))
     } else if (e.key === 'Home') { e.preventDefault(); setValue(line.min) }
     else if (e.key === 'End') { e.preventDefault(); setValue(line.max) }
     else if (e.key === 'Enter') { e.preventDefault(); check() }
@@ -94,6 +95,7 @@ export function PlaceGame({ question, aid, onAttempt }: GameProps<PlaceQ>) {
   return (
     <div className="pk-stage ml-stage">
       <p className="pk-q">{phrases[question.instruction]}</p>
+      <div className="pk-expr digi" dir="ltr">{question.target}</div>
       <HintButton aid={aid} hint={hint} />
       <div className="ml-wrap" ref={wrap}>
         <svg ref={svg} width={w} height={150} className="ml-svg" style={{ direction: 'ltr', touchAction: 'none' }}
@@ -101,11 +103,14 @@ export function PlaceGame({ question, aid, onAttempt }: GameProps<PlaceQ>) {
           <Axis line={line} w={w} y={Y} numbers />
           <g ref={marker} className={`ml-marker${dragging ? ' drag' : ''}${locked ? ' ok' : ''}${shaking ? ' bad' : ''}`}
             tabIndex={locked ? -1 : 0} role="slider" aria-label={phrases[question.instruction]}
-            aria-valuemin={line.min} aria-valuemax={line.max} aria-valuenow={value} aria-valuetext={`${value}`}
+            aria-valuemin={line.min} aria-valuemax={line.max} aria-valuenow={value} aria-valuetext={aid || locked ? `${value}` : undefined}
             transform={`translate(${x} 0)`} onKeyDown={key}>
             <rect x={-32} y={8} width={64} height={Y} fill="transparent" />
-            <rect className="ml-bubble" x={-30} y={10} width={60} height={36} rx={12} />
-            <text className="ml-value" x={0} y={36} textAnchor="middle" fontSize={24} fontWeight={800}>{value}</text>
+            {/* The marker's value would let a child match digits instead of reading the line: shown only as an aid. */}
+            {(aid || locked) && <>
+              <rect className="ml-bubble" x={-30} y={10} width={60} height={36} rx={12} />
+              <text className="ml-value" x={0} y={36} textAnchor="middle" fontSize={24} fontWeight={800}>{value}</text>
+            </>}
             <polygon className="ml-tri" points={`-18,52 18,52 0,${Y - 6}`} />
           </g>
         </svg>
@@ -172,4 +177,23 @@ export function NumberLineGame({ question, aid, onAttempt }: GameProps<PlaceQ | 
   return 'target' in question
     ? <PlaceGame question={question} aid={aid} onAttempt={onAttempt} />
     : <MisplacedGame question={question} aid={aid} onAttempt={onAttempt} />
+}
+
+/** "Which number is marked?": the line with a marked point above the shared pick-one-answer UI. */
+export function WhichNumberGame({ question, aid, onAttempt }: GameProps<WhichNumberQ>) {
+  const [ref, w] = useWidth(640)
+  const { line, marked } = question
+  const x = PAD_START + ((marked - line.min) / (line.max - line.min)) * (w - PAD_START - PAD_END)
+  return (
+    <div className="ml-stage">
+      <div ref={ref} className="ml-wrap" dir="ltr">
+        <svg width={w} height={96} role="img" aria-label={`${line.min}–${line.max}`}>
+          <Axis line={line} w={w} y={36} numbers />
+          <circle cx={x} cy={36} r={11} fill="var(--clock)" stroke="var(--card)" strokeWidth={3} />
+          <text x={x} y={16} textAnchor="middle" fontSize={22} fontWeight={800} fill="var(--clock)">?</text>
+        </svg>
+      </div>
+      <PickGame question={question} aid={aid} onAttempt={onAttempt} />
+    </div>
+  )
 }

@@ -10,6 +10,8 @@ export interface ObjectGroup {
   layout?: 'row' | 'dice' | 'scatter'
   /** The last `faded` objects are shown leaving (subtraction stories). */
   faded?: number
+  /** The last `covered` objects are hidden under cups ("how many are hiding?"). */
+  covered?: number
 }
 
 /**

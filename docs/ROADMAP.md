@@ -52,8 +52,8 @@ with pictures, dictation by dragging letters.
 **Read-along books:** a book is split into pages; each page is recorded in the studio (page-level recording
 mode) and words are highlighted while the page is read. Needs a long-recording mode and word timings in the studio.
 
-## Stage 4 – Math: kindergarten – 1st grade 🟡
-Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ (shared PickGame, number phrases, contract) · T1, T2, T3a, T3b 🟡 in parallel · T4 ⬜.
+## Stage 4 – Math: kindergarten – 1st grade ✅ built
+Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ · T1 content ✅ · T2 ✅ · T3a ✅ · T3b ✅ (four in parallel) · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
 
 ## Stage 4b – Math: 2nd grade ⬜
 Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).

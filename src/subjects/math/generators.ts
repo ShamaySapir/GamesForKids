@@ -3,7 +3,7 @@ import type { GenContext } from '../../core/engine/types'
 import type { ObjectGroup, PickOption, PickQ } from '../../ui/pick/types'
 import { M, OP, shopPhrase, storyPart, thingPhrase } from './ids'
 import { numberPhrase, pricePhrase } from './numbers'
-import type { BuildQ, CoinsQ, Line, MisplacedQ, PadQ, PairsQ, PlaceQ, StoryTemplate, Thing } from './types'
+import type { BuildQ, CoinsQ, Line, MisplacedQ, PadQ, PairsQ, PlaceQ, StoryTemplate, Thing, WhichNumberQ } from './types'
 
 // Pure question generators for the numbers island (skills 1–10), one per game. Content (things, stories, shop
 // items) comes in as arguments. Spec: docs/specs/math-k2.md. Tested in generators.test.ts.
@@ -179,7 +179,7 @@ export function mostQuestion(ctx: GenContext, things: readonly Thing[]): PickQ {
     const emoji = pick(ctx.rng, things).emoji
     const layout = pick(ctx.rng, ['row', 'scatter'] as const)
     return {
-      itemKey: tripleKey(triple), answer: String(triple[2]), say: M.more, instruction: M.more, prompt: {},
+      itemKey: tripleKey(triple), answer: String(triple[2]), say: M.most, instruction: M.most, prompt: {},
       options: shuffle(ctx.rng, triple).map(c => groupOpt(emoji, c, layout)),
     }
   })
@@ -296,7 +296,7 @@ const LINE_MAXES: readonly LineMax[] = [10, 20, 100]
 const PLACE_LINES: Readonly<Record<LineMax, { line: Line; tolerance: number }>> = {
   10: { line: { min: 0, max: 10, step: 1, labelEvery: 5 }, tolerance: 0 },
   20: { line: { min: 0, max: 20, step: 1, labelEvery: 5 }, tolerance: 0 },
-  100: { line: { min: 0, max: 100, step: 10, labelEvery: 10 }, tolerance: 3 },
+  100: { line: { min: 0, max: 100, step: 10, labelEvery: 10, snap: 1 }, tolerance: 3 },
 }
 /** Targets never sit on a labelled tick (that would be reading, not placing). */
 const placeTargets = (max: LineMax) => range(1, max - 1).filter(t => t % PLACE_LINES[max].line.labelEvery !== 0)
@@ -324,11 +324,6 @@ const WHICHES: LineFact[][] = LINE_MAXES.map(max => whichMarks(max).map(n => ({ 
 export const whichNumberAccepts = (key: string) => WHICHES.flat().some(f => lineKey(f) === key)
 
 /** A PickQ that also carries the line and the marked point; the shared PickPrompt cannot draw a line (see report). */
-export interface WhichNumberQ extends PickQ {
-  line: Line
-  marked: number
-}
-
 /** A point is marked on the line; pick its number of 3 (±1, ±2 — on 0–100 ±10, ±20). */
 export function whichNumberQuestion(ctx: GenContext): WhichNumberQ {
   return make(ctx, oneGroup(ctx, WHICHES, lineKey), lineKey, ({ max, n }) => {
@@ -376,12 +371,12 @@ export const hiddenAccepts = (key: string) => range(1, 9).some(v => hideKey(v) =
 
 /**
  * Ten objects, some under a cup; "how many are hidden?" on the pad. The hidden ones are the `faded` objects of a single
- * group of 10 (the games render faded objects as covered). Key: how many are visible.
+ * group of 10 whose last ones are under cups (`covered`). Key: how many are visible.
  */
 export function hiddenQuestion(ctx: GenContext, things: readonly Thing[]): PadQ {
   return make(ctx, range(1, 9), hideKey, visible => ({
     itemKey: hideKey(visible), answer: 10 - visible, say: M.hidden, instruction: M.hidden, maxDigits: 2,
-    prompt: { objects: [{ emoji: pick(ctx.rng, things).emoji, count: 10, layout: 'row', faded: 10 - visible }] },
+    prompt: { objects: [{ emoji: pick(ctx.rng, things).emoji, count: 10, layout: 'row', covered: 10 - visible }] },
   }))
 }
 

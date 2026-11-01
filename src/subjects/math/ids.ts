@@ -27,6 +27,7 @@ export const M = {
   matchNumber: 'math.q.matchNumber', // "אֵיפֹה יֵשׁ כָּל כָּךְ הַרְבֵּה?"
   more: 'math.q.more', //             "אֵיפֹה יֵשׁ יוֹתֵר?"
   fewer: 'math.q.fewer', //           "אֵיפֹה יֵשׁ פָּחוֹת?"
+  most: 'math.q.most', //             "אֵיפֹה יֵשׁ הֲכִי הַרְבֵּה?"
   story: 'math.q.story', //           "כַּמָּה יֵשׁ עַכְשָׁו?"
   next: 'math.q.next', //             "אֵיזֶה מִסְפָּר בָּא אַחֲרֵי…" + number
   before: 'math.q.before', //         "אֵיזֶה מִסְפָּר בָּא לִפְנֵי…" + number

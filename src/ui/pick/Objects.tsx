@@ -25,16 +25,29 @@ function scatter(count: number): [number, number][] {
 
 /** A countable group of objects. Rows are split in fives, which supports grouping (curriculum: grouping into 10s). */
 export function Objects({ group, size = 44 }: { group: ObjectGroup; size?: number }) {
-  const { emoji, count, layout = 'row', faded = 0 } = group
+  const { emoji, count, layout = 'row', faded = 0, covered = 0 } = group
   const item = (i: number) => (
     <span key={i} className={`pk-obj${i >= count - faded ? ' faded' : ''}`} style={{ fontSize: size }} aria-hidden="true">{emoji}</span>
   )
-  const label = `${count}`
+  // A covered group must not announce its total: that is the answer.
+  const label = covered ? `${count - covered} + ?` : `${count}`
   if ((layout === 'dice' && count <= 6) || layout === 'scatter') {
     const spots = layout === 'dice' ? DICE[count]! : scatter(count)
     return (
       <div className="pk-objs-box" role="img" aria-label={label} style={{ width: size * 3.4, height: size * 3.4 }}>
         {spots.map(([x, y], i) => <span key={i} className="pk-obj-at" style={{ insetInlineStart: `${x}%`, top: `${y}%` }}>{item(i)}</span>)}
+      </div>
+    )
+  }
+  if (covered) {
+    // All hidden objects sit under ONE cup, so the child works out the missing part instead of counting cups.
+    const shown = count - covered
+    return (
+      <div className="pk-objs-rows" role="img" aria-label={label}>
+        <div className="pk-objs-row pk-objs-cover">
+          {Array.from({ length: shown }, (_, i) => item(i))}
+          <span className="pk-cup" style={{ fontSize: size * 1.6 }} aria-hidden="true">?</span>
+        </div>
       </div>
     )
   }

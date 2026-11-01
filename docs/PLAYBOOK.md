@@ -51,6 +51,9 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | Reading content passed every test but had gender errors, cloze items with two right answers, stories with two valid orders | Separate reviewer read every item as a Hebrew editor | Child-facing text always gets a full human-style content review, not samples and not just tests |
 | A story's emoji scene listed the events in order, so the child could solve it without reading | Screenshot | Check that pictures and hints never give the answer away |
 | Wiring that imported not-yet-merged content broke the whole app (islands load together) | User saw the app fail | Keep the working tree compiling at all times; park unmerged wiring outside `src/` |
+| Number-line targets like 45 were unreachable: the marker snapped to tens | A flaky E2E drag test, then a unit test | Every generated answer must be *reachable* through the UI — test it, don't assume it |
+| "How many are hiding?" drew one cup per hidden object, so the child could count cups; the line marker showed its value | Screenshots | Ask "can a child get this right without the skill?" for every screen |
+| E2E helper reloaded before its IndexedDB write committed | Intermittent test failures | Wait for the transaction's `oncomplete`; share helpers in `e2e/helpers.ts` |
 | Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off
