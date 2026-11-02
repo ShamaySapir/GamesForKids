@@ -189,7 +189,7 @@ describe('patterns', () => {
   it('repeat: 5–8 items then a slot, exactly one correct continuation', () => {
     const lengths = new Set<number>()
     each(c => patternQuestion(c, PATTERNS), q => {
-      expectPick(q, q.prompt.objects ? 3 : 3)
+      expectPick(q, 3)
       const p = PATTERNS.find(x => `pattern:${x.id}` === q.itemKey)!
       if (p.kind === 'grow') return
       const shown = q.prompt.art!
