@@ -433,3 +433,22 @@ describe('maze', () => {
     expect(mazeAccepts('maze:small')).toBe(true)
   })
 })
+
+describe('where: wrong pictures are plausible and never look alike', () => {
+  const LOOK_ALIKE = [['on', 'above'], ['in', 'behind'], ['in-front', 'next-to']]
+  it('never offers two look-alike positions, nor "in the table" / "under the house"', () => {
+    const scenes = [
+      { id: 'w1', a: 'ball', b: 'table', rel: 'under' as const },
+      { id: 'w2', a: 'duck', b: 'box', rel: 'behind' as const },
+      { id: 'w3', a: 'dog', b: 'house', rel: 'in-front' as const },
+    ]
+    for (let seed = 0; seed < 250; seed++) {
+      const q = whereQuestion(ctx(seed), scenes)
+      const rels = q.options.map(o => (o.kind === 'art' ? String(o.art.props?.rel) : ''))
+      for (const [x, y] of LOOK_ALIKE) expect(rels.includes(x!) && rels.includes(y!), rels.join()).toBe(false)
+      const b = q.options[0]!.kind === 'art' ? String(q.options[0]!.art.props?.b) : ''
+      if (b === 'table') expect(rels).not.toContain('in')
+      if (b === 'house') expect(rels).not.toContain('under')
+    }
+  })
+})

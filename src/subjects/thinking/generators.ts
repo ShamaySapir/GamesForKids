@@ -195,15 +195,34 @@ export function patternQuestion(ctx: GenContext, patterns: readonly PatternDef[]
 const whereKey = (id: string) => `where:${id}`
 export const whereAccepts = (key: string) => key.startsWith('where:')
 
-/** Positions that can look alike in a drawing; never offered together. */
-const CLASH: Readonly<Partial<Record<Position, Position>>> = { on: 'above', above: 'on' }
+/** Positions that can look alike in a flat drawing; never offered together. */
+const CLASH: Readonly<Partial<Record<Position, readonly Position[]>>> = {
+  on: ['above'], above: ['on'], in: ['behind'], behind: ['in'], 'in-front': ['next-to'], 'next-to': ['in-front'],
+}
+const clashes = (x: Position, y: Position) => !!CLASH[x]?.includes(y)
+
+/**
+ * Positions that make sense for each reference object. A wrong picture like "a ball inside the table" is absurd,
+ * so a child could rule it out without knowing the word — wrong options come only from this list.
+ */
+const SENSIBLE: Readonly<Record<string, readonly Position[]>> = {
+  table: ['on', 'under', 'next-to', 'between', 'in-front', 'behind', 'above'],
+  chair: ['on', 'under', 'next-to', 'between', 'in-front', 'behind', 'above'],
+  bed: ['on', 'under', 'next-to', 'between', 'in-front', 'behind', 'above'],
+  box: ['on', 'in', 'next-to', 'between', 'in-front', 'behind', 'above'],
+  cup: ['in', 'next-to', 'between', 'in-front', 'behind'],
+  tree: ['on', 'next-to', 'between', 'in-front', 'behind', 'above'],
+  house: ['next-to', 'between', 'in-front', 'behind', 'above'],
+  tent: ['in', 'next-to', 'between', 'in-front', 'behind', 'above'],
+}
+const sensibleFor = (b: string): readonly Position[] => SENSIBLE[b] ?? POSITIONS
 
 /** The same two objects in 3 positions; pick the one the spoken sentence describes. Pictures are silent. */
 export function whereQuestion(ctx: GenContext, scenes: readonly WhereScene[]): PickQ {
   return make(ctx, scenes, s => whereKey(s.id), s => {
     const wrong: Position[] = []
-    for (const r of shuffle(ctx.rng, POSITIONS.filter(r => r !== s.rel && r !== CLASH[s.rel])))
-      if (wrong.length < 2 && !wrong.some(w => CLASH[w] === r)) wrong.push(r)
+    for (const r of shuffle(ctx.rng, sensibleFor(s.b).filter(r => r !== s.rel && !clashes(s.rel, r))))
+      if (wrong.length < 2 && !wrong.some(w => clashes(w, r))) wrong.push(r)
     if (wrong.length < 2) return null
     const art = (rel: Position): ArtRef => ({ name: SCENE, props: { a: s.a, b: s.b, rel } })
     const { items, answer } = arrange(ctx.rng, s.rel, wrong)

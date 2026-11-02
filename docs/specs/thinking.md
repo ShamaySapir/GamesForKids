@@ -29,7 +29,7 @@ Skills marked −1 are unlocked from the start; skills marked 0 follow them on t
 | # | ID | Title | Age | Requires | Sticker | Game | Examples |
 |---|---|---|---|---|---|---|---|
 | 1 | `think.odd-one` | מִי שׁוֹנֶה? | −1 | — | 🦄 | pick | ≥ 30 sets: 6+ each by direction, color, size, shape, kind |
-| 2 | `think.twin` | מָצְאוּ אֶת הַתְּאוֹם | −1 | — | 👯 | pick | ≥ 12 sets of 4 near-identical drawings |
+| 2 | `think.twin` | מִצְאוּ אֶת הַתְּאוֹם | −1 | — | 👯 | pick | ≥ 12 sets of 4 near-identical drawings |
 | 3 | `think.shadows` | צְלָלִים | −1 | — | 🌑 | pick | ≥ 20 objects; silhouettes drawn from the same art |
 | 4 | `think.patterns` | מָה בָּא אַחַר כָּךְ? | −1 → 0 | — | 🔁 | pick | AB, AAB, ABB, ABC (6+ each), then growing ●, ●●, ●●● (6+) |
 | 5 | `think.where` | אֵיפֹה זֶה? | −1 | — | 📦 | pick | 8 position words × 6+ scenes: עַל, מִתַּחַת, בְּתוֹךְ, לְיַד, בֵּין, לִפְנֵי, מֵאֲחוֹרֵי, לְמַעְלָה/לְמַטָּה |
@@ -38,7 +38,7 @@ Skills marked −1 are unlocked from the start; skills marked 0 follow them on t
 | 8 | `think.sequence` | מָה קָרָה קֹדֶם? | 0 | patterns | 🌱 | order | ≥ 12 picture sequences of 3–4 steps (seed → sprout → flower) |
 | 9 | `think.sorting` | מְמַיְּנִים | 0 | odd-one | 🧺 | sort | ≥ 12 boards: by kind (fruit / vehicles / animals), then by a rule (color, size) |
 | 10 | `think.missing` | מָה חָסֵר? | 0 | twin | 🪑 | pick | ≥ 12 drawings with one part missing (a chair with three legs, a face with one eye) |
-| 11 | `think.differences` | מְצְאוּ אֶת הַהֶבְדֵּלִים | 0 | twin | 🔍 | differences | ≥ 8 scene pairs with 3–5 differences each |
+| 11 | `think.differences` | מִצְאוּ אֶת הַהֶבְדֵּלִים | 0 | twin | 🔍 | differences | ≥ 8 scene pairs with 3–5 differences each |
 | 12 | `think.maze` | מָבוֹךְ | 0 | where | 🐭 | maze | ≥ 10 mazes, 5×5 → 7×7, lead a character to its goal |
 
 ### Details and distractor rules
