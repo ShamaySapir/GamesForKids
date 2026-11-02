@@ -51,6 +51,15 @@ export function Objects({ group, size = 44 }: { group: ObjectGroup; size?: numbe
       </div>
     )
   }
+  if ((layout === 'array' || layout === 'groups') && group.cols) {
+    const per = group.cols
+    const rowsOf = Array.from({ length: Math.ceil(count / per) }, (_, r) => Array.from({ length: Math.min(per, count - r * per) }, (_, i) => r * per + i))
+    return (
+      <div className={layout === 'array' ? 'pk-objs-array' : 'pk-objs-groups'} role="img" aria-label={label}>
+        {rowsOf.map((row, r) => <div key={r} className={layout === 'array' ? 'pk-objs-row' : 'pk-objs-group'}>{row.map(item)}</div>)}
+      </div>
+    )
+  }
   const rows = Array.from({ length: Math.ceil(count / 5) }, (_, r) => Array.from({ length: Math.min(5, count - r * 5) }, (_, i) => r * 5 + i))
   return (
     <div className="pk-objs-rows" role="img" aria-label={label}>

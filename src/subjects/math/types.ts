@@ -90,4 +90,27 @@ export interface StoryTemplate {
   things: readonly string[]
 }
 
+/* ---------- 2nd grade (Stage 4b, docs/specs/math-grade2.md) ---------- */
+
+/** Build `answer` in a place-value house: hundreds, tens and ones columns, 0–9 each (+/− per column, then Check). */
+export interface PlaceValueQ extends MathQ<number> {
+  /** The number to build, shown in digits (or blank when it is only spoken). */
+  show: string
+  /** Columns offered, from the left: 3 = hundreds/tens/ones, 2 = tens/ones. */
+  columns: 2 | 3
+}
+
+/** A 10×10 hundred chart starting at `start` (1, 101, …, 901) with some cells blank. Answer: the blank cells' values. */
+export interface ChartQ extends MathQ<readonly number[]> {
+  start: number
+  blanks: readonly number[]
+}
+
+/** Share `total` items equally among `plates` by dragging (or tapping a plate). Answer: items per plate. */
+export interface ShareQ extends MathQ<number> {
+  emoji: string
+  total: number
+  plates: number
+}
+
 export type { ObjectGroup }

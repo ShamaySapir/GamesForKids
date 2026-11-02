@@ -17,8 +17,13 @@ export interface ArtRef {
 export interface ObjectGroup {
   emoji: string
   count: number
-  /** row: in rows of 5 (helps grouping); dice: dot-dice pattern (count ≤ 6, invites subitizing); scatter: loose. */
-  layout?: 'row' | 'dice' | 'scatter'
+  /**
+   * row: in rows of 5 (helps grouping); dice: dot-dice pattern (count ≤ 6, invites subitizing); scatter: loose;
+   * array: `count / cols` rows of `cols` (multiplication); groups: `count / cols` separate groups of `cols`.
+   */
+  layout?: 'row' | 'dice' | 'scatter' | 'array' | 'groups'
+  /** Items per row (array) or per group (groups). */
+  cols?: number
   /** The last `faded` objects are shown leaving (subtraction stories). */
   faded?: number
   /** The last `covered` objects are hidden under cups ("how many are hiding?"). */

@@ -1,7 +1,7 @@
 import type { PhraseMap } from '../../../core/engine/types'
 
 // Spoken number building blocks, feminine counting form (as numbers are said when counting).
-// Written by the planner in T0; numberPhrase() in ../numbers.ts composes them. Stage 4b adds hundreds.
+// Written by the planner; numberPhrase() in ../numbers.ts composes them (0–1,000).
 
 const UNITS = ['אֶפֶס', 'אַחַת', 'שְׁתַּיִם', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע']
 const TEENS = ['עֶשֶׂר', 'אַחַת־עֶשְׂרֵה', 'שְׁתֵּים־עֶשְׂרֵה', 'שְׁלוֹשׁ־עֶשְׂרֵה', 'אַרְבַּע־עֶשְׂרֵה', 'חֲמֵשׁ־עֶשְׂרֵה',
@@ -10,12 +10,25 @@ const TENS = ['', '', 'עֶשְׂרִים', 'שְׁלוֹשִׁים', 'אַרְ�
 /** "and" + unit after a ten (עֶשְׂרִים וְאַחַת). ו becomes וּ before a shva (וּשְׁתַּיִם, וּשְׁמוֹנֶה). */
 const AND_UNITS = ['', 'וְאַחַת', 'וּשְׁתַּיִם', 'וְשָׁלוֹשׁ', 'וְאַרְבַּע', 'וְחָמֵשׁ', 'וְשֵׁשׁ', 'וְשֶׁבַע', 'וּשְׁמוֹנֶה', 'וְתֵשַׁע']
 
+const HUNDREDS = ['', 'מֵאָה', 'מָאתַיִם', 'שְׁלוֹשׁ מֵאוֹת', 'אַרְבַּע מֵאוֹת', 'חֲמֵשׁ מֵאוֹת', 'שֵׁשׁ מֵאוֹת', 'שְׁבַע מֵאוֹת',
+  'שְׁמוֹנֶה מֵאוֹת', 'תְּשַׁע מֵאוֹת']
+/** "and" + a whole ten after hundreds (שְׁלוֹשׁ מֵאוֹת וְעֶשְׂרִים): ו is וּ before a shva and וַ before a chataf patach. */
+const AND_TENS = ['', 'וְעֶשֶׂר', 'וְעֶשְׂרִים', 'וּשְׁלוֹשִׁים', 'וְאַרְבָּעִים', 'וַחֲמִשִּׁים', 'וְשִׁשִּׁים', 'וְשִׁבְעִים', 'וּשְׁמוֹנִים',
+  'וְתִשְׁעִים']
+/** "and" + a teen after hundreds (שְׁלוֹשׁ מֵאוֹת וַחֲמֵשׁ־עֶשְׂרֵה). */
+const AND_TEENS = ['וְאַחַת־עֶשְׂרֵה', 'וּשְׁתֵּים־עֶשְׂרֵה', 'וּשְׁלוֹשׁ־עֶשְׂרֵה', 'וְאַרְבַּע־עֶשְׂרֵה', 'וַחֲמֵשׁ־עֶשְׂרֵה',
+  'וְשֵׁשׁ־עֶשְׂרֵה', 'וּשְׁבַע־עֶשְׂרֵה', 'וּשְׁמוֹנֶה־עֶשְׂרֵה', 'וּתְשַׁע־עֶשְׂרֵה']
+
 export const NUMBER_PHRASES: PhraseMap = Object.fromEntries([
   ...UNITS.map((w, n) => [`math.n.${n}`, w]),
   ...TEENS.map((w, i) => [`math.n.${10 + i}`, w]),
   ...TENS.flatMap((w, t) => (w ? [[`math.n.${t * 10}`, w]] : [])),
   ...AND_UNITS.flatMap((w, u) => (w ? [[`math.and.${u}`, w]] : [])),
   ['math.n.100', 'מֵאָה'],
+  ...HUNDREDS.flatMap((w, h) => (w ? [[`math.h.${h}`, w]] : [])),
+  ...AND_TENS.flatMap((w, t) => (w ? [[`math.andt.${t * 10}`, w]] : [])),
+  ...AND_TEENS.map((w, i) => [`math.andteen.${11 + i}`, w]),
+  ['math.n.1000', 'אֶלֶף'],
 ])
 
 /**

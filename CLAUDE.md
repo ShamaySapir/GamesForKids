@@ -43,9 +43,9 @@ computer-first with touch support.
 | Thinking island | ✅ built, ⏳ awaiting user play-test | 12 skills, 53 original SVG drawings (`art/`), 4 new games; pre-kindergarten level (Grade −1); ~190 phrases to record |
 | English island | ⬜ placeholder | | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
-| Git | ✅ | Stages 0–4 merged to `main` (PR #1–#4). Current work: `stage4c/thinking` |
+| Git | ✅ | Stages 0–4c merged to `main` (PR #1–#5). Current work: `stage4b/math-grade2` |
 
-Current stage: **Stage 4c built** (thinking island, ages 4–6); Stages 1–3 await the user's play-test and recordings.
+Current stage: **Stage 4b** (math, 2nd grade) building — spec `docs/specs/math-grade2.md`; Stages 1–3 await the user's play-test and recordings.
 
 ## Next steps
 

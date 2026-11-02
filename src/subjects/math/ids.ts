@@ -17,6 +17,10 @@ export const OP = {
   plus: 'math.op.plus', //     "וְעוֹד"
   minus: 'math.op.minus', //   "פָּחוֹת"
   equals: 'math.op.equals', // "שָׁוֶה"
+  less: 'math.op.less', //     "קָטָן מִ"
+  greater: 'math.op.greater', // "גָּדוֹל מִ"
+  times: 'math.op.times', //   "כָּפוּל"
+  div: 'math.op.div', //       "לְחַלֵּק לְ"
 } as const
 
 /** Instructions and labels. */
@@ -45,6 +49,26 @@ export const M = {
   missing: 'math.q.missing', //       "אֵיזֶה מִסְפָּר חָסֵר?"
   pay: 'math.q.pay', //               "שַׁלְּמוּ בְּדִיּוּק…" + pricePhrase(price)
   change: 'math.q.change', //         "כַּמָּה עֹדֶף תְּקַבְּלוּ?"
+  // 2nd grade (Stage 4b)
+  build: 'math.q.build', //           "בְּנוּ אֶת הַמִּסְפָּר" + number
+  flexible: 'math.q.flexible', //     "כַּמָּה אֲחָדוֹת חֲסֵרוֹת?" (e.g. 56 = 4 tens and ? ones)
+  compare: 'math.q.compare', //       "אֵיזֶה סִימָן מַתְאִים?"
+  chart: 'math.q.chart', //           "מִצְאוּ אֶת הַמִּסְפָּרִים הַחֲסֵרִים בַּלּוּחַ"
+  estimate: 'math.q.estimate', //     "הַתּוֹצָאָה גְּדוֹלָה אוֹ קְטַנָּה מִ…" + number
+  moreThan: 'math.q.moreThan', //     "יוֹתֵר"
+  lessThan: 'math.q.lessThan', //     "פָּחוֹת"
+  facts: 'math.q.facts', //           "כַּמָּה זֶה? בְּעַל פֶּה!"
+  oddEven: 'math.q.oddEven', //       "זוּגִי אוֹ אִי זוּגִי?"
+  pairUp: 'math.q.pairUp', //         "יֵשׁ חָבֵר לְכֻלָּם?"
+  even: 'math.q.even', //             "זוּגִי"
+  odd: 'math.q.odd', //               "אִי זוּגִי"
+  array: 'math.q.array', //           "כַּמָּה יֵשׁ בְּסַךְ הַכֹּל?"
+  whichExercise: 'math.q.whichExercise', // "אֵיזֶה תַּרְגִּיל מַתְאִים לַתְּמוּנָה?"
+  share: 'math.q.share', //           "חַלְּקוּ שָׁוֶה בְּשָׁוֶה בֵּין הַצַּלָּחוֹת"
+  groupsOf: 'math.q.groupsOf', //     "כַּמָּה קְבוּצוֹת יֵשׁ?"
+  hundreds: 'math.ui.hundreds', //    "מֵאוֹת"
+  tens: 'math.ui.tens', //            "עֲשָׂרוֹת"
+  ones: 'math.ui.ones', //            "אֲחָדוֹת"
   check: 'math.ui.check', //          "בְּדִיקָה"
   reset: 'math.ui.reset', //          "מֵהַתְחָלָה"
 } as const
