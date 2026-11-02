@@ -69,7 +69,12 @@ function optionLabel(o: PickOption): string {
     case 'picture': return o.emoji
     case 'sound': return o.label ?? phrases[o.say] ?? ''
     case 'objects': return `${o.group.count}`
-    case 'art': return o.id
+    case 'art': {
+      // A silhouette must not announce what it is: that is the answer.
+      if (o.art.props?.silhouette) return '?'
+      const ref = o.say ?? o.art.say
+      return typeof ref === 'string' ? (phrases[ref] ?? o.art.name) : o.art.name
+    }
     default: return o.label
   }
 }
