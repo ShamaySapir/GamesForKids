@@ -56,7 +56,9 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
     const { moved } = drag
     setDrag(null)
     if (!moved) return
+    // Swallow only the click that this same pointer-up produces, not the child's next tap on a plate.
     suppressClick.current = true
+    setTimeout(() => { suppressClick.current = false }, 0)
     const p = plateAt(e.clientX, e.clientY)
     if (p >= 0) give(p)
   }

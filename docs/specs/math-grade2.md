@@ -1,6 +1,6 @@
 # Spec: Numbers island, 2nd grade (Stage 4b)
 
-- **Status:** Approved by user on 2026-11-02 — in progress
+- **Status:** Built, awaiting user play-test. Approved by user on 2026-11-02
 - **Stage:** 4b (docs/ROADMAP.md) — continues `docs/specs/math-k2.md` (skills 1–10, built)
 - **Relies on:** DECISIONS D3, D6, D7, D8, D14 · docs/RESEARCH.md § "Math … NEW curriculum" (grade 2)
 

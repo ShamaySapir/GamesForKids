@@ -39,19 +39,19 @@ computer-first with touch support.
 | Hebrew letters island | ✅ built, ⏳ awaiting user play-test | 13 skills, 3 game components, 190 words; spec `docs/specs/hebrew-letters.md`; 0 of 324 phrases recorded |
 | Reading island | ✅ built, ⏳ awaiting user play-test | 11 skills (5 nikud signs, build, word/sentence reading, cloze, story order, 5 read-along books); spec `docs/specs/reading.md`; ~273 phrases to record |
 | Shared pick UI | ✅ | `src/ui/pick/` — `PickGame`, `SayButton`, `Objects`, `PickQ` (D14) |
-| Numbers island (K–1) | ✅ built, ⏳ awaiting user play-test | 10 skills, 6 game components; spec `docs/specs/math-k2.md`; ~140 phrases to record |
+| Numbers island (K–2) | ✅ built, ⏳ awaiting user play-test | 17 skills (K–1: `docs/specs/math-k2.md`, grade 2: `docs/specs/math-grade2.md`), 9 game components; numbers spoken 0–1,000; ~185 phrases to record |
 | Thinking island | ✅ built, ⏳ awaiting user play-test | 12 skills, 53 original SVG drawings (`art/`), 4 new games; pre-kindergarten level (Grade −1); ~190 phrases to record |
 | English island | ⬜ placeholder | | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
 | Git | ✅ | Stages 0–4c merged to `main` (PR #1–#5). Current work: `stage4b/math-grade2` |
 
-Current stage: **Stage 4b** (math, 2nd grade) building — spec `docs/specs/math-grade2.md`; Stages 1–3 await the user's play-test and recordings.
+Current stage: **Stage 4b built** (math, 2nd grade); Stages 1–3 await the user's play-test and recordings.
 
 ## Next steps
 
 1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
 2. User plays the letters island; records its phrases (studio lists isolated sounds and syllables first).
-3. Next: Stage 4b (math grade 2), Stage 6 (English) or Stage 2b (letter tracing, print first). Stage 2b (letter tracing) will use print letters first (D13).
+3. Next: Stage 6 (English), Stage 2b (letter tracing, print first), Stage 5 (math grades 3–6) or Stage 7 (parents' page). Stage 2b (letter tracing) will use print letters first (D13).
 4. Set up GitHub Pages deployment (user approval needed).
 
 ## Commands

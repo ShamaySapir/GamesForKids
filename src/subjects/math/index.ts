@@ -8,12 +8,17 @@ import { TapBuildGame } from './games-build'
 import { CoinsGame } from './games-coins'
 import { MisplacedGame, PlaceGame, WhichNumberGame } from './games-line'
 import { NumberPadGame } from './games-pad'
+import { HundredChartGame } from './games-chart'
 import { PairsBoardGame } from './games-pairs'
+import { PlaceValueGame } from './games-place'
+import { ShareGame } from './games-share'
 import * as g from './generators'
+import * as g2 from './generators-g2'
 import { phrases } from './phrases'
 import type { PadQ } from './types'
 
-// Skills 1–10 of docs/specs/math-k2.md (kindergarten and the new 1st-grade curriculum). Skills 11–14 are Stage 4b.
+// Skills 1–10: docs/specs/math-k2.md (kindergarten and the new 1st-grade curriculum).
+// Skills 11–17: docs/specs/math-grade2.md (the new 2nd-grade curriculum).
 
 const pick = (id: string, title: string, icon: string, generate: (ctx: GenContext) => PickQ, accepts: (k: string) => boolean): GameDef =>
   defineGame({ id, title, icon, component: PickGame, generate, accepts })
@@ -96,6 +101,55 @@ export const island: IslandDef = {
       games: [
         game({ id: 'pay', title: 'מְשַׁלְּמִים', icon: '🪙', component: CoinsGame, generate: ctx => g.payQuestion(ctx, SHOP), accepts: g.payAccepts }),
         pad('change', 'עֹדֶף', '💰', ctx => g.changeQuestion(ctx, SHOP), g.changeAccepts),
+      ],
+    },
+    {
+      id: 'math.place-value', title: 'אֲחָדוֹת, עֲשָׂרוֹת, מֵאוֹת', grade: 2, requires: ['math.number-line'], sticker: '🏠',
+      games: [
+        game({ id: 'build-number', title: 'בּוֹנִים מִסְפָּר', icon: '🏠', component: PlaceValueGame, generate: g2.buildNumberQuestion, accepts: g2.buildNumberAccepts }),
+        pad('flexible', 'פֵּרוּק גָּמִישׁ', '🧩', g2.flexibleQuestion, g2.flexibleAccepts),
+        pick('compare-signs', 'גָּדוֹל, קָטָן, שָׁוֶה', '⚖️', g2.compareSignsQuestion, g2.compareSignsAccepts),
+      ],
+    },
+    {
+      id: 'math.count-1000', title: 'סוֹפְרִים עַד 1000', grade: 2, requires: ['math.place-value'], sticker: '🗺️',
+      games: [
+        pad('skip-1000', 'קְפִיצוֹת גְּדוֹלוֹת', '🦘', g2.skip1000Question, g2.skip1000Accepts),
+        game({ id: 'hundred-chart', title: 'לוּחַ הַמֵּאָה', icon: '🔢', component: HundredChartGame, roundLength: 3, generate: g2.hundredChartQuestion, accepts: g2.hundredChartAccepts }),
+      ],
+    },
+    {
+      id: 'math.within-100', title: 'חִבּוּר וְחִסּוּר עַד 100', grade: 2, requires: ['math.tens', 'math.place-value'], sticker: '🧮',
+      games: [
+        pad('solve-100', 'תַּרְגִּילִים עַד 100', '🧮', g2.solve100Question, g2.within100Accepts),
+        pad('missing-100', 'הַמִּסְפָּר הֶחָסֵר', '❔', g2.missing100Question, g2.within100Accepts),
+        pick('estimate', 'יוֹתֵר אוֹ פָּחוֹת?', '🎯', g2.estimateQuestion, g2.within100Accepts),
+      ],
+    },
+    {
+      id: 'math.facts-20', title: 'עוּבְדוֹת עַד 20 בְּעַל פֶּה', grade: 2, requires: ['math.within-20'], sticker: '⚡',
+      games: [pad('facts', 'בְּעַל פֶּה', '⚡', g2.facts20Question, g2.facts20Accepts)],
+    },
+    {
+      id: 'math.odd-even', title: 'זוּגִי וְאִי זוּגִי', grade: 2, requires: ['math.count-100'], sticker: '👟',
+      games: [
+        pick('pairs', 'יֵשׁ חָבֵר לְכֻלָּם?', '👟', ctx => g2.pairsQuestion(ctx, THINGS), g2.pairsAccepts),
+        pick('parity', 'מִסְפָּרִים זוּגִיִּים', '🔢', g2.parityQuestion, g2.parityAccepts),
+      ],
+    },
+    {
+      id: 'math.times', title: 'כֶּפֶל', grade: 2, requires: ['math.facts-20'], sticker: '✖️',
+      games: [
+        pick('array', 'שׁוּרוֹת וְטוּרִים', '🍫', ctx => g2.arrayQuestion(ctx, THINGS), g2.arrayAccepts),
+        pick('groups', 'קְבוּצוֹת שָׁווֹת', '🧺', ctx => g2.groupsQuestion(ctx, THINGS), g2.groupsAccepts),
+        pad('tables', 'לוּחַ הַכֶּפֶל', '✖️', g2.tablesQuestion, g2.tablesAccepts),
+      ],
+    },
+    {
+      id: 'math.divide', title: 'חִלּוּק', grade: 2, requires: ['math.times'], sticker: '🍪',
+      games: [
+        game({ id: 'share', title: 'מְחַלְּקִים לַצַּלָּחוֹת', icon: '🍪', component: ShareGame, generate: ctx => g2.shareQuestion(ctx, THINGS), accepts: g2.shareAccepts }),
+        pad('groups-of', 'כַּמָּה קְבוּצוֹת?', '🧺', ctx => g2.groupsOfQuestion(ctx, THINGS), g2.groupsOfAccepts),
       ],
     },
   ],
