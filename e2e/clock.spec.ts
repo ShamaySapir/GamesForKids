@@ -6,12 +6,12 @@ async function createProfile(page: Page) {
   await page.goto('/')
   await page.getByLabel('שם').fill('נועה')
   await page.getByRole('button', { name: 'יאללה!' }).click()
-  await expect(page.getByRole('button', { name: /אי השעון/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /אִי הַשָּׁעוֹן/ })).toBeVisible()
 }
 
 test('a child can create a profile, play a round, and keep progress after reload', async ({ page }) => {
   await createProfile(page)
-  await page.getByRole('button', { name: /אי השעון/ }).click()
+  await page.getByRole('button', { name: /אִי הַשָּׁעוֹן/ }).click()
   await page.getByRole('link', { name: /איזה מחוג/ }).click()
 
   // "Which hand?" — read the prompt and click the matching hand, six times.
@@ -32,7 +32,7 @@ test('a child can create a profile, play a round, and keep progress after reload
 
 test('clock hands can be set by dragging and by keyboard', async ({ page }) => {
   await createProfile(page)
-  await page.getByRole('button', { name: /אי השעון/ }).click()
+  await page.getByRole('button', { name: /אִי הַשָּׁעוֹן/ }).click()
   await page.getByRole('link', { name: /כוונו את השעון/ }).first().click()
 
   const clock = page.locator('svg.clock')

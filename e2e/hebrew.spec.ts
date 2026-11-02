@@ -6,7 +6,7 @@ import { DAGESH_GROUPS, WORDS } from '../src/subjects/hebrew/content/words'
 
 async function startOnIsland(page: Page) {
   await createProfile(page)
-  await page.getByRole('button', { name: /אי האותיות/ }).click()
+  await page.getByRole('button', { name: /אִי הָאוֹתִיּוֹת/ }).click()
 }
 
 const byEmoji = (emoji: string) => WORDS.find(w => w.emoji === emoji)!

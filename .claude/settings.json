@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i '' 's#/אי השעון/#/אִי הַשָּׁעוֹן/#g' e2e/helpers.ts e2e/clock.spec.ts)",
+      "Bash(sed -i '' 's#/אי האותיות/#/אִי הָאוֹתִיּוֹת/#g' e2e/hebrew.spec.ts)",
+      "Bash(python3 /private/tmp/claude-501/-Users-sapirs-Projects-GamesForKids/9f3c599d-3198-4eb9-814d-460f8d863426/scratchpad/artedit/edit4.py)",
+      "Bash(node shot.cjs \"mode=scenes\" s2 1280 light)",
+      "Bash(git commit -q -m 'Space the islands on the map; add nikud to two island titles *)"
+    ]
+  }
+}
