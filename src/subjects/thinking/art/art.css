@@ -1,0 +1,18 @@
+/* Palette for the thinking island's art kit. Outlines flip to a light ink in dark mode so shapes stay visible. */
+:root {
+  --art-line: #26305f; --art-dark: #26305f; --art-white: #ffffff; --art-shadow: #4b5688;
+  --art-red: #f0524f; --art-blue: #3d8bfd; --art-green: #35b36b; --art-yellow: #ffd23f;
+  --art-purple: #9b6bff; --art-orange: #ff9a2e;
+  --art-brown: #a8723f; --art-wood: #cf9a62; --art-tan: #f1d6a6; --art-pink: #ff8fb8; --art-gray: #aeb8cc;
+  --art-sky: #a9dcff; --art-lime: #a8d84a; --art-skin: #ffd2a6; --art-cream: #fff3d6; --art-leaf: #4cc46f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --art-line: #e6ecff; --art-white: #f3f6ff; --art-shadow: #04061a;
+    --art-sky: #7fc3f5; --art-cream: #f1e3c4; --art-tan: #e6c98f;
+  }
+}
+:root[data-theme='dark'] {
+  --art-line: #e6ecff; --art-white: #f3f6ff; --art-shadow: #04061a;
+  --art-sky: #7fc3f5; --art-cream: #f1e3c4; --art-tan: #e6c98f;
+}
