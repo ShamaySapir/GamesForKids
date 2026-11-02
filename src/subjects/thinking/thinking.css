@@ -1,0 +1,88 @@
+/* Thinking island games (Stage 4c). Pictures stay left-to-right on the RTL page. */
+.tk-stage { display: grid; justify-items: center; gap: 16px; }
+.tk-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.tk-actions .cta,.tk-actions .pill { min-height: var(--tap); }
+
+/* Memory */
+.tk-mem-board {
+  display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 132px)); gap: 12px; justify-content: center;
+}
+.tk-mem-card {
+  aspect-ratio: 1; min-width: var(--tap); min-height: var(--tap); border-radius: 20px; cursor: pointer; padding: 0;
+  border: 3px solid var(--think); background: var(--think); color: var(--card);
+  font-size: 48px; font-weight: 800; display: grid; place-items: center;
+  box-shadow: 0 5px 0 var(--line); transition: background .2s;
+}
+.tk-mem-card.up { background: var(--card); color: var(--ink); border-color: var(--line); }
+.tk-mem-card.found { background: var(--okbg); border-color: var(--ok); cursor: default; }
+.tk-mem-face { display: grid; place-items: center; width: 100%; height: 100%; }
+.tk-mem-face svg { width: 80%; height: 80%; }
+.tk-mem-emoji { font-size: 56px; line-height: 1; }
+@media (max-width: 600px) {
+  .tk-mem-board { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 8px; width: 100%; }
+  .tk-mem-emoji { font-size: 40px; }
+  .tk-mem-card { font-size: 36px; }
+}
+
+/* Symmetry grid */
+.tk-sym { position: relative; width: min(100%, calc(var(--cols) * 64px)); }
+.tk-sym-grid {
+  display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 4px; padding: 6px;
+  background: var(--line); border-radius: 18px;
+}
+.tk-sym.bad { animation: shake .35s; }
+.tk-sym-cell {
+  aspect-ratio: 1; min-height: 0; border: 0; border-radius: 8px; padding: 0; background: var(--card); cursor: pointer;
+}
+.tk-sym-cell.given { cursor: default; }
+.tk-sym-cell.on { background: var(--fill); }
+button.tk-sym-cell:hover { outline: 3px solid var(--think); outline-offset: -3px; }
+.tk-sym-mirror {
+  position: absolute; inset-block: -8px; left: 50%; width: 0; translate: -50% 0;
+  border-inline-start: 5px dashed var(--think); pointer-events: none;
+}
+
+/* Differences */
+.tk-diff-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 900px; }
+.tk-diff-pic {
+  position: relative; aspect-ratio: 4 / 3; background: var(--card); border: 3px solid var(--line);
+  border-radius: var(--radius); overflow: hidden;
+}
+.tk-diff-pic.right { cursor: pointer; border-color: var(--think); }
+.tk-diff-item { position: absolute; width: 16%; aspect-ratio: 1; translate: -50% -50%; display: grid; place-items: center; font-size: 40px; }
+.tk-diff-item svg { width: 100%; height: 100%; }
+.tk-diff-ring {
+  position: absolute; width: 20%; aspect-ratio: 1; translate: -50% -50%; border: 5px solid var(--bad);
+  border-radius: 50%; pointer-events: none; animation: pop .4s;
+}
+/* Invisible keyboard hotspots; the mouse goes through to the picture so taps are judged by distance. */
+.tk-diff-spot {
+  position: absolute; width: 18%; aspect-ratio: 1; translate: -50% -50%; background: transparent; border: 0;
+  border-radius: 50%; padding: 0; pointer-events: none;
+}
+@media (max-width: 700px) { .tk-diff-pair { grid-template-columns: 1fr; gap: 12px; } }
+
+/* Maze */
+.tk-maze {
+  --cell: min(64px, calc((100vw - 56px) / var(--cols)));
+  display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-auto-rows: var(--cell);
+  gap: 2px; padding: 6px; background: var(--line); border-radius: 18px; touch-action: none; user-select: none;
+}
+.tk-maze-cell { display: grid; place-items: center; border-radius: 8px; font-size: calc(var(--cell) * .66); line-height: 1; }
+/* Walls are a solid tint that reads as "block" against the card-colored path in both themes. */
+.tk-maze-cell.wall { background: color-mix(in srgb, var(--think) 80%, var(--bg)); }
+.tk-maze-cell.path { background: var(--card); cursor: pointer; }
+.tk-maze-cell.walked { background: var(--sand); }
+.tk-maze-pad {
+  display: grid; grid-template-columns: repeat(3, var(--tap)); grid-template-rows: repeat(2, var(--tap)); gap: 8px;
+  grid-template-areas: '. up .' 'left down right';
+}
+.tk-maze-arrow {
+  min-width: var(--tap); min-height: var(--tap); border-radius: 18px; border: 3px solid var(--think); background: var(--card);
+  font-size: 32px; font-weight: 800; cursor: pointer;
+}
+.tk-maze-arrow:active { background: var(--think); color: var(--card); }
+.tk-maze-arrow.ArrowUp { grid-area: up; }
+.tk-maze-arrow.ArrowLeft { grid-area: left; }
+.tk-maze-arrow.ArrowDown { grid-area: down; }
+.tk-maze-arrow.ArrowRight { grid-area: right; }
