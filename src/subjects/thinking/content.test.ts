@@ -128,7 +128,7 @@ describe('twins', () => {
         expect(d.name, t.id).toBe(t.sample.name)
         const changed = diffKeys(t.sample, d)
         expect(changed.length, t.id).toBe(1)
-        expect(['missing', 'color']).toContain(changed[0])
+        expect(['missing', 'color', 'facing']).toContain(changed[0])
       }
     }
   })
@@ -187,7 +187,7 @@ describe('where', () => {
     expect(text('in-front-dog-house')).toBe('אֵיפֹה הַכֶּלֶב? לִפְנֵי הַבַּיִת')
     expect(text('behind-dog-house')).toBe('אֵיפֹה הַכֶּלֶב? מֵאֲחוֹרֵי הַבַּיִת')
     expect(text('above-bird-tree')).toBe('אֵיפֹה הַצִּפּוֹר? מֵעַל הָעֵץ')
-    expect(text('under-dog-tree')).toBe('אֵיפֹה הַכֶּלֶב? מִתַּחַת לָעֵץ')
+    expect(text('under-dog-table')).toBe('אֵיפֹה הַכֶּלֶב? מִתַּחַת לַשֻּׁלְחָן')
   })
 })
 

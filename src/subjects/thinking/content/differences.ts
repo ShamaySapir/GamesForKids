@@ -54,7 +54,7 @@ export const DIFF_SCENES: readonly DiffScene[] = [
       { index: 1, change: 'remove' },
       { index: 2, change: 'mirror' },
       { index: 4, change: { color: 'purple' } },
-      { index: 7, change: 'mirror' },
+      { index: 7, change: { color: 'green' } },
     ],
   },
   {
@@ -173,7 +173,7 @@ export const DIFF_SCENES: readonly DiffScene[] = [
       { index: 1, change: 'remove' },
       { index: 2, change: 'mirror' },
       { index: 6, change: { color: 'blue' } },
-      { index: 8, change: 'mirror' },
+      { index: 8, change: { color: 'orange' } },
     ],
   },
 ]

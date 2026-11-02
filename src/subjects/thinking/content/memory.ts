@@ -3,10 +3,10 @@ import { ref } from './ref'
 
 // Faces within a theme are all different and easy to tell apart at a glance.
 export const MEMORY_THEMES: readonly MemoryTheme[] = [
-  { id: 'animals', faces: ['🐶', '🐱', '🐰', '🐸', '🐵', '🦁', '🐼', '🐷'] },
+  { id: 'animals', faces: ['🐶', '🐱', '🐰', '🐸', '🐵', '🦁', '🐼', '🐮'] },
   { id: 'fruit', faces: ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍐', '🍋'] },
   { id: 'vehicles', faces: ['🚗', '🚌', '🚂', '✈️', '🚲', '⛵', '🚜', '🚑'] },
-  { id: 'sea', faces: ['🐟', '🐙', '🐳', '🦀', '🐢', '🐬', '🦈', '⭐'] },
+  { id: 'sea', faces: ['🐟', '🐙', '🐳', '🦀', '🐢', '🐬', '🦈', '🐚'] },
   { id: 'toys', faces: ['🧸', '⚽', '🪁', '🎈', '🎲', '🥁', '🎨', '🚀'] },
   { id: 'nature', faces: ['🌸', '🌳', '☀️', '🌈', '🍄', '🌵', '🌻', '🌙'] },
   { id: 'food', faces: ['🍕', '🍦', '🧁', '🍪', '🍩', '🥕', '🍞', '🧀'] },
@@ -18,7 +18,7 @@ export const MEMORY_THEMES: readonly MemoryTheme[] = [
       ref('triangle', { color: 'green' }),
       ref('star', { color: 'yellow' }),
       ref('heart', { color: 'purple' }),
-      ref('circle', { color: 'orange' }),
+      ref('star', { color: 'blue' }),
       ref('square', { color: 'green' }),
       ref('triangle', { color: 'red' }),
     ],
