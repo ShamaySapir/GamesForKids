@@ -2,7 +2,7 @@ import { shuffle, pick, type Rng } from '../../core/engine/random'
 import type { GenContext } from '../../core/engine/types'
 import type { PickOption, PickQ } from '../../ui/pick/types'
 import type { OrderQ, Tile } from '../reading/types'
-import { E, engAnswer, engBlend, engChunk, engLetter, engQuestion, engSentence, engSight, engSound, engWord } from './ids'
+import { E, engMagic, engAnswer, engBlend, engChunk, engLetter, engQuestion, engSentence, engSight, engSound, engWord } from './ids'
 import type { Chunk, EngSentence, EngWord, MagicPair, MinimalPair, Pattern, QA, Topic } from './types'
 
 // Pure question generators for the English island, one per game. Content comes in as arguments.
@@ -92,7 +92,8 @@ export function hearPickQuestion(ctx: GenContext, words: readonly EngWord[], top
     if (!wrong) return null
     return {
       itemKey: answer.id, answer: answer.id, say: [E.hearPick, engWord(answer.id)], instruction: E.hearPick, prompt: {},
-      options: shuffle(ctx.rng, [answer, ...wrong]).map(pictureOpt), hint: engWord(answer.id),
+      // Silent: if each picture said its word, a child could match sounds without knowing the word.
+      options: shuffle(ctx.rng, [answer, ...wrong]).map(silentPictureOpt), hint: engWord(answer.id),
     }
   })
 }
@@ -139,7 +140,8 @@ export const rhymeAccepts = (words: readonly EngWord[]) => (key: string) => rhym
 export function rhymeQuestion(ctx: GenContext, words: readonly EngWord[]): PickQ {
   return make(ctx, rhymeItems(words), w => w.id, target => {
     const answer = pick(ctx.rng, words.filter(p => distinct(p, target) && rhymes(p, target)))
-    const others = words.filter(w => distinct(w, target) && distinct(w, answer) && !rhymes(w, target))
+    // Only words with a known rime: a word without one (bread, key, chair) might really rhyme with the target.
+    const others = words.filter(w => w.rime && distinct(w, target) && distinct(w, answer) && !rhymes(w, target))
     const wrong = spread(ctx.rng, [others.filter(w => w.first === target.first), others], 2, w => w.emoji, [target.emoji, answer.emoji])
     if (!wrong) return null
     return {
@@ -252,6 +254,8 @@ const clearFirstLetter = (w: EngWord) => {
   const a = w.word[0]!
   if ('ckqx'.includes(a)) return false
   if (a === 'g' && 'ei'.includes(w.word[1] ?? '')) return false
+  // "one" starts with a w sound, "eight" and "eye" with a letter name: the first letter wouldn't match what is heard.
+  if (!w.first.startsWith(a) || (w.first.length > 1 && !DIGRAPH_STARTS.some(d => w.first === d))) return false
   return !DIGRAPH_STARTS.some(d => w.word.startsWith(d))
 }
 const firstLetterItems = (words: readonly EngWord[]) => words.filter(clearFirstLetter)
@@ -351,28 +355,25 @@ export function pairsQuestion(ctx: GenContext, words: readonly EngWord[], pairs:
     const extra = unrelated.length ? [pick(ctx.rng, unrelated)] : []
     return {
       itemKey: pairKey(item), answer: said.id, say: [E.pairs, engWord(said.id)], instruction: E.pairs, prompt: {},
-      options: shuffle(ctx.rng, [item.a, item.b, ...extra]).map(pictureOpt), hint: engWord(said.id),
+      options: shuffle(ctx.rng, [item.a, item.b, ...extra]).map(silentPictureOpt), hint: engWord(said.id),
     }
   })
 }
 
 /* ---------- 11. which word (magic e) ---------- */
 
-interface HeardWord { text: string; other: string; id: string }
+interface HeardWord { text: string; other: string }
 
-const heardItems = (words: readonly EngWord[], pairs: readonly MagicPair[]): HeardWord[] =>
-  pairs.flatMap(p => {
-    const short = words.find(w => w.word === p.short)
-    const long = words.find(w => w.word === p.long)
-    return short && long ? [{ text: short.word, other: long.word, id: short.id }, { text: long.word, other: short.word, id: long.id }] : []
-  })
-export const whichWordAccepts = (words: readonly EngWord[], pairs: readonly MagicPair[]) => (key: string) => heardItems(words, pairs).some(h => h.text === key)
+/** Both words of every pair, as heard items. They need no picture (D17 / MagicPair). */
+const heardItems = (pairs: readonly MagicPair[]): HeardWord[] =>
+  pairs.flatMap(p => [{ text: p.short, other: p.long }, { text: p.long, other: p.short }])
+export const whichWordAccepts = (pairs: readonly MagicPair[]) => (key: string) => heardItems(pairs).some(h => h.text === key)
 
 /** Hear cap or cape, pick its spelling of 2. Both spellings are silent. */
-export function whichWordQuestion(ctx: GenContext, words: readonly EngWord[], pairs: readonly MagicPair[]): PickQ {
-  return make(ctx, heardItems(words, pairs), h => h.text, h => ({
-    itemKey: h.text, answer: h.text, say: [E.whichWord, engWord(h.id)], instruction: E.whichWord, prompt: {},
-    options: shuffle(ctx.rng, [h.text, h.other]).map(t => textOpt(t, t)), hint: engWord(h.id),
+export function whichWordQuestion(ctx: GenContext, pairs: readonly MagicPair[]): PickQ {
+  return make(ctx, heardItems(pairs), h => h.text, h => ({
+    itemKey: h.text, answer: h.text, say: [E.whichWord, engMagic(h.text)], instruction: E.whichWord, prompt: {},
+    options: shuffle(ctx.rng, [h.text, h.other]).map(t => textOpt(t, t)), hint: engMagic(h.text),
   }))
 }
 

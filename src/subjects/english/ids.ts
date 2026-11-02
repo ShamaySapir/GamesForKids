@@ -16,6 +16,8 @@ export const engQuestion = (id: string) => `eng.qa.${id}`
 export const engAnswer = (id: string, n: 0 | 1 | 2) => `eng.qa.${id}.${n}`
 export const engSentence = (id: string) => `eng.s.${id}`
 export const engSight = (word: string) => `eng.sight.${word}`
+/** A word of a magic-e pair, said in English (cap, cape); no picture needed. */
+export const engMagic = (word: string) => `eng.magic.${word}`
 /** A letter's name ("bee"). */
 export const engLetter = (letter: string) => `eng.letter.${letter}`
 /**

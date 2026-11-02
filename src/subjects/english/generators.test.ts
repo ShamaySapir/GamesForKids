@@ -10,7 +10,7 @@ import {
   readPictureQuestion, rhymeAccepts, rhymeQuestion, sentenceAccepts, sentenceQuestion, sightAccepts, sightQuestion, whichWordAccepts, whichWordQuestion,
   wordTiles,
 } from './generators'
-import { E, engAnswer, engBlend, engChunk, engLetter, engQuestion, engSentence, engSight, engSound, engWord } from './ids'
+import { E, engMagic, engAnswer, engBlend, engChunk, engLetter, engQuestion, engSentence, engSight, engSound, engWord } from './ids'
 import type { Chunk, EngSentence, EngWord, MagicPair, MinimalPair, Pattern, QA, Topic } from './types'
 
 /* ---------- fixtures (small, but with the structure the real content has) ---------- */
@@ -57,7 +57,7 @@ const MINIMAL: MinimalPair[] = [
   { id: 'pig-big', a: 'pig', b: 'big', contrast: 'b/p' }, { id: 'van-web', a: 'van', b: 'web', contrast: 'v/w' }, { id: 'chip-ship', a: 'chip', b: 'ship', contrast: 'ee/i' },
   { id: 'missing', a: 'pen', b: 'nothing', contrast: 'b/p' },
 ]
-const MAGIC: MagicPair[] = [{ short: 'cap', long: 'cape' }, { short: 'kit', long: 'kite' }, { short: 'hop', long: 'hope' }, { short: 'zzz', long: 'zzze' }]
+const MAGIC: MagicPair[] = [{ short: 'cap', long: 'cape' }, { short: 'kit', long: 'kite' }, { short: 'hop', long: 'hope' }]
 const SIGHT = ['the', 'is', 'I', 'you', 'my', 'and', 'it', 'in', 'on', 'a', 'he', 'she', 'we', 'said', 'was', 'they']
 const SENTENCES: EngSentence[] = [
   { id: 's1', text: 'The cat is on the bed.', scene: '🐱🛏️', tags: { who: 'cat', where: 'bed' } },
@@ -82,14 +82,15 @@ const KNOWN = new Set<string>([
   ...QAS.flatMap(q => [engQuestion(q.id), engAnswer(q.id, 0), engAnswer(q.id, 1), engAnswer(q.id, 2)]),
   ...SIGHT.map(engSight), ...SENTENCES.map(s => engSentence(s.id)),
   ...LETTERS.flatMap(l => [engLetter(l), engSound(l)]), ...['sh', 'ch', 'th'].map(engSound),
+  ...MAGIC.flatMap(p => [engMagic(p.short), engMagic(p.long)]),
 ])
 
-const fallsBack = (o: PickOption) => ('say' in o ? ids(o.say) : [])
+const sayOf = (o: PickOption) => ('say' in o ? ids(o.say) : [])
 function expectPick(q: PickQ) {
   const optionIds = q.options.map(o => o.id)
   expect(new Set(optionIds).size).toBe(optionIds.length)
   expect(optionIds.filter(id => id === q.answer)).toHaveLength(1)
-  for (const p of [...ids(q.say), q.instruction, ...ids(q.hint), ...q.options.flatMap(fallsBack), ...ids(q.prompt.sentence?.say)]) expect(KNOWN.has(p), p).toBe(true)
+  for (const p of [...ids(q.say), q.instruction, ...ids(q.hint), ...q.options.flatMap(sayOf), ...ids(q.prompt.sentence?.say)]) expect(KNOWN.has(p), p).toBe(true)
   expect(ids(q.say)[0]).toBe(q.instruction)
   const pictures = q.options.flatMap(o => (o.kind === 'picture' ? [o.emoji] : []))
   expect(new Set(pictures).size).toBe(pictures.length)
@@ -121,7 +122,8 @@ describe('hear pick', () => {
       expect(q.say).toEqual([E.hearPick, engWord(q.itemKey)])
       expect(q.answer).toBe(q.itemKey)
       for (const o of picked(q)) expect(topics).toContain(o.topic)
-      expect(q.options.every(o => o.kind === 'picture' && ids(o.say)[0] === engWord(o.id))).toBe(true)
+      // Silent pictures: hearing each option's word would let a child match sounds without knowing the word.
+      expect(q.options.every(o => o.kind === 'picture' && ids(o.say).length === 0)).toBe(true)
     }
   })
   it('keeps wrong pictures in the answer topic while it has enough words', () => {
@@ -447,22 +449,22 @@ describe('minimal pairs', () => {
 describe('which word', () => {
   it('hear cap or cape, pick its spelling of 2 English texts', () => {
     for (const seed of SEEDS) {
-      const q = whichWordQuestion(ctx(seed), WORDS, MAGIC)
+      const q = whichWordQuestion(ctx(seed), MAGIC)
       expectPick(q)
       expect(q.options).toHaveLength(2)
       const labels = q.options.map(o => (o as { label: string }).label).sort()
       const pair = MAGIC.find(p => p.short === q.answer || p.long === q.answer)!
       expect(pair.short).not.toBe('zzz')
       expect(labels).toEqual([pair.long, pair.short].sort())
-      expect(q.say).toEqual([E.whichWord, engWord(q.answer)])
+      expect(q.say).toEqual([E.whichWord, engMagic(q.answer)])
       for (const o of q.options) expect(ids((o as { say?: PhraseRef }).say)).toEqual([])
     }
   })
   it('asks both the short and the long word; honors review', () => {
-    const seen = new Set(SEEDS.map(s => whichWordQuestion(ctx(s), WORDS, MAGIC).answer))
+    const seen = new Set(SEEDS.map(s => whichWordQuestion(ctx(s), MAGIC).answer))
     expect(seen).toEqual(new Set(['cap', 'cape', 'kit', 'kite', 'hop', 'hope']))
-    for (const seed of SEEDS) expect(whichWordQuestion(ctx(seed, [], 'kite'), WORDS, MAGIC).itemKey).toBe('kite')
-    expect(whichWordAccepts(WORDS, MAGIC)('zzz')).toBe(false)
+    for (const seed of SEEDS) expect(whichWordQuestion(ctx(seed, [], 'kite'), MAGIC).itemKey).toBe('kite')
+    expect(whichWordAccepts(MAGIC)('zzz')).toBe(false)
   })
 })
 

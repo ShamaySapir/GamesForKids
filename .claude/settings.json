@@ -25,7 +25,8 @@
       "Bash(git commit -q -m 'Add English spec, per-language speech and LTR English text \\(Stage 6, T0\\) *)",
       "Bash(git commit -q -m 'Rename a test helper to what it does *)",
       "Bash(git commit -q -m 'Add English island content, phrases and content test \\(Stage 6, T1\\) *)",
-      "Bash(git commit -q -m 'Wire the English island; fix English phrase loading in production builds *)"
+      "Bash(git commit -q -m 'Wire the English island; fix English phrase loading in production builds *)",
+      "Bash(git commit -q -m 'Fix English generators from the content review *)"
     ]
   }
 }

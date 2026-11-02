@@ -30,7 +30,10 @@ export interface QA { id: string; question: string; answer: string; wrong: reado
 /** Two words that differ in one sound Hebrew speakers confuse. */
 export interface MinimalPair { id: string; a: string; b: string; contrast: 'b/p' | 'v/w' | 'ee/i' }
 
-/** A short word and its silent-e partner (cap → cape), both picturable. */
+/**
+ * A short word and its silent-e partner, as written words (cap → cape). They need no picture: the which-word game is
+ * heard and read only. Phrase engMagic(word) says each. (Pictured magic-e words for reading are in WORDS.)
+ */
 export interface MagicPair { short: string; long: string }
 
 export interface EngSentence {

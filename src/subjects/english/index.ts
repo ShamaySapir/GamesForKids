@@ -80,7 +80,7 @@ export const island: IslandDef = {
       id: 'eng.magic-e', title: 'Magic e', grade: 4, requires: ['eng.cvc'], sticker: '🪄',
       games: [
         readWord('magic-e'),
-        pick('which-word', 'אֵיזוֹ מִילָּה?', '🪄', ctx => g.whichWordQuestion(ctx, WORDS, MAGIC_PAIRS), g.whichWordAccepts(WORDS, MAGIC_PAIRS)),
+        pick('which-word', 'אֵיזוֹ מִילָּה?', '🪄', ctx => g.whichWordQuestion(ctx, MAGIC_PAIRS), g.whichWordAccepts(MAGIC_PAIRS)),
       ],
     },
     {
