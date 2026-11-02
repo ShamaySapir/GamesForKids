@@ -12,6 +12,8 @@
 
 /* ---------- OrderGame ---------- */
 .rb-slots { display: flex; gap: 14px; justify-content: center; width: 100%; direction: rtl; }
+/* English words are built left to right (OrderQ.direction). */
+.rb-slots[dir='ltr'] { direction: ltr; }
 .rb-slots-units { flex-direction: row; flex-wrap: wrap; }
 .rb-slots-sentences { flex-direction: column; align-items: stretch; max-width: 640px; }
 .rb-slot {

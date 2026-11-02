@@ -20,8 +20,9 @@ export const recordings: ReadonlyMap<string, string> = new Map(
 )
 
 // English phrases are declared separately (`englishPhrases`) and always spoken by an en-US voice (DECISIONS D17).
-const englishFiles = import.meta.glob('/src/subjects/*/phrases.ts', { eager: true, import: 'englishPhrases' }) as Record<string, PhraseMap | undefined>
-const english: PhraseMap = Object.assign({}, ...Object.values(englishFiles).filter(Boolean))
+// Whole modules, not `import: 'englishPhrases'`: most islands don't export it, and a named glob import fails the build.
+const phraseModules = import.meta.glob('/src/subjects/*/phrases.ts', { eager: true }) as Record<string, { englishPhrases?: PhraseMap }>
+const english: PhraseMap = Object.assign({}, ...Object.values(phraseModules).map(m => m.englishPhrases ?? {}))
 
 /** Every phrase declared in the app, by ID (Hebrew and English). */
 export const phrases: PhraseMap = Object.assign({}, ...Object.values(phraseFiles), english)
