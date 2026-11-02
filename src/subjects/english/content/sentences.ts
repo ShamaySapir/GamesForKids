@@ -8,10 +8,10 @@ export const SENTENCES: readonly EngSentence[] = [
   { id: 'cat-chair', text: 'The cat is on the chair.', scene: '🐱🪑', tags: { who: 'cat', where: 'chair' } },
   { id: 'dog-chair', text: 'The dog is on the chair.', scene: '🐶🪑', tags: { who: 'dog', where: 'chair' } },
 
-  { id: 'hat-red', text: 'The hat is red.', scene: '🎩🔴', tags: { thing: 'hat', color: 'red' } },
-  { id: 'hat-blue', text: 'The hat is blue.', scene: '🎩🔵', tags: { thing: 'hat', color: 'blue' } },
-  { id: 'bus-red', text: 'The bus is red.', scene: '🚌🔴', tags: { thing: 'bus', color: 'red' } },
-  { id: 'bus-blue', text: 'The bus is blue.', scene: '🚌🔵', tags: { thing: 'bus', color: 'blue' } },
+  { id: 'book-red', text: 'The book is red.', scene: '📕', tags: { thing: 'book', color: 'red' } },
+  { id: 'book-blue', text: 'The book is blue.', scene: '📘', tags: { thing: 'book', color: 'blue' } },
+  { id: 'apple-red', text: 'The apple is red.', scene: '🍎', tags: { thing: 'apple', color: 'red' } },
+  { id: 'apple-green', text: 'The apple is green.', scene: '🍏', tags: { thing: 'apple', color: 'green' } },
 
   { id: 'pig-run', text: 'The pig can run.', scene: '🐷🏃', tags: { who: 'pig', does: 'run' } },
   { id: 'pig-dig', text: 'The pig can dig.', scene: '🐷⛏️', tags: { who: 'pig', does: 'dig' } },
@@ -31,8 +31,8 @@ export const SENTENCES: readonly EngSentence[] = [
   { id: 'like-cake', text: 'I like cake.', scene: '🍰😋', tags: { who: 'I', likes: 'cake' } },
   { id: 'like-milk', text: 'I like milk.', scene: '🥛😋', tags: { who: 'I', likes: 'milk' } },
 
-  { id: 'dad-van', text: 'My dad is in the van.', scene: '👨🚐', tags: { who: 'dad', where: 'van' } },
-  { id: 'mom-van', text: 'My mom is in the van.', scene: '👩🚐', tags: { who: 'mom', where: 'van' } },
+  { id: 'dad-car', text: 'My dad is in the car.', scene: '👨🚗', tags: { who: 'dad', where: 'car' } },
+  { id: 'mom-car', text: 'My mom is in the car.', scene: '👩🚗', tags: { who: 'mom', where: 'car' } },
   { id: 'dad-bus', text: 'My dad is on the bus.', scene: '👨🚌', tags: { who: 'dad', where: 'bus' } },
   { id: 'mom-bus', text: 'My mom is on the bus.', scene: '👩🚌', tags: { who: 'mom', where: 'bus' } },
 ]
