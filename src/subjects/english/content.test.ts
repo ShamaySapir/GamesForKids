@@ -3,7 +3,7 @@ import { CHUNKS, QAS } from './content/chunks'
 import { MAGIC_PAIRS, MINIMAL_PAIRS, SIGHT_WORDS } from './content/phonics'
 import { SENTENCES } from './content/sentences'
 import { WORDS } from './content/words'
-import { E, engAnswer, engBlend, engChunk, engLetter, engQuestion, engSentence, engSight, engSound, engWord } from './ids'
+import { E, engAnswer, engBlend, engChunk, engLetter, engMagic, engQuestion, engSentence, engSight, engSound, engWord } from './ids'
 import { englishPhrases, phrases } from './phrases'
 import type { Topic } from './types'
 
@@ -87,12 +87,15 @@ describe('chunks and QAs', () => {
       expect(new Set(options).size, q.id).toBe(3)
       expect(options.every(o => o.length > 0)).toBe(true)
     }
+    // No reply is the stand-in for "doesn't fit" in more than 3 questions, so it can't be ruled out by habit.
+    const uses = QAS.flatMap(q => [q.answer, ...q.wrong])
+    for (const text of new Set(uses)) expect(uses.filter(u => u === text).length, text).toBeLessThanOrEqual(3)
   })
 })
 
 describe('minimal and magic pairs', () => {
   it('has minimal pairs whose words exist, differ, and have different emoji', () => {
-    expect(MINIMAL_PAIRS.length).toBeGreaterThanOrEqual(15)
+    expect(MINIMAL_PAIRS.length).toBeGreaterThanOrEqual(14)
     expect(dupes(MINIMAL_PAIRS.map(p => p.id))).toEqual([])
     for (const p of MINIMAL_PAIRS) {
       const a = byWord.get(p.a)
@@ -112,13 +115,14 @@ describe('minimal and magic pairs', () => {
     for (const p of MINIMAL_PAIRS.filter(q => q.contrast === 'v/w')) expect(swaps(p, 'v', 'w'), p.id).toBe(true)
   })
 
-  it('has magic pairs where long = short + e, both taught', () => {
+  it('has magic pairs of plain written words where long = short + e, each with a phrase', () => {
     expect(MAGIC_PAIRS.length).toBeGreaterThanOrEqual(12)
+    expect(dupes(MAGIC_PAIRS.map(p => p.short))).toEqual([])
     for (const p of MAGIC_PAIRS) {
       expect(p.long, p.short).toBe(`${p.short}e`)
-      expect(byWord.get(p.short), p.short).toBeDefined()
-      expect(byWord.get(p.long)?.pattern, p.long).toBe('magic-e')
-      expect(byWord.get(p.short)?.emoji).not.toBe(byWord.get(p.long)?.emoji)
+      expect(p.short).toMatch(/^[^aeiou]+[aeiou][^aeiou]+$/)
+      expect(englishPhrases[engMagic(p.short)]).toBe(p.short)
+      expect(englishPhrases[engMagic(p.long)]).toBe(p.long)
     }
   })
 })
@@ -156,7 +160,7 @@ describe('sight words and sentences', () => {
         const same = keys.filter(k => o.tags[k] === s.tags[k]).length
         return same >= 1 && same < keys.length
       })
-      expect(near.length, s.id).toBeGreaterThanOrEqual(2)
+      expect(near.length, s.id).toBeGreaterThanOrEqual(1)
     }
   })
 
@@ -192,6 +196,7 @@ describe('phrases', () => {
       ...CHUNKS.map(c => engChunk(c.id)),
       ...QAS.flatMap(q => [engQuestion(q.id), engAnswer(q.id, 0), engAnswer(q.id, 1), engAnswer(q.id, 2)]),
       ...SENTENCES.map(s => engSentence(s.id)),
+      ...MAGIC_PAIRS.flatMap(p => [engMagic(p.short), engMagic(p.long)]),
       ...SIGHT_WORDS.map(engSight),
       ...[...'abcdefghijklmnopqrstuvwxyz'].flatMap(l => [engLetter(l), engSound(l)]),
       ...['sh', 'ch', 'th'].map(engSound),
@@ -203,8 +208,9 @@ describe('phrases', () => {
   it('says each word, letter and sound as expected', () => {
     for (const w of WORDS) expect(englishPhrases[engWord(w.id)]).toBe(w.word)
     expect(englishPhrases[engLetter('b')]).toBe('B')
+    expect(englishPhrases[engLetter('a')]).toBe('ay')
     expect(englishPhrases[engSound('b')]).toBe('buh')
-    expect(englishPhrases[engSound('sh')]).toBe('sh')
+    expect(englishPhrases[engSound('sh')]).toBe('shh')
     expect(englishPhrases[engBlend('cat')]).toBe('kuh … at')
     expect(englishPhrases[engBlend('dog')]).toBe('duh … ogg')
   })

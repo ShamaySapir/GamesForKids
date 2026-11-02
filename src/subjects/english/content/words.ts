@@ -21,7 +21,6 @@ orange 🟠 other o -
 black ⚫ other b -
 white ⚪ magic-e w ite
 brown 🟤 other b -
-pink 🩷 other p ink
 `)
 
 const numbers = rows('numbers', `
@@ -44,13 +43,11 @@ pig 🐷 cvc p ig
 hen 🐔 cvc h en
 fox 🦊 cvc f ox
 bat 🦇 cvc b at
-rat 🐀 cvc r at
 bug 🐛 cvc b ug
 cow 🐄 other k -
 frog 🐸 other f og
 fish 🐟 digraph f ish
 duck 🦆 other d uck
-bird 🐦 other b -
 horse 🐴 other h -
 sheep 🐑 other sh eep
 lion 🦁 other l -
@@ -60,9 +57,7 @@ rabbit 🐰 other r -
 mouse 🐭 other m ouse
 snake 🐍 magic-e s ake
 whale 🐳 magic-e w ale
-shark 🦈 other sh -
 owl 🦉 other ow -
-ant 🐜 other a -
 bee 🐝 other b ee
 goat 🐐 other g oat
 crab 🦀 other k ab
@@ -99,16 +94,14 @@ pie 🥧 other p -
 corn 🌽 other k -
 meat 🍖 other m eat
 bean 🫘 other b -
-pea 🫛 other p -
 honey 🍯 other h -
 sandwich 🥪 other s -
 strawberry 🍓 other s -
 watermelon 🍉 other w -
-lunch 🍱 digraph l -
 `)
 
 const body = rows('body', `
-eye 👁️ other eye -
+eye 👁️ other ai -
 ear 👂 other ear -
 nose 👃 magic-e n ose
 mouth 👄 other m -
@@ -135,8 +128,6 @@ girl 👧 other g -
 grandma 👵 other g -
 grandpa 👴 other g -
 family 👪 other f -
-kid 🧒 cvc k id
-vet 🧑‍⚕️ cvc v et
 `)
 
 const school = rows('school', `
@@ -150,15 +141,12 @@ paint 🎨 other p -
 brush 🖌️ digraph b ush
 map 🗺️ cvc m ap
 teacher 🧑‍🏫 other t -
-note 📝 magic-e n -
+note 🎵 magic-e n -
 pin 📌 cvc p in
 computer 💻 other k -
 paper 📄 other p -
 chess ♟️ digraph ch ess
-plan 📋 other p an
 pad 🗒️ cvc p ad
-tape 📼 magic-e t ape
-tube 🧪 magic-e t ube
 globe 🌍 magic-e g -
 cut ✂️ cvc k ut
 flag 🚩 other f ag
@@ -210,12 +198,9 @@ umbrella ☂️ other u -
 
 const actions = rows('actions', `
 run 🏃 cvc r un
-hug 🤗 cvc h ug
 dig ⛏️ cvc d ig
-hop 🦘 cvc h op
 win 🏆 cvc w in
 hit 🥊 cvc h it
-not 🚫 cvc n ot
 sad 😢 cvc s ad
 mad 😡 cvc m ad
 bad 👎 cvc b ad
@@ -226,13 +211,12 @@ dance 💃 other d -
 sing 🎤 other s ing
 clap 👏 other k ap
 walk 🚶 other w -
-wash 🧼 digraph w -
-think 💭 digraph th ink
+wash 🧼 other w -
+think 🤔 digraph th ink
 chat 💬 digraph ch at
+check ✅ digraph ch -
+shot 💉 digraph sh ot
 drink 🥤 other d ink
-cute 🥰 magic-e k -
-hope 🤞 magic-e h ope
-wish 🌠 digraph w ish
 grin 😁 other g in
 bye 👋 other b ye
 `)
@@ -249,7 +233,7 @@ rain 🌧️ other r -
 snow ❄️ other s -
 cloud ☁️ other k -
 flower 🌸 other f -
-leaf 🍃 other l -
+leaf 🍁 other l -
 rock 🪨 other r ock
 log 🪵 cvc l og
 web 🕸️ cvc w eb
@@ -257,8 +241,7 @@ pine 🌲 magic-e p ine
 beach 🏖️ other b each
 hill ⛰️ other h ill
 west 🧭 other w -
-heat 🔥 other h eat
-wet 💦 cvc w et
+veil 👰 other v -
 water 💧 other w -
 shell 🐚 digraph sh ell
 `)
@@ -270,27 +253,18 @@ door 🚪 other d -
 house 🏠 other h ouse
 clock 🕐 other k ock
 key 🔑 other k -
-tap 🚰 cvc t ap
-tub 🛁 cvc t ub
 bin 🗑️ cvc b in
-mop 🧹 cvc m op
 wall 🧱 other w all
 sofa 🛋️ other s -
 box 📦 cvc b ox
 bell 🔔 other b ell
-pane 🪟 magic-e p ane
 can 🥫 cvc k an
 cup ☕ cvc k up
 pot 🍲 cvc p ot
-pan 🍳 cvc p an
 spoon 🥄 other s oon
 dish 🍽️ digraph d ish
 bath 🛀 digraph b -
 bill 💵 other b ill
-kit 🧰 cvc k it
-dim 🔅 cvc d im
-dime 🪙 magic-e d -
-cane 🦯 magic-e k ane
 shop 🏪 digraph sh op
 `)
 
