@@ -35,7 +35,7 @@ const letterSkill = (group: g.LetterGroup, title: string, sticker: string, requi
 export const island: IslandDef = {
   id: 'hebrew',
   order: 2,
-  title: 'אי האותיות',
+  title: 'אִי הָאוֹתִיּוֹת',
   icon: '🔤',
   color: '--abc',
   phrases,

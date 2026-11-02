@@ -1,11 +1,10 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from '../../core/storage/store'
-import type { Grade } from '../../core/engine/types'
+import { GRADE_NAMES, gradeName, type Grade } from '../../core/engine/types'
 import { Mascot } from '../../ui/Mascot'
 
 const AVATARS = ['🦊', '🐼', '🐯', '🐸', '🐵', '🦄', '🐙', '🐶', '🐱', '🐰', '🦁', '🐨']
-const GRADES = ['גן חובה', 'כיתה א׳', 'כיתה ב׳', 'כיתה ג׳', 'כיתה ד׳', 'כיתה ה׳', 'כיתה ו׳']
 
 export function ProfileScreen() {
   const { profiles, selectProfile, createProfile } = useStore()
@@ -27,7 +26,7 @@ export function ProfileScreen() {
             {profiles.map(p => (
               <button key={p.id} className="tile" onClick={() => choose(p.id)}>
                 <span className="ic">{p.avatar}</span>
-                <div><b>{p.name}</b><small>{GRADES[p.grade]}</small></div>
+                <div><b>{p.name}</b><small>{gradeName(p.grade)}</small></div>
               </button>
             ))}
             <button className="tile" onClick={() => setAdding(true)}>
@@ -71,7 +70,7 @@ function NewProfile({ onSave, onCancel }: NewProfileProps) {
       </div>
       <label className="field">כיתה
         <select value={grade} onChange={e => setGrade(Number(e.target.value) as Grade)}>
-          {GRADES.map((g, i) => <option key={g} value={i}>{g}</option>)}
+          {GRADE_NAMES.map((g, i) => <option key={g} value={i - 1}>{g}</option>)}
         </select>
       </label>
       <div style={{ display: 'flex', gap: 12 }}>

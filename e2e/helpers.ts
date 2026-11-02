@@ -5,7 +5,7 @@ export async function createProfile(page: Page) {
   await page.goto('/')
   await page.getByLabel('שם').fill('נועה')
   await page.getByRole('button', { name: 'יאללה!' }).click()
-  await page.getByRole('button', { name: /אי השעון/ }).waitFor()
+  await page.getByRole('button', { name: /אִי הַשָּׁעוֹן/ }).waitFor()
 }
 
 /**

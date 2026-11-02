@@ -54,6 +54,8 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | Number-line targets like 45 were unreachable: the marker snapped to tens | A flaky E2E drag test, then a unit test | Every generated answer must be *reachable* through the UI — test it, don't assume it |
 | "How many are hiding?" drew one cup per hidden object, so the child could count cups; the line marker showed its value | Screenshots | Ask "can a child get this right without the skill?" for every screen |
 | E2E helper reloaded before its IndexedDB write committed | Intermittent test failures | Wait for the transaction's `oncomplete`; share helpers in `e2e/helpers.ts` |
+| "Where is it?" offered absurd wrong pictures (a ball *in* the table) and look-alike positions | Content review | Wrong options must be plausible — otherwise the child rules them out without the skill |
+| Drawing options were announced to screen readers as "a", "b", "c" | Writing the E2E test | Every option needs a meaningful accessible name — but never one that reveals the answer (silhouettes) |
 | Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off

@@ -6,8 +6,9 @@ import { islands } from '../islands'
 import { TopBar } from '../TopBar'
 import './map.css'
 
-// Fixed spots on the sea for up to 6 islands, in map order (percent of the map box).
-const SPOTS = [[22, 30], [68, 24], [30, 72], [76, 68], [50, 48], [12, 52]] as const
+// Spots on the sea in map order (percent of the map box): two rows of three, gently staggered so they read as
+// islands, with room between them. From the reading side (right) in RTL. Add a row when there are more than six.
+const SPOTS = [[17, 26], [50, 21], [83, 26], [17, 74], [50, 79], [83, 74]] as const
 
 export function MapScreen() {
   const navigate = useNavigate()

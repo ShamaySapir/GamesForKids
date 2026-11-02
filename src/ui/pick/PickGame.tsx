@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { phrases, say } from '../../core/audio/audio'
 import type { GameProps, PhraseRef } from '../../core/engine/types'
+import { ArtView } from './art'
 import { Objects } from './Objects'
 import { SayButton } from './SayButton'
 import type { PickOption, PickPrompt, PickQ } from './types'
@@ -11,7 +12,7 @@ import './pick.css'
 const HOVER_SAY_MS = 400
 
 function PromptView({ prompt }: { prompt: PickPrompt }) {
-  const { picture, letter, word, sentence, objects, expr } = prompt
+  const { picture, letter, word, sentence, objects, expr, art } = prompt
   return (
     <div className="pk-prompt">
       {picture && <div className="pk-picture" aria-hidden="true">{picture}</div>}
@@ -35,6 +36,10 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
         </div>
       )}
       {expr && <div className="pk-expr digi" dir="ltr">{expr}</div>}
+      {art && (
+        // Patterns read in the page's direction (RTL): the first item is on the right.
+        <div className="pk-art-row">{art.map((a, i) => <ArtView key={i} art={a} size={art.length > 4 ? 72 : 120} />)}</div>
+      )}
     </div>
   )
 }
@@ -54,6 +59,7 @@ function optionFace(o: PickOption) {
     case 'text': return <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>
     case 'number': return <span className="pk-opt-number digi" dir="ltr">{o.label}</span>
     case 'objects': return <Objects group={o.group} size={30} />
+    case 'art': return <ArtView art={o.art} size={96} />
     case 'letter': return <span className="he-letter pk-opt-letter">{o.label}</span>
   }
 }
@@ -63,6 +69,12 @@ function optionLabel(o: PickOption): string {
     case 'picture': return o.emoji
     case 'sound': return o.label ?? phrases[o.say] ?? ''
     case 'objects': return `${o.group.count}`
+    case 'art': {
+      // A silhouette must not announce what it is: that is the answer.
+      if (o.art.props?.silhouette) return '?'
+      const ref = o.say ?? o.art.say
+      return typeof ref === 'string' ? (phrases[ref] ?? o.art.name) : o.art.name
+    }
     default: return o.label
   }
 }

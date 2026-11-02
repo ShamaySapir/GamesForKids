@@ -1,12 +1,12 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { say } from '../../core/audio/audio'
 import { isUnlocked } from '../../core/progress/progress'
+import { gradeShort } from '../../core/engine/types'
 import { useStore } from '../../core/storage/store'
 import { Mascot } from '../../ui/Mascot'
 import { findIsland } from '../islands'
 import { TopBar } from '../TopBar'
 
-const GRADE_LABEL = ['גן', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳']
 
 export function IslandScreen() {
   const island = findIsland(useParams().islandId)
@@ -27,7 +27,7 @@ export function IslandScreen() {
               <span className="ic">{sp?.mastered ? skill.sticker : open ? i + 1 : '🔒'}</span>
               <div style={{ flex: 1, minWidth: 180 }}>
                 <b>{skill.title}</b>
-                <small>{GRADE_LABEL[skill.grade]} · {'⭐'.repeat(sp?.bestStars ?? 0) || 'עוד לא שיחקנו'}</small>
+                <small>{gradeShort(skill.grade)} · {'⭐'.repeat(sp?.bestStars ?? 0) || 'עוד לא שיחקנו'}</small>
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 {skill.games.map(g => open
