@@ -8,6 +8,7 @@
 //   silhouette: boolean   every shape filled with the shadow color (shadows game)
 //   half: 'right'|'left'  only that half is drawn, the other is blank (symmetry game; only if `symmetric`)
 //   missing: string       one part left out (what's-missing / twin games; only names from `parts`)
+//   only: string          ONLY that part, enlarged and centred in the box (the answer options of the what's-missing game)
 
 export const COLORS = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'] as const
 export type Color = (typeof COLORS)[number]

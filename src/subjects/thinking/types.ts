@@ -34,7 +34,10 @@ export interface SequenceSet { id: string; steps: readonly string[] }
 /** 9. Sorting: two baskets (emoji label + phrase) and cards (emoji) with their basket. */
 export interface SortBoard { id: string; bins: readonly [string, string]; cards: readonly { emoji: string; bin: 0 | 1 }[] }
 
-/** 10. What's missing: a drawing with one part left out, and two wrong parts of the same drawing. */
+/**
+ * 10. What's missing: a drawing with one part left out, and two wrong parts of the same drawing.
+ * Options show each part alone: { name: art.name, props: { only: part } }.
+ */
 export interface MissingItem { id: string; art: ArtRef; part: string; wrong: readonly [string, string] }
 
 /** 11. Differences: drawings placed on a 0–100 grid; `changes` alter the right-hand copy. */
