@@ -58,7 +58,8 @@ Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ · T
 ## Stage 4b – Math: 2nd grade ⬜
 Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).
 
-## Stage 4c – Thinking island (ages 4–6) ⬜ approved by the user, spec after Stage 4
+## Stage 4c – Thinking island (ages 4–6) 🟡
+Spec approved 2026-11-02: `docs/specs/thinking.md`. T0 ✅ (Grade −1, shared art registry, catalog, contract) · T1–T4 🟡 in parallel · T5 ⬜.
 Started from the user's son's workbook for ages 4–5. Each idea needs **at least 5–6 examples**, with **original
 drawings** suited to the age (SVG illustrations; emoji only where unambiguous). Opens a pre-gan-chova level (age 4).
 

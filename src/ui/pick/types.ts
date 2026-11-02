@@ -2,6 +2,17 @@ import type { PhraseRef, Question } from '../../core/engine/types'
 
 // Shared "pick one answer" question, used by every island (DECISIONS D14). Generators build PickQ; PickGame renders it.
 
+/**
+ * A registered drawing and its variation props, e.g. { name: 'dog', props: { facing: 'left' } }.
+ * The name '?' is an empty slot. Drawings are registered with registerArt (./art.tsx).
+ */
+export interface ArtRef {
+  name: string
+  props?: Readonly<Record<string, string | number | boolean>>
+  /** Spoken name, when the drawing should be named on hover/🔊. */
+  say?: PhraseRef
+}
+
 /** A group of identical objects to count: '🍎' × 7. */
 export interface ObjectGroup {
   emoji: string
@@ -28,6 +39,8 @@ export type PickOption =
   | { id: string; kind: 'number'; label: string; say?: PhraseRef }
   /** A group of objects to compare or count. */
   | { id: string; kind: 'objects'; group: ObjectGroup }
+  /** A drawing from a registered art kit. */
+  | { id: string; kind: 'art'; art: ArtRef; say?: PhraseRef }
 
 export interface PickPrompt {
   /** Big picture (emoji). */
@@ -42,6 +55,8 @@ export interface PickPrompt {
   objects?: readonly ObjectGroup[]
   /** An exercise shown left-to-right in digits: '8 + 5 = ?'. */
   expr?: string
+  /** Drawings in a row (a sample, a pattern with a '?' slot, a drawing with a missing part). */
+  art?: readonly ArtRef[]
 }
 
 /** Answer is the correct option's id. */

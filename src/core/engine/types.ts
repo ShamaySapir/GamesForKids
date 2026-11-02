@@ -1,7 +1,13 @@
 import type { ComponentType } from 'react'
 
-/** 0 = kindergarten (gan chova), 1–6 = school grades. */
-export type Grade = 0 | 1 | 2 | 3 | 4 | 5 | 6
+/** -1 = pre-kindergarten (טרום חובה, age 4), 0 = kindergarten (gan chova), 1–6 = school grades. */
+export type Grade = -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+/** Child-facing level names, indexed by grade + 1. */
+export const GRADE_NAMES = ['טרום חובה', 'גן חובה', 'כיתה א׳', 'כיתה ב׳', 'כיתה ג׳', 'כיתה ד׳', 'כיתה ה׳', 'כיתה ו׳'] as const
+export const GRADE_SHORT = ['טרום', 'גן', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳'] as const
+export const gradeName = (g: Grade) => GRADE_NAMES[g + 1]
+export const gradeShort = (g: Grade) => GRADE_SHORT[g + 1]
 
 /** One phrase ID, or several played back to back (e.g. "three" + "and a half"). */
 export type PhraseRef = string | readonly string[]

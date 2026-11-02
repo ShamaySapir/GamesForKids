@@ -40,11 +40,12 @@ computer-first with touch support.
 | Reading island | ✅ built, ⏳ awaiting user play-test | 11 skills (5 nikud signs, build, word/sentence reading, cloze, story order, 5 read-along books); spec `docs/specs/reading.md`; ~273 phrases to record |
 | Shared pick UI | ✅ | `src/ui/pick/` — `PickGame`, `SayButton`, `Objects`, `PickQ` (D14) |
 | Numbers island (K–1) | ✅ built, ⏳ awaiting user play-test | 10 skills, 6 game components; spec `docs/specs/math-k2.md`; ~140 phrases to record |
+| Thinking island | 🟡 building | Art kit catalog + contract done (T0); new pre-kindergarten level (Grade −1) |
 | English island | ⬜ placeholder | | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
-| Git | ✅ | Stages 0–3 merged to `main` (PR #1–#3). Current work: `stage4/math-k2` |
+| Git | ✅ | Stages 0–4 merged to `main` (PR #1–#4). Current work: `stage4c/thinking` |
 
-Current stage: **Stage 4 built** (math, kindergarten–1st grade); next: Stage 4c thinking island spec; Stages 1–3 await the user's play-test and recordings.
+Current stage: **Stage 4c** (thinking island, ages 4–6) building — spec `docs/specs/thinking.md`; Stages 1–3 await the user's play-test and recordings.
 
 ## Next steps
 

@@ -48,3 +48,11 @@ Why: the user's choice; print matches the letters children see in books and in t
 **D14 · 2026-11-01 · planner** — `PickGame` and its question types move from the letters island to shared UI
 (`src/ui/pick/`), with prompt kinds for counting objects and LTR exercises and number options. Shared classes use the `pk-` prefix.
 Why: the letters, reading and numbers islands all use it; shared code belongs to the planner, not to one island.
+
+**D15 · 2026-11-02 · planner** — Drawings are original SVG components registered by name (`registerArt` in
+`src/ui/pick/art.tsx`); shared UI draws an `ArtRef` without depending on the island that owns the art. The thinking
+island's catalog (`src/subjects/thinking/art/catalog.ts`) fixes names, parts and variation props.
+Why: the thinking games need controlled variations (mirrored, recolored, a missing part, silhouettes, halves)
+that emoji cannot give, and other islands may reuse the drawings.
+
+**D16 · 2026-11-02 · user** — A pre-kindergarten level (`Grade -1`, טרום חובה, age 4) is added, starting with the thinking island.
