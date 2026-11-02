@@ -1,0 +1,95 @@
+/* 2nd grade math games: place-value house, hundred chart, sharing plates. Tokens only. */
+
+/* ---- place-value house ---- */
+.pv-stage, .hc-stage, .sh-stage { gap: 14px; }
+.pv-show { font-size: 72px; font-weight: 800; line-height: 1.1; color: var(--ink); }
+.pv-house { width: 100%; max-width: 560px; display: grid; justify-items: center; }
+.pv-roof { width: 100%; height: 36px; background: var(--clock); clip-path: polygon(0 100%, 50% 0, 100% 100%); }
+.pv-cols {
+  width: 100%; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 10px;
+  background: var(--sand); border: 4px solid var(--line); border-radius: 0 0 24px 24px; padding: 10px;
+}
+.pv-house.bad .pv-cols { animation: shake .35s; border-color: var(--bad); }
+.pv-house.ok .pv-cols { border-color: var(--ok); background: var(--okbg); }
+.pv-col {
+  display: grid; grid-template-rows: auto 1fr auto auto; gap: 6px; justify-items: center;
+  background: var(--card); border: 3px solid var(--line); border-radius: 18px; padding: 8px 4px; min-width: 0;
+}
+.pv-col:focus-visible { outline: 4px solid var(--abc); outline-offset: 2px; }
+.pv-label { font-size: 20px; font-weight: 800; color: var(--ink); }
+.pv-pieces { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; align-content: flex-start; min-height: 120px; width: 100%; }
+.pv-piece { display: block; }
+.pv-hundred { width: 46px; height: 46px; }
+.pv-ten { width: 11px; height: 46px; }
+.pv-one { width: 20px; height: 20px; }
+.pv-pieces-ten { flex-wrap: nowrap; gap: 2px; align-items: flex-start; }
+.pv-pieces-one { max-width: 72px; margin-inline: auto; }
+.pv-fill { stroke: var(--ink); stroke-width: 1.5; }
+.pv-h { fill: var(--read); }
+.pv-t { fill: var(--num); }
+.pv-o { fill: var(--sun); }
+.pv-grid { stroke: var(--card); stroke-width: 1; opacity: .7; }
+.pv-count { min-height: 28px; font-size: 24px; font-weight: 800; color: var(--mute); }
+.pv-btns { display: flex; gap: 6px; }
+.pv-btn {
+  min-width: var(--tap); min-height: var(--tap); border-radius: 18px; border: 3px solid var(--line); background: var(--card);
+  color: var(--ink); font: inherit; font-size: 36px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 var(--line);
+}
+.pv-btn:hover:not(:disabled) { border-color: var(--num); }
+.pv-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--line); }
+.pv-btn:disabled { opacity: .4; cursor: default; }
+.pv-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.pv-actions .pill { min-height: var(--tap); font-size: 22px; }
+.pv-actions .pill:disabled { opacity: .5; cursor: default; }
+
+/* ---- hundred chart ---- */
+.hc-chart {
+  width: 100%; max-width: 640px; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px;
+  background: var(--line); border: 3px solid var(--line); border-radius: 14px; overflow: hidden;
+}
+.hc-cell {
+  min-height: 36px; display: grid; place-items: center; background: var(--card); color: var(--ink);
+  font: inherit; font-size: clamp(13px, 3.3vw, 24px); font-weight: 700; padding: 0; border: 0; border-radius: 0;
+}
+.hc-blank { background: var(--sun); color: var(--sun-ink); cursor: pointer; font-weight: 800; }
+.hc-blank.sel { outline: 3px solid var(--abc); outline-offset: -3px; }
+.hc-blank.bad { animation: shake .35s; background: var(--badbg); color: var(--ink); }
+.hc-blank:focus-visible { outline: 3px solid var(--abc); outline-offset: -3px; }
+.hc-ok { background: var(--okbg); color: var(--ink); }
+.hc-pad { display: grid; grid-template-columns: repeat(6, 64px); gap: 8px; direction: ltr; }
+.hc-pad .pd-key { width: 64px; min-width: 64px; }
+
+/* ---- sharing ---- */
+.sh-pile {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-content: center; min-height: 84px; width: 100%;
+  max-width: 560px; background: var(--sand); border-radius: 24px; padding: 10px;
+}
+.sh-item { font-size: 44px; line-height: 1; touch-action: none; cursor: grab; user-select: none; position: relative; }
+.sh-item.dragging { z-index: 10; pointer-events: none; opacity: .9; }
+.sh-placed { background: transparent; border: 0; padding: 0; cursor: pointer; font-size: 36px; min-width: 40px; min-height: 40px; }
+.sh-plates { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%; }
+.sh-plates.bad { animation: shake .35s; }
+.sh-plate {
+  display: grid; justify-items: center; gap: 4px; min-width: 120px; min-height: 160px; padding: 6px; background: var(--card);
+  border: 4px dashed var(--line); border-radius: 28px;
+}
+.sh-plate.aim { border-style: solid; border-color: var(--num); box-shadow: 0 0 0 4px var(--sun); }
+.sh-plate.ok { border-style: solid; border-color: var(--ok); background: var(--okbg); }
+.sh-dish { min-width: var(--tap); min-height: var(--tap); font-size: 56px; line-height: 1; background: transparent; border: 0; cursor: pointer; }
+.sh-dish:disabled { cursor: default; }
+.sh-on { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 130px; min-height: 44px; }
+.sh-count { min-height: 28px; font-size: 24px; font-weight: 800; color: var(--mute); }
+.sh-eq { font-size: 44px; font-weight: 800; background: var(--okbg); border: 3px solid var(--ok); border-radius: 18px; padding: 4px 20px; }
+
+@media (max-width: 600px) {
+  .pv-show { font-size: 56px; }
+  .pv-cols { gap: 6px; padding: 6px; }
+  .pv-hundred { width: 28px; height: 28px; }
+  .pv-ten { width: 8px; height: 32px; }
+  .pv-one { width: 14px; height: 14px; }
+  .pv-pieces-one { max-width: 54px; }
+  .pv-btns { flex-direction: column-reverse; gap: 4px; }
+  .hc-pad { grid-template-columns: repeat(4, 64px); gap: 6px; }
+  .sh-item { font-size: 38px; }
+  .sh-plate { min-width: 100px; }
+}

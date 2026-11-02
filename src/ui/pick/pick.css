@@ -54,3 +54,6 @@
   color: var(--mute); font-size: 40px; font-weight: 800;
 }
 .pk-opt-art { min-height: 140px; }
+.pk-objs-array { display: grid; gap: 2px; justify-items: center; direction: ltr; }
+.pk-objs-groups { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; direction: ltr; }
+.pk-objs-group { display: flex; flex-wrap: wrap; max-width: 6.5em; gap: 2px; padding: 6px 8px; border: 3px dashed var(--line); border-radius: 18px; }

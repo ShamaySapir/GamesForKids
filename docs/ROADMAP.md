@@ -55,8 +55,8 @@ mode) and words are highlighted while the page is read. Needs a long-recording m
 ## Stage 4 – Math: kindergarten – 1st grade ✅ built
 Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ · T1 content ✅ · T2 ✅ · T3a ✅ · T3b ✅ (four in parallel) · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
 
-## Stage 4b – Math: 2nd grade ⬜
-Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).
+## Stage 4b – Math: 2nd grade ✅ built
+Spec approved 2026-11-02: `docs/specs/math-grade2.md` (skills 11–17). T0 + T1 ✅ · T2 ✅ · T3 ✅ · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
 
 ## Stage 4c – Thinking island (ages 4–6) ✅ built
 Spec approved 2026-11-02: `docs/specs/thinking.md`. T0 ✅ · T1 art ✅ · T2 content ✅ (full review, 26 fixes) · T3 ✅ · T4 ✅ (four in parallel) · T5 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.

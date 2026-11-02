@@ -1,0 +1,108 @@
+import { useRef, useState, type KeyboardEvent } from 'react'
+import { phrases } from '../../core/audio/audio'
+import type { GameProps } from '../../core/engine/types'
+import { HintButton, useHintOnAid, useShake } from './games-pad'
+import { M } from './ids'
+import type { PlaceValueQ } from './types'
+import './math-g2.css'
+
+// Per-question state; PlayScreen remounts this component for every question.
+// The running value is never written as digits: the child has to read the pieces (counts show only with the aid).
+
+const MAX_PER_COLUMN = 9
+
+type Kind = 'hundred' | 'ten' | 'one'
+const LABELS: Record<Kind, string> = { hundred: M.hundreds, ten: M.tens, one: M.ones }
+const WORTH: Record<Kind, number> = { hundred: 100, ten: 10, one: 1 }
+
+function Piece({ kind }: { kind: Kind }) {
+  if (kind === 'hundred') {
+    return (
+      <svg className="pv-piece pv-hundred" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="1" y="1" width="38" height="38" rx="3" className="pv-fill pv-h" />
+        {Array.from({ length: 9 }, (_, i) => (
+          <g key={i} className="pv-grid">
+            <line x1={4 * (i + 1)} y1="1" x2={4 * (i + 1)} y2="39" />
+            <line x1="1" y1={4 * (i + 1)} x2="39" y2={4 * (i + 1)} />
+          </g>
+        ))}
+      </svg>
+    )
+  }
+  if (kind === 'ten') {
+    return (
+      <svg className="pv-piece pv-ten" viewBox="0 0 10 40" aria-hidden="true">
+        <rect x="1" y="1" width="8" height="38" rx="2" className="pv-fill pv-t" />
+        {Array.from({ length: 9 }, (_, i) => <line key={i} x1="1" y1={4 * (i + 1)} x2="9" y2={4 * (i + 1)} className="pv-grid" />)}
+      </svg>
+    )
+  }
+  return (
+    <svg className="pv-piece pv-one" viewBox="0 0 12 12" aria-hidden="true">
+      <rect x="1" y="1" width="10" height="10" rx="2" className="pv-fill pv-o" />
+    </svg>
+  )
+}
+
+export function PlaceValueGame({ question, aid, onAttempt }: GameProps<PlaceValueQ>) {
+  const kinds: Kind[] = question.columns === 3 ? ['hundred', 'ten', 'one'] : ['ten', 'one']
+  const [counts, setCounts] = useState<number[]>(() => kinds.map(() => 0))
+  const [done, setDone] = useState(false)
+  const [shaking, shake] = useShake()
+  const finished = useRef(false)
+  useHintOnAid(aid, question.hint)
+
+  const change = (i: number, delta: number) => {
+    if (finished.current) return
+    setCounts(c => c.map((n, j) => (j === i ? Math.min(MAX_PER_COLUMN, Math.max(0, n + delta)) : n)))
+  }
+  const onKey = (i: number) => (e: KeyboardEvent) => {
+    if (e.key === 'ArrowUp') { e.preventDefault(); change(i, 1) }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); change(i, -1) }
+  }
+  const empty = counts.every(n => n === 0)
+  const check = () => {
+    if (finished.current || empty) return
+    const value = counts.reduce((s, n, i) => s + n * WORTH[kinds[i]!], 0)
+    if (value === question.answer) {
+      finished.current = true
+      setDone(true)
+      onAttempt(true)
+    } else {
+      shake()
+      onAttempt(false)
+    }
+  }
+
+  return (
+    <div className="pk-stage pv-stage">
+      <p className="pk-q">{phrases[question.instruction]}</p>
+      <div className="pv-show digi" dir="ltr">{question.show}</div>
+      <HintButton aid={aid} hint={question.hint} />
+      <div className={`pv-house${shaking ? ' bad' : ''}${done ? ' ok' : ''}`} dir="ltr">
+        <div className="pv-roof" aria-hidden="true" />
+        <div className="pv-cols">
+          {kinds.map((kind, i) => (
+            <div key={kind} className="pv-col" role="group" aria-label={phrases[LABELS[kind]]} tabIndex={0} onKeyDown={onKey(i)}>
+              <div className="pv-label">{phrases[LABELS[kind]]}</div>
+              <div className={`pv-pieces pv-pieces-${kind}`} aria-hidden="true">
+                {Array.from({ length: counts[i]! }, (_, k) => <Piece key={k} kind={kind} />)}
+              </div>
+              <div className="pv-count digi" dir="ltr" aria-hidden={!aid}>{aid ? counts[i] : ''}</div>
+              <div className="pv-btns">
+                <button type="button" className="pv-btn" aria-label={`− ${phrases[LABELS[kind]]}`} tabIndex={-1}
+                  disabled={done || counts[i] === 0} onClick={() => change(i, -1)}>−</button>
+                <button type="button" className="pv-btn" aria-label={`+ ${phrases[LABELS[kind]]}`} tabIndex={-1}
+                  disabled={done || counts[i] === MAX_PER_COLUMN} onClick={() => change(i, 1)}>+</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="pv-actions">
+        <button type="button" className="cta" disabled={done || empty} onClick={check}>{phrases[M.check]}</button>
+        <button type="button" className="pill" disabled={done || empty} onClick={() => setCounts(kinds.map(() => 0))}>{phrases[M.reset]}</button>
+      </div>
+    </div>
+  )
+}

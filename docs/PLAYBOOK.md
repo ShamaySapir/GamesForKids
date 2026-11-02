@@ -56,6 +56,8 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | E2E helper reloaded before its IndexedDB write committed | Intermittent test failures | Wait for the transaction's `oncomplete`; share helpers in `e2e/helpers.ts` |
 | "Where is it?" offered absurd wrong pictures (a ball *in* the table) and look-alike positions | Content review | Wrong options must be plausible — otherwise the child rules them out without the skill |
 | Drawing options were announced to screen readers as "a", "b", "c" | Writing the E2E test | Every option needs a meaningful accessible name — but never one that reveals the answer (silhouettes) |
+| After a drag, the next tap on a plate was swallowed (click-suppression flag never reset) | E2E mixing drag and tap | Test mixed input sequences (drag then tap), not each input alone |
+| A screenshot "looked" reversed, but the DOM was correct | Measuring character positions | When a screenshot surprises you, verify in the DOM before changing code |
 | Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off
