@@ -26,7 +26,12 @@
       "Bash(git commit -q -m 'Rename a test helper to what it does *)",
       "Bash(git commit -q -m 'Add English island content, phrases and content test \\(Stage 6, T1\\) *)",
       "Bash(git commit -q -m 'Wire the English island; fix English phrase loading in production builds *)",
-      "Bash(git commit -q -m 'Fix English generators from the content review *)"
+      "Bash(git commit -q -m 'Fix English generators from the content review *)",
+      "Bash(python3 /private/tmp/claude-501/-Users-sapirs-Projects-GamesForKids/9f3c599d-3198-4eb9-814d-460f8d863426/scratchpad/apply.py)",
+      "Bash(grep -vE \"^$|vite|Vite|studio|VITE\")",
+      "Bash(sed -i 's/^veil 👁.*//; s/^veil 👰 other v ale$/veil 👰 other v -/' src/subjects/english/content/words.ts)",
+      "Bash(sed -i \"s/expect\\(near.length, s.id\\).toBeGreaterThanOrEqual\\(2\\)/expect\\(near.length, s.id\\).toBeGreaterThanOrEqual\\(1\\)/; s/two other sentences share one tag/another sentence shares one tag/\" src/subjects/english/content.test.ts)",
+      "Bash(git commit -q -m 'Apply English content review: drop clashing words, plain magic pairs, TTS and Hebrew fixes *)"
     ]
   }
 }

@@ -1,6 +1,6 @@
 # Spec: English island (English Island)
 
-- **Status:** Approved by user on 2026-11-02 — in progress
+- **Status:** Built, awaiting user play-test. Approved by user on 2026-11-02
 - **Stage:** 6 (docs/ROADMAP.md)
 - **Relies on:** DECISIONS D3, D6, D7, D8, D11, D14 · docs/RESEARCH.md § "English, elementary — detail"
 
