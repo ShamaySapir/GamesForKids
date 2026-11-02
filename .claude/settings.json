@@ -22,7 +22,8 @@
       "Bash(../venv/bin/python -I -c \"import openpyxl;print\\(4\\)\")",
       "Bash(awk -F: '$1>0')",
       "Bash(../venv/bin/python -I -c ' *)",
-      "Bash(git commit -q -m 'Add English spec, per-language speech and LTR English text \\(Stage 6, T0\\) *)"
+      "Bash(git commit -q -m 'Add English spec, per-language speech and LTR English text \\(Stage 6, T0\\) *)",
+      "Bash(git commit -q -m 'Rename a test helper to what it does *)"
     ]
   }
 }
