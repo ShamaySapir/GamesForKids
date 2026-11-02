@@ -36,10 +36,10 @@ export interface ObjectGroup {
  */
 export type PickOption =
   | { id: string; kind: 'picture'; emoji: string; say: PhraseRef }
-  | { id: string; kind: 'letter'; label: string }
+  | { id: string; kind: 'letter'; label: string; lang?: 'en' }
   | { id: string; kind: 'sound'; label?: string; say: string }
   /** Readable text with nikud (a unit, word or short phrase); optional 🔊 reads it. */
-  | { id: string; kind: 'text'; label: string; say?: PhraseRef }
+  | { id: string; kind: 'text'; label: string; say?: PhraseRef; lang?: 'en' }
   /** A number or a short exercise/sign shown in digits, left-to-right ('7', '<', '3 + 4'). */
   | { id: string; kind: 'number'; label: string; say?: PhraseRef }
   /** A group of objects to compare or count. */
@@ -48,6 +48,8 @@ export type PickOption =
   | { id: string; kind: 'art'; art: ArtRef; say?: PhraseRef }
 
 export interface PickPrompt {
+  /** 'en': the letter, word and sentence are English — shown left to right in the English reading font. */
+  lang?: 'en'
   /** Big picture (emoji). */
   picture?: string
   /** Big single letter. */

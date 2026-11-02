@@ -25,6 +25,9 @@ interface Drag { id: string; sx: number; sy: number; dx: number; dy: number; mov
 
 export function OrderGame({ question, onAttempt }: GameProps<OrderQ>) {
   const { tiles, answer, layout } = question
+  // English words are built left to right in the English font; Hebrew right to left.
+  const dir = question.direction ?? 'rtl'
+  const textCls = dir === 'ltr' ? 'en-text' : 'he-text'
   const [placed, setPlaced] = useState<string[]>([])
   const [shake, setShake] = useState<string | null>(null)
   const [drag, setDrag] = useState<Drag | null>(null)
@@ -92,7 +95,7 @@ export function OrderGame({ question, onAttempt }: GameProps<OrderQ>) {
     return (
       <div key={i} ref={el => { slots.current[i] = el }} className={`rb-slot${cls}${done ? ' ok' : ''}`}>
         {layout === 'sentences' && <span className="rb-num" aria-hidden="true">{i + 1}</span>}
-        {tile && <span className={`he-text ${layout === 'units' ? 'rb-unit' : 'rb-line'}`} dir="rtl">{tile.text}</span>}
+        {tile && <span className={`${textCls} ${layout === 'units' ? 'rb-unit' : 'rb-line'}`} dir={dir}>{tile.text}</span>}
       </div>
     )
   }
@@ -101,9 +104,9 @@ export function OrderGame({ question, onAttempt }: GameProps<OrderQ>) {
     <div className="rb-stage">
       <p className="rb-q">{phrases[question.instruction]}</p>
       {question.picture && <div className="rb-picture" aria-hidden="true">{question.picture}</div>}
-      <div className={`rb-slots rb-slots-${layout}`}>{answer.map((_, i) => slotView(i))}</div>
+      <div className={`rb-slots rb-slots-${layout}`} dir={dir}>{answer.map((_, i) => slotView(i))}</div>
       {done && layout === 'units' && (
-        <div className="he-text rb-assembled" dir="rtl">{placed.map(id => byId.get(id)?.text).join('')}</div>
+        <div className={`${textCls} rb-assembled`} dir={dir}>{placed.map(id => byId.get(id)?.text).join('')}</div>
       )}
       <div className={`rb-tray rb-tray-${layout}`}>
         {loose.map(t => {
@@ -114,7 +117,7 @@ export function OrderGame({ question, onAttempt }: GameProps<OrderQ>) {
               <button type="button" className={`opt rb-tile${shake === t.id ? ' bad' : ''}`}
                 onClick={() => click(t)} onPointerDown={e => onDown(e, t)} onPointerMove={onMove}
                 onPointerUp={e => onUp(e, t)} onPointerCancel={() => setDrag(null)}>
-                <span className={`he-text ${layout === 'units' ? 'rb-unit' : 'rb-line'}`} dir="rtl">{t.text}</span>
+                <span className={`${textCls} ${layout === 'units' ? 'rb-unit' : 'rb-line'}`} dir={dir}>{t.text}</span>
               </button>
               <SayButton id={t.say} />
             </div>

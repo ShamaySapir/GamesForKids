@@ -56,3 +56,8 @@ Why: the thinking games need controlled variations (mirrored, recolored, a missi
 that emoji cannot give, and other islands may reuse the drawings.
 
 **D16 · 2026-11-02 · user** — A pre-kindergarten level (`Grade -1`, טרום חובה, age 4) is added, starting with the thinking island.
+
+**D17 · 2026-11-02 · user** — English is spoken by the browser's en-US voice, not recorded (phrases declared as
+`englishPhrases`; `say()` switches voice per part). Isolated English sounds and blends may optionally be recorded in the studio.
+English text is shown left to right in Andika (school-print a/g). Instructions on the English island stay in Hebrew.
+Why: native-quality English TTS exists on every device and saves ~250 recordings; Hebrew instructions match the other islands.

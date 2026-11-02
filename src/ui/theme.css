@@ -110,6 +110,10 @@ h1 { font-size: 34px; margin: 4px 0; }
 /* Hebrew with nikud for young readers: large and widely spaced (curriculum digital guidance). */
 .he-text { font-size: 44px; font-weight: 600; letter-spacing: .06em; line-height: 1.6; }
 .he-letter { font-size: 104px; font-weight: 700; line-height: 1.1; }
+/* English for young readers: Andika has school-print single-storey a and g (DECISIONS D17). */
+.en-text, .en-letter { font-family: 'Andika', 'Rubik Variable', sans-serif; direction: ltr; unicode-bidi: isolate; }
+.en-text { font-size: 44px; font-weight: 700; letter-spacing: .04em; line-height: 1.5; }
+.en-letter { font-size: 104px; font-weight: 700; line-height: 1.1; }
 .digi { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
 .fb { min-height: 32px; font-weight: 600; font-size: 22px; margin-top: 14px; text-align: center; }
 

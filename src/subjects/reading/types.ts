@@ -83,6 +83,8 @@ export interface OrderQ extends Question<readonly string[]> {
   picture?: string
   /** 'units' builds a word in one line; 'sentences' stacks lines top to bottom. */
   layout: 'units' | 'sentences'
+  /** 'ltr' for English: slots fill left to right, text in the English font (default: Hebrew, right to left). */
+  direction?: 'ltr'
   tiles: Tile[]
 }
 

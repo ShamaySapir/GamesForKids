@@ -82,7 +82,8 @@ drawings** suited to the age (SVG illustrations; emoji only where unambiguous). 
 Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
 percent and ratio, area / perimeter / volume, word problems.
 
-## Stage 6 – English (mainly 3rd grade and up) ⬜
+## Stage 6 – English (mainly 3rd grade and up) ✅ built
+Spec approved 2026-11-02: `docs/specs/english.md`. T0 ✅ · T1 content ✅ (full review, 52 findings) · T2 ✅ · T3 wiring + E2E + screenshots ✅ · user play-test ⏳.
 Pre-Foundation: listening, ABC, phonics, CVC words; then vocabulary from the ministry's Lexical Bands list.
 
 ## Stage 7 – Parents' page ⬜
