@@ -41,6 +41,9 @@ Spec approved 2026-10-29: `docs/specs/hebrew-letters.md`. T0 ✅ · T1 content �
 Letter ↔ picture, opening/closing sound, rhyme and syllables, final letters, same-sound letters,
 dagesh pairs, letter tracing with hand-authored SVG stroke paths.
 
+## Stage 2b – Letter tracing ⬜
+Print letters first (D13); cursive later. Needs hand-authored stroke paths for 27 forms (no official chart exists).
+
 ## Stage 3 – Hebrew: nikud and reading (1st – 2nd grade) ✅ built
 Spec approved 2026-10-29: `docs/specs/reading.md`. T0 ✅ · T1 content ✅ (full Hebrew review, 25 findings fixed) · T2 ✅ · T3 ✅ · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
 
@@ -49,11 +52,33 @@ with pictures, dictation by dragging letters.
 **Read-along books:** a book is split into pages; each page is recorded in the studio (page-level recording
 mode) and words are highlighted while the page is read. Needs a long-recording mode and word timings in the studio.
 
-## Stage 4 – Math: kindergarten – 2nd grade ⬜
-Counting and comparing, number line, add/subtract to 10 → 20 → 100, place value, ten-frames, ½ and ¼, length.
+## Stage 4 – Math: kindergarten – 1st grade ✅ built
+Spec approved 2026-11-01 for skills 1–10: `docs/specs/math-k2.md`. T0 ✅ · T1 content ✅ · T2 ✅ · T3a ✅ · T3b ✅ (four in parallel) · T4 wiring + E2E + screenshots ✅ · user play-test ⏳ · recordings ⏳.
+
+## Stage 4b – Math: 2nd grade ⬜
+Place value to 1,000, within 100, odd/even, ×/÷ with tables 2/4/5/10 (skills 11–14 in `docs/specs/math-k2.md`).
+
+## Stage 4c – Thinking island (ages 4–6) ⬜ approved by the user, spec after Stage 4
+Started from the user's son's workbook for ages 4–5. Each idea needs **at least 5–6 examples**, with **original
+drawings** suited to the age (SVG illustrations; emoji only where unambiguous). Opens a pre-gan-chova level (age 4).
+
+| Idea | What the child does |
+|---|---|
+| Odd one out | Find the one that differs — by direction (a figure facing the other way), color, size, shape or kind |
+| Symmetry | Match the two halves of a drawing; complete the missing half |
+| Patterns | What comes next: AB, AAB, ABC, then growing patterns (●, ●●, ●●●) |
+| Identical twin | Find the picture exactly like the sample among very similar ones |
+| Spot the difference | Two drawings, find 3–5 differences |
+| Shadows | Match an object to its silhouette |
+| Sequencing in pictures | Order 3–4 pictures of a process (seed → sprout → flower) |
+| Sorting into groups | Fruits / vehicles / animals; then by a rule (color, size) |
+| Where is it? | Spatial words: on, under, inside, next to, between (עַל, מִתַּחַת, בְּתוֹךְ, לְיַד, בֵּין) |
+| Paths and mazes | Lead a character through a simple maze |
+| Memory pairs | Classic turn-two-cards memory game |
+| What's missing? | A familiar drawing with a part missing (a chair with three legs) |
 
 ## Stage 5 – Math: 3rd – 6th grade ⬜
-Multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
+Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
 percent and ratio, area / perimeter / volume, word problems.
 
 ## Stage 6 – English (mainly 3rd grade and up) ⬜

@@ -2,7 +2,8 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { say } from '../../core/audio/audio'
-import { ClapGame, PickGame, SortGame } from './games'
+import { PickGame } from '../../ui/pick/PickGame'
+import { ClapGame, SortGame } from './games'
 import type { ClapQ, PickQ, SortQ } from './types'
 
 vi.mock('../../core/audio/audio', () => ({
@@ -58,12 +59,12 @@ describe('PickGame', () => {
     vi.useFakeTimers()
     const onAttempt = vi.fn()
     const { container } = render(<PickGame question={pickQ} aid={false} onAttempt={onAttempt} />)
-    const speakers = container.querySelectorAll('.hb-say')
+    const speakers = container.querySelectorAll('.pk-say')
     expect(speakers).toHaveLength(3)
-    fireEvent.click(nth(container, '.hb-say', 2))
+    fireEvent.click(nth(container, '.pk-say', 2))
     expect(say).toHaveBeenLastCalledWith('hebrew.sound.m')
 
-    const wrap = nth(container, '.hb-opt-wrap', 0)
+    const wrap = nth(container, '.pk-opt-wrap', 0)
     fireEvent.pointerEnter(wrap, { pointerType: 'mouse' })
     act(() => { vi.advanceTimersByTime(300) })
     expect(say).toHaveBeenCalledTimes(1)
@@ -75,7 +76,7 @@ describe('PickGame', () => {
   it('does not hover-play when the pointer leaves early', () => {
     vi.useFakeTimers()
     const { container } = render(<PickGame question={pickQ} aid={false} onAttempt={vi.fn()} />)
-    const wrap = nth(container, '.hb-opt-wrap', 0)
+    const wrap = nth(container, '.pk-opt-wrap', 0)
     fireEvent.pointerEnter(wrap, { pointerType: 'mouse' })
     act(() => { vi.advanceTimersByTime(200) })
     fireEvent.pointerLeave(wrap)
@@ -90,19 +91,19 @@ describe('PickGame', () => {
       options: [{ id: 'a', kind: 'letter', label: 'ב' }, { id: 'b', kind: 'letter', label: 'כ' }],
     }
     const { container } = render(<PickGame question={q} aid={false} onAttempt={vi.fn()} />)
-    const word = container.querySelector('.hb-word')
-    expect(word?.firstElementChild).toHaveClass('hb-blank')
-    expect(container.querySelectorAll('.hb-say')).toHaveLength(0)
+    const word = container.querySelector('.pk-word')
+    expect(word?.firstElementChild).toHaveClass('pk-blank')
+    expect(container.querySelectorAll('.pk-say')).toHaveLength(0)
   })
 
   it('speaks the hint once when the aid turns on', () => {
     const q: PickQ = { ...pickQ, hint: 'hebrew.hint' }
     const { rerender, container } = render(<PickGame question={q} aid={false} onAttempt={vi.fn()} />)
-    expect(container.querySelector('.hb-hint')).toBeNull()
+    expect(container.querySelector('.pk-hint')).toBeNull()
     expect(say).not.toHaveBeenCalled()
     rerender(<PickGame question={q} aid onAttempt={vi.fn()} />)
     expect(say).toHaveBeenCalledExactlyOnceWith('hebrew.hint')
-    expect(container.querySelector('.hb-hint')).not.toBeNull()
+    expect(container.querySelector('.pk-hint')).not.toBeNull()
   })
 })
 
@@ -171,7 +172,7 @@ describe('ClapGame', () => {
     expect(container.querySelectorAll('.hb-syl')).toHaveLength(0)
     rerender(<ClapGame question={clapQ} aid onAttempt={vi.fn()} />)
     expect(container.querySelectorAll('.hb-syl')).toHaveLength(2)
-    await userEvent.click(container.querySelector('.hb-say-wide') as HTMLElement)
+    await userEvent.click(container.querySelector('.pk-say-wide') as HTMLElement)
     expect(say).toHaveBeenLastCalledWith('hebrew.syl.kadur')
   })
 })
@@ -222,7 +223,7 @@ describe('SortGame', () => {
 
   it('plays the card sound without selecting or placing it', async () => {
     const { container } = render(<SortGame question={sortQ} aid={false} onAttempt={vi.fn()} />)
-    await userEvent.click(nth(container, '.hb-say', 1))
+    await userEvent.click(nth(container, '.pk-say', 1))
     expect(say).toHaveBeenLastCalledWith('hebrew.word.pil')
     expect(container.querySelector('.hb-card.sel')).toBeNull()
   })

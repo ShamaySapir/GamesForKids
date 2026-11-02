@@ -44,37 +44,8 @@ export interface Word {
 
 /* ---------- questions (T2 produces them, T3 renders them) ---------- */
 
-/**
- * What a pick option shows. A 'sound' option answers on click and has a separate 🔊 that plays `say`; it shows
- * `label` (a letter), or without a label the text of its single `say` phrase (e.g. a letter's name, "בֵּית").
- */
-export type PickOption =
-  | { id: string; kind: 'picture'; emoji: string; say: PhraseRef }
-  | { id: string; kind: 'letter'; label: string }
-  | { id: string; kind: 'sound'; label?: string; say: string }
-  /** Readable text with nikud (a unit, word or short phrase); optional 🔊 reads it. Used by the reading island. */
-  | { id: string; kind: 'text'; label: string; say?: PhraseRef }
-
-export interface PickPrompt {
-  /** Big picture (emoji). */
-  picture?: string
-  /** Big single letter. */
-  letter?: string
-  /** Word with nikud; `blank` marks the missing letter position ('start' | 'end'). */
-  word?: { text: string; blank?: 'start' | 'end' }
-  /** A sentence with nikud for the child to read; '___' marks a gap. 🔊 reads it only when `say` is given. */
-  sentence?: { text: string; say?: PhraseRef }
-}
-
-/** Answer is the correct option's id. */
-export interface PickQ extends Question<string> {
-  /** Child-facing instruction phrase ID, shown as text. */
-  instruction: string
-  prompt: PickPrompt
-  options: PickOption[]
-  /** Spoken again when the adaptive aid turns on. */
-  hint?: PhraseRef
-}
+// Pick questions are shared by all islands (DECISIONS D14).
+export type { PickOption, PickPrompt, PickQ } from '../../ui/pick/types'
 
 /** Answer is the syllable count. */
 export interface ClapQ extends Question<number> {

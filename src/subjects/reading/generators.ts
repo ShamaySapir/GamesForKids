@@ -1,7 +1,8 @@
 import { pick, shuffle, type Rng } from '../../core/engine/random'
 import type { GenContext } from '../../core/engine/types'
 import { wordPhrase } from '../hebrew/ids'
-import type { Letter, PickOption, PickQ, Word } from '../hebrew/types'
+import type { PickOption, PickQ } from '../../ui/pick/types'
+import type { Letter, Word } from '../hebrew/types'
 import { R, clozePhrase, sentencePhrase, storyPhrase, unitPhrase } from './ids'
 import type { Book, BookQ, Cloze, OrderQ, Sentence, Story, Tile, Unit, Vowel } from './types'
 
