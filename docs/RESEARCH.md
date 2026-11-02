@@ -114,6 +114,27 @@ Sources as above, plus **[F]** ministry reading-fluency test for grades 2–6 (2
   books with prominent words in the signs already learned ([G] p.29). Digital: simple closed interface, large font,
   wide spacing; narration with word highlighting and adjustable speed are named as useful; extras only when tied to the plot ([C] p.157–160).
 
+### English, elementary — detail (read 2026-11-02)
+
+Sources: Curriculum 2020 (Table 4 p.19, Table 5 p.20, outcomes pp.23–36), Pre-Foundation guide (2009, pp.6–15) and Pre-A1
+can-dos (2019), Building Blocks overview (pp.2–4), Lexical Bands (Excel, 2020), Grammar Band I.
+
+- **Levels:** Pre-A1 (Pre-Band I) = grade 3 / early grade 4; A1 Band I Core I = grade 4 → mid 5; Core II = mid 5 → end 6.
+  Grades 1–2: no requirement (optional exposure only).
+- **First a listening/speaking period** (about a year before grade 4) before reading. Pre-A1 outcomes: recognise taught words and
+  chunks by ear, match words to pictures, know letters upper + lower case, read left to right; trace/copy letters and words.
+- **Literacy order:** oral language → phonological awareness (syllables, rhyme, first/middle/last sound, blend/segment) →
+  alphabetics (letter names, sounds and shapes together, upper and lower case together; single-letter sounds before digraphs) →
+  decoding (closed and open syllables first, ≈ 53% of beginners' words; then silent-e, digraphs, vowel teams, word families,
+  -s/-ed/-ing) → fluency. Read only words whose correspondences were taught.
+- **Vocabulary:** Pre-A1 ≈ 200 receptive/productive (chunks like "What's your name?", basic nouns, verbs, function words);
+  A1 cumulative ≈ 1,400 receptive / 1,200 productive. **The Lexical Bands file is "All rights reserved" — do not ship it;**
+  write our own list of common words (common English words themselves are not protected).
+- **Item formats:** pick the picture for a spoken word; same/different first sound; rhyme; blend onset + rime (/t/ + an → tan);
+  letter by name / by sound; match word to picture; complete a frame sentence; sequence story pictures; trace and copy.
+- **Hebrew-speaker difficulties:** /b/–/p/, /v/–/w/, /iː/–/ɪ/ (feel/fill) — use minimal pairs; left-to-right reading; letter
+  direction. Instructions may be in Hebrew; sounds stay English.
+
 ### English (Curriculum 2020, elementary)
 
 - Mandatory from 3rd grade. Pre-A1 (Pre-Foundation) in 3rd and early 4th: listening and speaking first,

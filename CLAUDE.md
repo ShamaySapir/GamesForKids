@@ -41,11 +41,11 @@ computer-first with touch support.
 | Shared pick UI | ✅ | `src/ui/pick/` — `PickGame`, `SayButton`, `Objects`, `PickQ` (D14) |
 | Numbers island (K–2) | ✅ built, ⏳ awaiting user play-test | 17 skills (K–1: `docs/specs/math-k2.md`, grade 2: `docs/specs/math-grade2.md`), 9 game components; numbers spoken 0–1,000; ~185 phrases to record |
 | Thinking island | ✅ built, ⏳ awaiting user play-test | 12 skills, 53 original SVG drawings (`art/`), 4 new games; pre-kindergarten level (Grade −1); ~190 phrases to record |
-| English island | ⬜ placeholder | | `comingSoon` stubs in `src/subjects/*/index.ts` |
+| English island | 🟡 building | T0 done: English speech via browser voice (D17), Andika font, contract | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
-| Git | ✅ | Stages 0–4c merged to `main` (PR #1–#5). Current work: `stage4b/math-grade2` |
+| Git | ✅ | Stages 0–4b merged to `main` (PR #1–#6). Current work: `stage6/english` |
 
-Current stage: **Stage 4b built** (math, 2nd grade); Stages 1–3 await the user's play-test and recordings.
+Current stage: **Stage 6** (English) building — spec `docs/specs/english.md`; Stages 1–3 await the user's play-test and recordings.
 
 ## Next steps
 

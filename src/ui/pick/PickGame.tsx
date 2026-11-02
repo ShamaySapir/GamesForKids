@@ -13,12 +13,15 @@ const HOVER_SAY_MS = 400
 
 function PromptView({ prompt }: { prompt: PickPrompt }) {
   const { picture, letter, word, sentence, objects, expr, art } = prompt
+  const en = prompt.lang === 'en'
+  const textCls = en ? 'en-text' : 'he-text'
+  const dir = en ? 'ltr' : 'rtl'
   return (
     <div className="pk-prompt">
       {picture && <div className="pk-picture" aria-hidden="true">{picture}</div>}
-      {letter && <div className="he-letter pk-big-letter">{letter}</div>}
+      {letter && <div className={`${en ? 'en-letter' : 'he-letter'} pk-big-letter`} dir={dir}>{letter}</div>}
       {word && (
-        <div className="he-text pk-word" dir="rtl">
+        <div className={`${textCls} pk-word`} dir={dir}>
           {word.blank === 'start' && <span className="pk-blank" aria-label="_">_</span>}
           <span>{word.text}</span>
           {word.blank === 'end' && <span className="pk-blank" aria-label="_">_</span>}
@@ -26,7 +29,7 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
       )}
       {sentence && (
         <div className="pk-word-row">
-          <p className="he-text pk-sentence" dir="rtl">{sentence.text}</p>
+          <p className={`${textCls} pk-sentence`} dir={dir}>{sentence.text}</p>
           {sentence.say && <SayButton id={sentence.say} />}
         </div>
       )}
@@ -56,11 +59,13 @@ function optionFace(o: PickOption) {
     case 'sound': return o.label === undefined
       ? <span className="he-text pk-opt-name">{phrases[o.say]}</span>
       : <span className="he-letter pk-opt-letter">{o.label}</span>
-    case 'text': return <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>
+    case 'text': return o.lang === 'en'
+      ? <span className="en-text pk-opt-name" dir="ltr">{o.label}</span>
+      : <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>
     case 'number': return <span className="pk-opt-number digi" dir="ltr">{o.label}</span>
     case 'objects': return <Objects group={o.group} size={30} />
     case 'art': return <ArtView art={o.art} size={96} />
-    case 'letter': return <span className="he-letter pk-opt-letter">{o.label}</span>
+    case 'letter': return <span className={`${o.lang === 'en' ? 'en-letter' : 'he-letter'} pk-opt-letter`} dir={o.lang === 'en' ? 'ltr' : undefined}>{o.label}</span>
   }
 }
 

@@ -19,13 +19,26 @@ export const recordings: ReadonlyMap<string, string> = new Map(
   Object.entries(recordingFiles).map(([path, url]) => [path.replace(/^.*\/([^/]+)\.\w+$/, '$1'), url + devBust]),
 )
 
-/** Every phrase declared in the app, by ID. */
-export const phrases: PhraseMap = Object.assign({}, ...Object.values(phraseFiles))
+// English phrases are declared separately (`englishPhrases`) and always spoken by an en-US voice (DECISIONS D17).
+const englishFiles = import.meta.glob('/src/subjects/*/phrases.ts', { eager: true, import: 'englishPhrases' }) as Record<string, PhraseMap | undefined>
+const english: PhraseMap = Object.assign({}, ...Object.values(englishFiles).filter(Boolean))
+
+/** Every phrase declared in the app, by ID (Hebrew and English). */
+export const phrases: PhraseMap = Object.assign({}, ...Object.values(phraseFiles), english)
+
+/** Phrases spoken in English. They are never recorded (the browser voice is used), so the studio leaves them out. */
+export const englishIds: ReadonlySet<string> = new Set(Object.keys(english))
+
+type Lang = 'he-IL' | 'en-US'
+const langOf = (id: string): Lang => (englishIds.has(id) || id.startsWith('raw-en:') ? 'en-US' : 'he-IL')
+
+/** Text-only English phrase for runtime content that has no ID (e.g. a word built from tiles). */
+export const rawEn = (text: string) => `raw-en:${text}`
 
 /** Text-only phrase for runtime content that has no ID (e.g. a child's name). */
 export const raw = (text: string) => `raw:${text}`
 
-const textOf = (id: string) => (id.startsWith('raw:') ? id.slice(4) : (phrases[id] ?? id))
+const textOf = (id: string) => (id.startsWith('raw:') ? id.slice(4) : id.startsWith('raw-en:') ? id.slice(7) : (phrases[id] ?? id))
 
 let current: HTMLAudioElement | null = null
 let token = 0
@@ -37,19 +50,22 @@ export function stop() {
   try { speechSynthesis.cancel() } catch { /* no speech support */ }
 }
 
-function hebrewVoice(): SpeechSynthesisVoice | undefined {
-  try { return speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith('he')) } catch { return undefined }
+function voiceFor(lang: Lang): SpeechSynthesisVoice | undefined {
+  const prefix = lang.slice(0, 2)
+  try { return speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith(prefix)) } catch { return undefined }
 }
+const hebrewVoice = () => voiceFor('he-IL')
 
 export const hasHebrewVoice = () => !!hebrewVoice()
 
-function speakText(text: string): Promise<void> {
+function speakText(text: string, lang: Lang = 'he-IL'): Promise<void> {
   return new Promise(resolve => {
     try {
       const u = new SpeechSynthesisUtterance(text)
-      u.lang = 'he-IL'
-      u.rate = 0.9
-      const voice = hebrewVoice()
+      u.lang = lang
+      // English for learners is read a little slower than Hebrew instructions.
+      u.rate = lang === 'en-US' ? 0.8 : 0.9
+      const voice = voiceFor(lang)
       if (voice) u.voice = voice
       u.onend = u.onerror = () => resolve()
       speechSynthesis.speak(u)
@@ -71,10 +87,11 @@ export async function say(ref: PhraseRef): Promise<void> {
   stop()
   const mine = token
   const ids = typeof ref === 'string' ? [ref] : ref
-  // Consecutive unrecorded parts are read as one utterance so TTS keeps natural intonation.
+  // Consecutive unrecorded parts in the same language are read as one utterance so TTS keeps natural intonation.
   let pending: string[] = []
+  let pendingLang: Lang = 'he-IL'
   const flush = async () => {
-    if (pending.length) await speakText(pending.join(' '))
+    if (pending.length) await speakText(pending.join(' '), pendingLang)
     pending = []
   }
   for (const id of ids) {
@@ -84,7 +101,11 @@ export async function say(ref: PhraseRef): Promise<void> {
       await flush()
       if (mine !== token) return
       await playUrl(url)
-    } else pending.push(textOf(id))
+    } else {
+      const lang = langOf(id)
+      if (lang !== pendingLang) { await flush(); if (mine !== token) return; pendingLang = lang }
+      pending.push(textOf(id))
+    }
   }
   if (mine === token) await flush()
 }

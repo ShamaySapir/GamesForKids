@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { wordAt, wordAtChar, wordStarts } from './audio'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { raw, rawEn, say, wordAt, wordAtChar, wordStarts } from './audio'
 
 describe('narration timing', () => {
   it('weights words by letter count, ignoring nikud', () => {
@@ -23,5 +23,25 @@ describe('narration timing', () => {
     expect(wordAtChar(text, 0)).toBe(0)
     expect(wordAtChar(text, text.indexOf('יָשֵׁן'))).toBe(1)
     expect(wordAtChar(text, text.indexOf('הַכִּסֵּא'))).toBe(3)
+  })
+})
+
+describe('say with mixed languages', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('switches voice per part: Hebrew, English, Hebrew', async () => {
+    const spoken: { text: string; lang: string }[] = []
+    class Utterance { lang = ''; rate = 1; voice = null; onend: (() => void) | null = null; onerror = null; constructor(public text: string) {} }
+    vi.stubGlobal('SpeechSynthesisUtterance', Utterance)
+    vi.stubGlobal('speechSynthesis', {
+      cancel: () => {}, getVoices: () => [],
+      speak: (u: Utterance) => { spoken.push({ text: u.text, lang: u.lang }); u.onend?.() },
+    })
+    await say([raw('אֵיפֹה'), raw('הַ'), rawEn('cat'), raw('?')])
+    expect(spoken).toEqual([
+      { text: 'אֵיפֹה הַ', lang: 'he-IL' },
+      { text: 'cat', lang: 'en-US' },
+      { text: '?', lang: 'he-IL' },
+    ])
   })
 })

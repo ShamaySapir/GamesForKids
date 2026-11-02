@@ -15,7 +15,14 @@
       "Bash(awk '{print $NF}')",
       "Bash(node /private/tmp/claude-501/-Users-sapirs-Projects-GamesForKids/9f3c599d-3198-4eb9-814d-460f8d863426/scratchpad/shots.mjs)",
       "Bash(git commit -q -m 'Add grade 2 math generators for skills 11-17 with tests \\(Stage 4b, T2\\) *)",
-      "Bash(git commit -q -m 'Add place-value, hundred-chart and share games \\(Stage 4b, T3\\) *)"
+      "Bash(git commit -q -m 'Add place-value, hundred-chart and share games \\(Stage 4b, T3\\) *)",
+      "Bash(../venv/bin/python -I -c \"import pypdf;print\\(1\\)\")",
+      "Bash(../venv/bin/python -I -c \"import fitz;print\\(2\\)\")",
+      "Bash(../venv/bin/python -I -c \"import pdfplumber;print\\(3\\)\")",
+      "Bash(../venv/bin/python -I -c \"import openpyxl;print\\(4\\)\")",
+      "Bash(awk -F: '$1>0')",
+      "Bash(../venv/bin/python -I -c ' *)",
+      "Bash(git commit -q -m 'Add English spec, per-language speech and LTR English text \\(Stage 6, T0\\) *)"
     ]
   }
 }

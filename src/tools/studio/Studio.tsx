@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { hasHebrewVoice, phrases, recordings, say } from '../../core/audio/audio'
+import { englishIds, hasHebrewVoice, phrases, recordings, say } from '../../core/audio/audio'
 import './studio.css'
 
 // Dev-only page for recording phrases (docs/DECISIONS.md D3, D10, D12); excluded from production builds.
@@ -8,11 +8,13 @@ import './studio.css'
 // replaces any earlier take; ✅ appears only after the server confirms the file was written.
 
 // Phrases TTS can't say reliably (isolated sounds, syllables, units) are listed first.
-const PRIORITY = [/\.sound\./, /\.cv\./, /\.unit\./, /\.syl\./]
+const PRIORITY = [/^hebrew\.sound\./, /\.cv\./, /\.unit\./, /\.syl\./, /^eng\.(sound|blend)\./]
 const rank = (id: string) => { const i = PRIORITY.findIndex(r => r.test(id)); return i < 0 ? PRIORITY.length : i }
 
 export default function Studio() {
-  const ids = useMemo(() => Object.keys(phrases).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
+  // English is spoken by the browser voice (D17), so only Hebrew phrases are listed — except isolated English sounds and
+  // blends, which a browser voice cannot say exactly and may optionally be recorded.
+  const ids = useMemo(() => Object.keys(phrases).filter(id => !englishIds.has(id) || /^eng\.(sound|blend)\./.test(id)).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
   const [filter, setFilter] = useState<'missing' | 'all'>('missing')
   const [recording, setRecording] = useState<string | null>(null)
   const [saving, setSaving] = useState<string | null>(null)
