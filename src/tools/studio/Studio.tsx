@@ -8,22 +8,28 @@ import './studio.css'
 // replaces any earlier take; ✅ appears only after the server confirms the file was written.
 
 // Phrases TTS can't say reliably (isolated sounds, syllables, units) are listed first.
-const PRIORITY = [/^hebrew\.sound\./, /\.cv\./, /\.unit\./, /\.syl\./, /^eng\.(sound|blend)\./]
+const PRIORITY = [/^hebrew\.sound\./, /\.cv\./, /\.unit\./, /\.syl\./]
 const rank = (id: string) => { const i = PRIORITY.findIndex(r => r.test(id)); return i < 0 ? PRIORITY.length : i }
 
+// Isolated English sounds and blends: a browser voice says them only roughly, so they may be recorded, but they sit in
+// their own optional tab, outside the Hebrew list and its count.
+const ENGLISH_SOUND = /^eng\.(sound|blend)\./
+
+/** What to say for an English sound or blend: the blend's target word, so the respelling ("kuh … app") isn't read aloud. */
+const engHint = (id: string) => (id.startsWith('eng.blend.') ? `→ ${phrases[`eng.w.${id.slice('eng.blend.'.length)}`] ?? ''}` : '')
+
 export default function Studio() {
-  // English is spoken by the browser voice (D17), so only Hebrew phrases are listed — except isolated English sounds and
-  // blends, which a browser voice cannot say exactly and may optionally be recorded.
+  // English is spoken by the browser voice (D17), so only Hebrew phrases are listed, plus the optional English sounds tab.
   // Phrases with the same text share one recording, so each text is listed once, under the ID that owns it.
-  const ids = useMemo(() => Object.keys(phrases)
-    .filter(id => (!englishIds.has(id) || /^eng\.(sound|blend)\./.test(id)) && recordingId(id) === id)
+  const all = useMemo(() => Object.keys(phrases)
+    .filter(id => (!englishIds.has(id) || ENGLISH_SOUND.test(id)) && recordingId(id) === id)
     .sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
   const uses = useMemo(() => {
     const n: Record<string, number> = {}
     for (const id of Object.keys(phrases)) n[recordingId(id)] = (n[recordingId(id)] ?? 0) + 1
     return n
   }, [])
-  const [filter, setFilter] = useState<'missing' | 'all'>('missing')
+  const [filter, setFilter] = useState<'missing' | 'all' | 'english'>('missing')
   const [recording, setRecording] = useState<string | null>(null)
   const [saving, setSaving] = useState<string | null>(null)
   const [error, setError] = useState('')
@@ -32,7 +38,8 @@ export default function Studio() {
   const rec = useRef<MediaRecorder | null>(null)
 
   const has = (id: string) => recordings.has(id) || !!fresh[id]
-  const shown = ids.filter(id => filter === 'all' || !has(id))
+  const ids = all.filter(id => !ENGLISH_SOUND.test(id))
+  const shown = filter === 'english' ? all.filter(id => ENGLISH_SOUND.test(id)) : ids.filter(id => filter === 'all' || !has(id))
   const done = ids.filter(has).length
 
   const save = async (id: string, blob: Blob) => {
@@ -93,7 +100,15 @@ export default function Studio() {
       <div className="studio-bar">
         <label><input type="radio" checked={filter === 'missing'} onChange={() => setFilter('missing')} /> Missing</label>
         <label><input type="radio" checked={filter === 'all'} onChange={() => setFilter('all')} /> All</label>
+        <label><input type="radio" checked={filter === 'english'} onChange={() => setFilter('english')} /> English sounds (optional)</label>
       </div>
+      {filter === 'english' && (
+        <p className="sub">
+          Optional: without a recording the browser voice says these. Say the sound itself, not the spelling:
+          "kuh" is a short /k/; a blend is only its two parts with a short pause (k … ap). Never say the word after
+          the arrow — the child has to find it.
+        </p>
+      )}
       {error && <p className="studio-err" role="alert">⚠️ {error}</p>}
       <table>
         <thead><tr><th>ID</th><th>Text</th><th>Status</th><th /></tr></thead>
@@ -101,8 +116,8 @@ export default function Studio() {
           {shown.map(id => (
             <tr key={id} className={recording === id ? 'rec' : undefined}>
               <td><code>{id}</code></td>
-              <td dir="rtl" className="studio-text">
-                {phrases[id]}{(uses[id] ?? 1) > 1 && <small title="Phrases that share this recording"> · ×{uses[id]}</small>}
+              <td dir={ENGLISH_SOUND.test(id) ? 'ltr' : 'rtl'} className="studio-text">
+                {phrases[id]} {engHint(id)}{(uses[id] ?? 1) > 1 && <small title="Phrases that share this recording"> · ×{uses[id]}</small>}
               </td>
               <td>{saving === id ? '⏳' : has(id) ? '✅' : '—'}</td>
               <td className="studio-actions">
