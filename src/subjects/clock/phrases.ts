@@ -30,7 +30,7 @@ export const phrases: PhraseMap = {
 
   'clock.q.read': 'מה השעה?',
   'clock.q.set': 'כוונו את השעון לשעה',
-  'clock.q.check': 'בדיקה',
+  'clock.q.check': 'בְּדִיקָה',
   'clock.q.hand.hour': 'לחצו על המחוג הקצר. הוא מראה את השעות.',
   'clock.q.hand.minute': 'לחצו על המחוג הארוך. הוא מראה את הדקות.',
   'clock.q.match': 'התאימו כל שעון לשעה שלו.',

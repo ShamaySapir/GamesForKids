@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { raw, rawEn, say, wordAt, wordAtChar, wordStarts } from './audio'
+import { raw, rawEn, say, sharedRecordingIds, wordAt, wordAtChar, wordStarts } from './audio'
 
 describe('narration timing', () => {
   it('weights words by letter count, ignoring nikud', () => {
@@ -43,5 +43,27 @@ describe('say with mixed languages', () => {
       { text: 'cat', lang: 'en-US' },
       { text: '?', lang: 'he-IL' },
     ])
+  })
+})
+
+describe('shared recordings', () => {
+  const map = { 'b.egg': 'בֵּיצָה', 'a.egg': 'בֵּיצָה', 'c.egg': 'בֵּיצָה', 'a.dog': 'כֶּלֶב', 'eng.w.egg': 'egg', 'eng.x': 'egg' }
+  const english = new Set(['eng.w.egg', 'eng.x'])
+
+  it('gives every phrase with the same Hebrew text the first ID, until one is recorded', () => {
+    const ids = sharedRecordingIds(map, new Set(), english)
+    expect(['a.egg', 'b.egg', 'c.egg'].map(id => ids.get(id))).toEqual(['a.egg', 'a.egg', 'a.egg'])
+    expect(ids.get('a.dog')).toBe('a.dog')
+  })
+
+  it('prefers a recorded ID, so an existing take is reused', () => {
+    const ids = sharedRecordingIds(map, new Set(['c.egg', 'b.egg']), english)
+    expect(['a.egg', 'b.egg', 'c.egg'].map(id => ids.get(id))).toEqual(['b.egg', 'b.egg', 'b.egg'])
+  })
+
+  it('never shares English phrases', () => {
+    const ids = sharedRecordingIds(map, new Set(), english)
+    expect(ids.get('eng.w.egg')).toBe('eng.w.egg')
+    expect(ids.get('eng.x')).toBe('eng.x')
   })
 })

@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { englishIds, hasHebrewVoice, phrases, recordings, say } from '../../core/audio/audio'
+import { englishIds, hasHebrewVoice, phrases, recordingId, recordings, say } from '../../core/audio/audio'
 import './studio.css'
 
 // Dev-only page for recording phrases (docs/DECISIONS.md D3, D10, D12); excluded from production builds.
@@ -14,7 +14,15 @@ const rank = (id: string) => { const i = PRIORITY.findIndex(r => r.test(id)); re
 export default function Studio() {
   // English is spoken by the browser voice (D17), so only Hebrew phrases are listed — except isolated English sounds and
   // blends, which a browser voice cannot say exactly and may optionally be recorded.
-  const ids = useMemo(() => Object.keys(phrases).filter(id => !englishIds.has(id) || /^eng\.(sound|blend)\./.test(id)).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
+  // Phrases with the same text share one recording, so each text is listed once, under the ID that owns it.
+  const ids = useMemo(() => Object.keys(phrases)
+    .filter(id => (!englishIds.has(id) || /^eng\.(sound|blend)\./.test(id)) && recordingId(id) === id)
+    .sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)), [])
+  const uses = useMemo(() => {
+    const n: Record<string, number> = {}
+    for (const id of Object.keys(phrases)) n[recordingId(id)] = (n[recordingId(id)] ?? 0) + 1
+    return n
+  }, [])
   const [filter, setFilter] = useState<'missing' | 'all'>('missing')
   const [recording, setRecording] = useState<string | null>(null)
   const [saving, setSaving] = useState<string | null>(null)
@@ -93,7 +101,9 @@ export default function Studio() {
           {shown.map(id => (
             <tr key={id} className={recording === id ? 'rec' : undefined}>
               <td><code>{id}</code></td>
-              <td dir="rtl" className="studio-text">{phrases[id]}</td>
+              <td dir="rtl" className="studio-text">
+                {phrases[id]}{(uses[id] ?? 1) > 1 && <small title="Phrases that share this recording"> · ×{uses[id]}</small>}
+              </td>
               <td>{saving === id ? '⏳' : has(id) ? '✅' : '—'}</td>
               <td className="studio-actions">
                 <button className="pill" onClick={() => toggle(id)} disabled={(!!recording && recording !== id) || !!saving}>

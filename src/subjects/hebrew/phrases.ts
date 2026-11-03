@@ -65,19 +65,19 @@ const INSTRUCTIONS: Record<keyof typeof Q, string> = {
   cv: 'איזו מילה מתחילה ב',
   sound: 'איזו מילה מתחילה בצליל',
   closing: 'באיזה צליל נגמרת המילה',
-  findLetter: 'איפה האות',
+  findLetter: 'אֵיפֹה הָאוֹת',
   nameLetter: 'איך קוראים לאות הזאת?',
   thisIs: 'זו האות',
   andSays: 'והיא אומרת',
   letterPicture: 'איזו תמונה מתחילה באות הזאת?',
-  firstLetter: 'באיזו אות מתחילה המילה',
+  firstLetter: 'בְּאֵיזוֹ אוֹת מַתְחִילָה הַמִּילָּה',
   finalOf: 'מה האות הסופית של',
   regularOf: 'של איזו אות זו האות הסופית?',
   lastLetter: 'איזו אות חסרה בסוף המילה',
   sameSound: 'איזו אות חסרה בתחילת המילה',
   sort: 'שימו כל תמונה בסל הנכון',
-  check: 'בדיקה',
-  reset: 'מהתחלה',
+  check: 'בְּדִיקָה',
+  reset: 'מֵהַתְחָלָה',
 }
 
 const blocks: Record<string, string> = {}

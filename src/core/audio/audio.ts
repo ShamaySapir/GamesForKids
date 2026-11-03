@@ -1,7 +1,7 @@
 import type { PhraseMap, PhraseRef } from '../engine/types'
 
 // All playback goes through this module (docs/DECISIONS.md D3).
-// A recording at src/audio/he/<phraseId>.<ext> wins; otherwise Web Speech reads the phrase text.
+// A recording at src/audio/he/<phraseId>.<ext> wins (shared by phrases with the same text); otherwise Web Speech reads it.
 
 const recordingFiles = import.meta.glob('/src/audio/he/*.{mp3,m4a,ogg,webm,wav}', {
   eager: true, query: '?url', import: 'default',
@@ -29,6 +29,27 @@ export const phrases: PhraseMap = Object.assign({}, ...Object.values(phraseFiles
 
 /** Phrases spoken in English. They are never recorded (the browser voice is used), so the studio leaves them out. */
 export const englishIds: ReadonlySet<string> = new Set(Object.keys(english))
+
+/**
+ * Hebrew phrases with the same text share one recording, so a word used by several islands ("בֵּיצָה") is recorded once.
+ * Each phrase maps to its text's recorded ID: the first recorded ID in sort order, else the first ID.
+ */
+export function sharedRecordingIds(map: PhraseMap, recorded: ReadonlySet<string>, english: ReadonlySet<string>): ReadonlyMap<string, string> {
+  const owner = new Map<string, string>()
+  for (const id of Object.keys(map).sort()) {
+    if (english.has(id)) continue
+    const cur = owner.get(map[id]!)
+    if (cur === undefined || (!recorded.has(cur) && recorded.has(id))) owner.set(map[id]!, id)
+  }
+  return new Map(Object.keys(map).map(id => [id, english.has(id) ? id : owner.get(map[id]!)!]))
+}
+
+const shared = sharedRecordingIds(phrases, new Set(recordings.keys()), englishIds)
+
+/** The phrase ID whose recording plays for `id` (itself, or the phrase with the same text that owns the recording). */
+export const recordingId = (id: string) => shared.get(id) ?? id
+
+const recordingOf = (id: string) => recordings.get(recordingId(id))
 
 type Lang = 'he-IL' | 'en-US'
 const langOf = (id: string): Lang => (englishIds.has(id) || id.startsWith('raw-en:') ? 'en-US' : 'he-IL')
@@ -97,7 +118,7 @@ export async function say(ref: PhraseRef): Promise<void> {
   }
   for (const id of ids) {
     if (mine !== token) return
-    const url = recordings.get(id)
+    const url = recordingOf(id)
     if (url) {
       await flush()
       if (mine !== token) return
@@ -150,7 +171,7 @@ export async function narrate(id: string, onWord: (index: number) => void, rate 
     if (mine === token && i !== last) onWord((last = i))
   }
   report(0)
-  const url = recordings.get(id)
+  const url = recordingOf(id)
   if (url) {
     const a = new Audio(url)
     a.playbackRate = rate
