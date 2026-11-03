@@ -5,6 +5,7 @@ math and English. Hebrew RTL UI, an owl guide, and a world map of subject island
 Runs fully in the browser with no server. Progress is saved locally on each device.
 
 - What exists today and the rules for contributing: [`CLAUDE.md`](CLAUDE.md)
+- How to build a feature, step by step: [`docs/FEATURE-GUIDE.md`](docs/FEATURE-GUIDE.md)
 - Work stages and status: [`docs/ROADMAP.md`](docs/ROADMAP.md)
 - Decisions and why they were made: [`docs/DECISIONS.md`](docs/DECISIONS.md)
 

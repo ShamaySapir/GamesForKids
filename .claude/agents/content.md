@@ -5,7 +5,7 @@ model: sonnet
 ---
 
 You prepare educational content for one island. Read `CLAUDE.md`, `docs/PLAYBOOK.md`, `docs/RESEARCH.md`
-and the island's spec first. Look at `src/subjects/clock/phrases.ts` and `content/day.ts` for the format.
+and the island's spec first; your phase is `docs/FEATURE-GUIDE.md` §4. Look at `src/subjects/clock/phrases.ts` and `content/day.ts` for the format.
 
 ## You own
 
