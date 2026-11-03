@@ -37,7 +37,8 @@
       "Bash(perl -CSD -i -pe \"s/'clock.q.check': 'בדיקה'/'clock.q.check': 'בְּדִיקָה'/\" src/subjects/clock/phrases.ts)",
       "Bash(perl -CSD -i -pe \"s/^const HOURS = \\(.*\\)\\\\$/const HOURS = \\\\$1\\\\n\\\\/\\\\/ With nikud, the same text as the math island's numbers, so each hour shares one recording with them.\\\\nconst HOUR_WORDS = ['אַחַת', 'שְׁתַּיִם', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע', 'עֶשֶׂר', 'אַחַת־עֶשְׂרֵה', 'שְׁתֵּים־עֶשְׂרֵה']/; s/blocks\\\\[\\\\`clock.h.\\\\\\\\$\\\\{i \\\\+ 1\\\\}\\\\`\\\\] = w/blocks[\\\\`clock.h.\\\\\\\\\\\\${i + 1}\\\\`] = HOUR_WORDS[i]!/\" src/subjects/clock/phrases.ts)",
       "Bash(perl -CSD -i -pe \"s/findLetter: 'איפה האות'/findLetter: 'אֵיפֹה הָאוֹת'/; s/firstLetter: 'באיזו אות מתחילה המילה'/firstLetter: 'בְּאֵיזוֹ אוֹת מַתְחִילָה הַמִּילָּה'/; s/check: 'בדיקה'/check: 'בְּדִיקָה'/; s/reset: 'מהתחלה'/reset: 'מֵהַתְחָלָה'/\" src/subjects/hebrew/phrases.ts)",
-      "Bash(perl -CSD -i -pe \"s/text: 'פַּנָּס', emoji: '🔦', syllables: \\\\['פַּ', 'נָּס'\\\\], opening: 'פַּ'/text: 'פָּנָס', emoji: '🔦', syllables: ['פָּ', 'נָס'], opening: 'פָּ'/; s/text: 'אָגָס', emoji: '🍐', syllables: \\\\['אָ', 'גָס'\\\\], opening: 'אָ'/text: 'אַגָּס', emoji: '🍐', syllables: ['אַ', 'גָּס'], opening: 'אַ'/\" src/subjects/hebrew/content/words.ts)"
+      "Bash(perl -CSD -i -pe \"s/text: 'פַּנָּס', emoji: '🔦', syllables: \\\\['פַּ', 'נָּס'\\\\], opening: 'פַּ'/text: 'פָּנָס', emoji: '🔦', syllables: ['פָּ', 'נָס'], opening: 'פָּ'/; s/text: 'אָגָס', emoji: '🍐', syllables: \\\\['אָ', 'גָס'\\\\], opening: 'אָ'/text: 'אַגָּס', emoji: '🍐', syllables: ['אַ', 'גָּס'], opening: 'אַ'/\" src/subjects/hebrew/content/words.ts)",
+      "Bash(git commit -q -m 'Move English sounds and blends to an optional studio tab *)"
     ]
   }
 }
