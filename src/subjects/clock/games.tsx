@@ -70,7 +70,6 @@ export function SetGame({ question, aid, onAttempt }: GameProps<SetQ>) {
       <Clock time={time} onChange={done ? undefined : setTime} snap={question.level.snap}
         movable={question.hourOnly ? ['hour'] : ['hour', 'minute']}
         aid={aid} ghost={aid && misses > 0 && !done ? question.answer : undefined} size={320} label={timeText(time)} />
-      <p className="clock-hint">{phrases['clock.hint.set']}</p>
       <button className="cta" onClick={check} disabled={done}>✔ {phrases['clock.q.check']}</button>
     </div>
   )
