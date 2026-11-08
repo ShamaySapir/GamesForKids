@@ -31,7 +31,8 @@ const LETTER_NAMES: Record<string, string> = {
   'ף': 'פֵּא סוֹפִית',
   'צ': 'צָדִי',
   'ץ': 'צָדִי סוֹפִית',
-  'ק': 'קוֹף',
+  // Said "kuf" in Israeli schools; also keeps it apart from the animal קוֹף, which has its own recording.
+  'ק': 'קוּף',
   'ר': 'רֵישׁ',
   'ש': 'שִׁין',
   'ת': 'תָּיו',
