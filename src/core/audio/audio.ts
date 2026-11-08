@@ -1,4 +1,5 @@
 import type { PhraseMap, PhraseRef } from '../engine/types'
+import { phraseOfFile } from './filename'
 
 // All playback goes through this module (docs/DECISIONS.md D3).
 // A recording at src/audio/he/<phraseId>.<ext> wins (shared by phrases with the same text); otherwise Web Speech reads it.
@@ -16,7 +17,7 @@ const devBust = import.meta.env.DEV ? `?t=${Date.now()}` : ''
 
 /** Phrase ID → recording URL. */
 export const recordings: ReadonlyMap<string, string> = new Map(
-  Object.entries(recordingFiles).map(([path, url]) => [path.replace(/^.*\/([^/]+)\.\w+$/, '$1'), url + devBust]),
+  Object.entries(recordingFiles).map(([path, url]) => [phraseOfFile(path.replace(/^.*\/([^/]+)\.\w+$/, '$1')), url + devBust]),
 )
 
 // English phrases are declared separately (`englishPhrases`) and always spoken by an en-US voice (DECISIONS D17).
