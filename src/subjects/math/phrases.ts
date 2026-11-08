@@ -34,7 +34,7 @@ const SHOP_WORDS: Record<string, string> = {
   car: 'מְכוֹנִית',
   ball: 'כַּדּוּר',
   kite: 'עֲפִיפוֹן',
-  balloon: 'בַּלּוֹן',
+  balloon: 'בָּלוֹן',
   icecream: 'גְּלִידָה',
   chocolate: 'שׁוֹקוֹלָד',
   cookie: 'עוּגִיָּה',

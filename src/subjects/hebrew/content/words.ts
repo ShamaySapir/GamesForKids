@@ -6,7 +6,7 @@ import type { Word } from '../types'
 // next vowel (גְּבִינָה = גְּבִי-נָה), and a final patach genuvah stays in the last syllable (תַּ-פּוּחַ).
 export const WORDS: readonly Word[] = [
   { id: 'bayit', text: 'בַּיִת', emoji: '🏠', syllables: ['בַּ', 'יִת'], opening: 'בַּ', first: 'b', last: 't', rhyme: 'ayit' },
-  { id: 'balon', text: 'בַּלּוֹן', emoji: '🎈', syllables: ['בַּ', 'לּוֹן'], opening: 'בַּ', first: 'b', last: 'n', rhyme: 'on' },
+  { id: 'balon', text: 'בָּלוֹן', emoji: '🎈', syllables: ['בָּ', 'לוֹן'], opening: 'בָּ', first: 'b', last: 'n', rhyme: 'on' },
   { id: 'banana', text: 'בָּנָנָה', emoji: '🍌', syllables: ['בָּ', 'נָ', 'נָה'], opening: 'בָּ', first: 'b', last: null },
   { id: 'beitza', text: 'בֵּיצָה', emoji: '🥚', syllables: ['בֵּי', 'צָה'], opening: 'בֵּי', first: 'b', last: null },
   { id: 'barvaz', text: 'בַּרְוָז', emoji: '🦆', syllables: ['בַּרְ', 'וָז'], opening: 'בַּ', first: 'b', last: 'z' },
@@ -29,7 +29,7 @@ export const WORDS: readonly Word[] = [
   { id: 'dinozaur', text: 'דִּינוֹזָאוּר', emoji: '🦖', syllables: ['דִּי', 'נוֹ', 'זָא', 'וּר'], opening: 'דִּי', first: 'd', last: 'r' },
   { id: 'dvora', text: 'דְּבוֹרָה', emoji: '🐝', syllables: ['דְּבוֹ', 'רָה'], opening: 'דְּ', first: 'd', last: null },
   { id: 'dubdevan', text: 'דֻּבְדְּבָן', emoji: '🍒', syllables: ['דֻּבְ', 'דְּ', 'בָן'], opening: 'דֻּ', first: 'd', last: 'n', rhyme: 'an' },
-  { id: 'dalat', text: 'דַּלְעַת', emoji: '🎃', syllables: ['דַּלְ', 'עַת'], opening: 'דַּ', first: 'd', last: 't' },
+  { id: 'dalat', text: 'דְּלַעַת', emoji: '🎃', syllables: ['דְּ', 'לַ', 'עַת'], opening: 'דְּ', first: 'd', last: 't' },
   { id: 'dam', text: 'דָּם', emoji: '🩸', syllables: ['דָּם'], opening: 'דָּ', first: 'd', last: 'm', rhyme: 'am' },
   { id: 'dvash', text: 'דְּבַשׁ', emoji: '🍯', syllables: ['דְּבַשׁ'], opening: 'דְּ', first: 'd', last: 'sh' },
   { id: 'har', text: 'הַר', emoji: '⛰️', syllables: ['הַר'], opening: 'הַ', first: null, last: 'r', rhyme: 'ar' },
