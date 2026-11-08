@@ -6,6 +6,7 @@ the "Current state" and "Next steps" sections must be updated in the same change
 ## Start here
 
 1. Read this file, then **`docs/PLAYBOOK.md`** (how to do any task — mandatory) and `docs/ARCHITECTURE.md`.
+   Building a feature? Follow **`docs/FEATURE-GUIDE.md`** phase by phase.
 2. Check "Current state" and "Next steps" below and `docs/ROADMAP.md` to see where the project is.
 3. If you have a role (`planner`, `builder`, `content`, `reviewer`), read its file in `.claude/agents/`.
 
@@ -30,7 +31,7 @@ computer-first with touch support.
 
 | Area | Status | Notes |
 |---|---|---|
-| Docs & process | ✅ | This file, `docs/PLAYBOOK.md`, `ARCHITECTURE.md`, `ROADMAP.md`, `DECISIONS.md`, `RESEARCH.md`, `specs/`, `.claude/agents/` |
+| Docs & process | ✅ | This file, `docs/FEATURE-GUIDE.md`, `docs/PLAYBOOK.md`, `ARCHITECTURE.md`, `ROADMAP.md`, `DECISIONS.md`, `RESEARCH.md`, `specs/`, `.claude/agents/` |
 | Tooling | ✅ | Vite 8, React 19, TS strict, ESLint, Vitest, Playwright, PWA. `npm run check` and `npm run e2e` green |
 | Core | ✅ | Contracts, session, adaptive + Leitner, progress, IndexedDB store, audio with TTS fallback |
 | UI & app shell | ✅ | Theme tokens + dark mode, owl mascot, profiles, world map, island path, play screen, sticker book |
@@ -67,6 +68,7 @@ Current stage: **Stage 6 built** (English); Stages 1–3 await the user's play-t
 
 | What | Where |
 |---|---|
+| How to build a feature, phase by phase (spec → contract → build → review → verify → docs) | `docs/FEATURE-GUIDE.md` |
 | How to do a task, quality bar, self-review | `docs/PLAYBOOK.md` |
 | Architecture, contracts, adding an island | `docs/ARCHITECTURE.md` |
 | Work stages and status | `docs/ROADMAP.md` |

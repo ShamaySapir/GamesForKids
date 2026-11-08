@@ -12,14 +12,14 @@ async function createProfile(page: Page) {
 test('a child can create a profile, play a round, and keep progress after reload', async ({ page }) => {
   await createProfile(page)
   await page.getByRole('button', { name: /אִי הַשָּׁעוֹן/ }).click()
-  await page.getByRole('link', { name: /איזה מחוג/ }).click()
+  await page.getByRole('link', { name: /אֵיזֶה מָחוֹג/ }).click()
 
   // "Which hand?" — read the prompt and click the matching hand, six times.
   for (let i = 0; i < 6; i++) {
     // Wait for the round to reach question i rather than sleeping: fixed delays were flaky under load.
     await expect(page.locator('.dot.done')).toHaveCount(i)
     const prompt = await page.locator('.clock-q').innerText()
-    const hand = prompt.includes('הקצר') ? 'מחוג השעות' : 'מחוג הדקות'
+    const hand = prompt.includes('הַקָּצָר') ? 'מחוג השעות' : 'מחוג הדקות'
     // Click the tip, as a child would: near the hub the two hands are close together.
     await page.getByRole('button', { name: hand }).locator('circle').click()
   }
@@ -33,7 +33,7 @@ test('a child can create a profile, play a round, and keep progress after reload
 test('clock hands can be set by dragging and by keyboard', async ({ page }) => {
   await createProfile(page)
   await page.getByRole('button', { name: /אִי הַשָּׁעוֹן/ }).click()
-  await page.getByRole('link', { name: /כוונו את השעון/ }).first().click()
+  await page.getByRole('link', { name: /כַּוְּנוּ אֶת הַשָּׁעוֹן/ }).first().click()
 
   const clock = page.locator('svg.clock')
   const box = (await clock.boundingBox())!
@@ -47,10 +47,10 @@ test('clock hands can be set by dragging and by keyboard', async ({ page }) => {
   await page.mouse.down()
   await page.mouse.move(cx + box.width * 0.2, cy, { steps: 8 })
   await page.mouse.up()
-  await expect(hour).toHaveAttribute('aria-valuetext', 'שלוש')
+  await expect(hour).toHaveAttribute('aria-valuetext', 'שָׁלוֹשׁ')
 
   // Keyboard: one step forward.
   await hour.focus()
   await page.keyboard.press('ArrowUp')
-  await expect(hour).toHaveAttribute('aria-valuetext', 'ארבע')
+  await expect(hour).toHaveAttribute('aria-valuetext', 'אַרְבַּע')
 })

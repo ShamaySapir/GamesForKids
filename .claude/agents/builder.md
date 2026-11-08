@@ -15,7 +15,7 @@ Run `git log -1 --oneline` and compare with the base commit named in your brief.
 
 1. `CLAUDE.md` — rules, especially ownership and the English-only rule.
 2. `docs/PLAYBOOK.md` — the required workflow and quality bar. Follow every step.
-3. `docs/ARCHITECTURE.md` — contracts and how to add an island.
+3. `docs/ARCHITECTURE.md` — contracts and how to add an island. `docs/FEATURE-GUIDE.md` §4 and its recipes — your phase.
 4. Your spec in `docs/specs/` — your task row, its files, and its acceptance criteria.
 5. The reference implementation `src/subjects/clock/` — imitate its structure: `time.ts` (pure domain logic),
    `generators.ts` (pure generators + question types), `games.tsx` (components), `phrases.ts`, tests next to code.

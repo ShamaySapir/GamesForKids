@@ -29,11 +29,12 @@ export function Mascot({ mood = 'idle', line, text = line && phrases[line], spea
   }
 
   return (
-    <div className={`mascot mood-${shown}`}>
+    <div className={`mascot mood-${shown}${speak ? ' can-speak' : ''}`}>
       <button className="mascot-owl" onClick={onClick} aria-label={text ?? 'ינשוף'} disabled={!speak} style={{ width: size }}>
         <Owl mood={shown} />
       </button>
-      {text && <p className="bubble" aria-live="polite">{text}</p>}
+      {/* Clicking the bubble replays too (a mouse convenience; the owl is the keyboard-reachable button). */}
+      {text && <p className="bubble" aria-live="polite" onClick={speak ? onClick : undefined}>{text}</p>}
     </div>
   )
 }

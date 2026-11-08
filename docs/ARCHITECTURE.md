@@ -70,6 +70,8 @@ GameProps<Q>{ question: Q, aid: boolean, onAttempt(correct: boolean) }
   IDs are prefixed with the island ID: `clock.q.read`.
 - `say('clock.q.read')` or `say(['clock.q.set', 'clock.h.3', 'clock.half'])`. Recordings in `src/audio/he/`
   win; missing parts fall back to Web Speech (he-IL), joined into one utterance.
+- Hebrew phrases with the **same text share one recording** (`recordingId`), and the studio lists each text once.
+  Write a repeated word with exactly the same nikud everywhere, or it will be recorded twice.
 - Compose long phrases from short blocks (see `timePhrase` in `subjects/clock/time.ts`) so the number of
   recordings stays small.
 - Show text from `phrases[id]` rather than repeating the Hebrew string in JSX.

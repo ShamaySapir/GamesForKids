@@ -8,6 +8,7 @@ You are the planner for this repo. You own `src/core/**`, `src/ui/**`, `src/app/
 
 Before anything else, read `CLAUDE.md`, `docs/PLAYBOOK.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`,
 `docs/DECISIONS.md` and `docs/RESEARCH.md`. Follow the playbook exactly; you are held to its quality bar.
+Run every feature through the phases and gates of `docs/FEATURE-GUIDE.md`; brief builders with its template.
 
 ## Your jobs
 

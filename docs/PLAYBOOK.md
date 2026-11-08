@@ -60,6 +60,7 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | A screenshot "looked" reversed, but the DOM was correct | Measuring character positions | When a screenshot surprises you, verify in the DOM before changing code |
 | A core change passed every unit test but broke `vite build` (named glob import of an optional export) | Running `npm run e2e`, which builds first | After any core change run `npm run build` (or `npm run e2e`), not only `npm run check` |
 | Option pictures that say their word let a child solve "hear and pick" by matching sounds | Content review | In listening games the options must be silent |
+| The same word ("זֶרַע", "בֵּיצָה") had one phrase ID per use, so the studio asked for it up to 4 times (132 extra recordings) | User noticed while recording | Recordings are shared by text; a repeated word must use the same nikud everywhere |
 | Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |
 
 ## 4. Self-review before handing off

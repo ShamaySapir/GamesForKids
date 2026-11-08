@@ -70,7 +70,7 @@ export const island: IslandDef = {
     {
       id: 'think.symmetry', title: 'סִימֶטְרִיָּה', grade: 0, requires: ['think.odd-one'], sticker: '🦋',
       games: [
-        pick('halves', 'חֲצִי וַחֲצִי', '🦋', ctx => g.symmetryQuestion(ctx, SYMMETRY_ITEMS), g.symmetryAccepts),
+        pick('halves', 'חֵצִי וָחֵצִי', '🦋', ctx => g.symmetryQuestion(ctx, SYMMETRY_ITEMS), g.symmetryAccepts),
         game({ id: 'mirror-grid', title: 'כְּמוֹ בְּמַרְאָה', icon: '🪞', component: SymmetryGridGame, generate: g.symGridQuestion, accepts: g.symGridAccepts }),
       ],
     },

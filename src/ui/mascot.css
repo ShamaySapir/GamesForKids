@@ -10,10 +10,13 @@
   position: relative; background: var(--card); border: 3px solid var(--line); border-radius: 22px;
   padding: 12px 18px; font-size: 22px; font-weight: 600; margin: 0; max-width: 460px;
 }
-.bubble::before {
-  content: ''; position: absolute; inset-inline-start: -14px; top: 50%; translate: 0 -50%;
-  border: 10px solid transparent; border-inline-end-color: var(--line);
+.mascot.can-speak .bubble { cursor: pointer; }
+/* The tail sits outside the bubble, pointing at the owl: an outline triangle with a card-colored one over it. */
+.bubble::before, .bubble::after {
+  content: ''; position: absolute; top: 50%; translate: 0 -50%; border: solid transparent;
 }
+.bubble::before { inset-inline-start: -27px; border-width: 12px; border-inline-end-color: var(--line); }
+.bubble::after { inset-inline-start: -18px; border-width: 9px; border-inline-end-color: var(--card); }
 @keyframes flap { 50% { transform: rotate(-25deg); } }
 @keyframes flap-l { 50% { transform: rotate(25deg); } }
 @keyframes talk { to { transform: scaleY(.4); } }

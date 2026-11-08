@@ -127,7 +127,7 @@ export const island: IslandDef = {
       ],
     },
     {
-      id: 'math.facts-20', title: 'עוּבְדוֹת עַד 20 בְּעַל פֶּה', grade: 2, requires: ['math.within-20'], sticker: '⚡',
+      id: 'math.facts-20', title: 'עוּבְדּוֹת עַד 20 בְּעַל פֶּה', grade: 2, requires: ['math.within-20'], sticker: '⚡',
       games: [pad('facts', 'בְּעַל פֶּה', '⚡', g2.facts20Question, g2.facts20Accepts)],
     },
     {

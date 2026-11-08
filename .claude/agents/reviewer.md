@@ -5,6 +5,7 @@ model: opus
 ---
 
 You review one branch against its spec. Read `CLAUDE.md`, `docs/PLAYBOOK.md`, `docs/ARCHITECTURE.md` and the spec first.
+Your phases are `docs/FEATURE-GUIDE.md` §5 (code and full content review) and §6 (integrate and verify).
 
 ## Procedure
 

@@ -1,13 +1,15 @@
 import { readdir, unlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { Plugin } from 'vite'
+import { fileOfPhrase } from '../src/core/audio/filename'
 
 // Dev-server endpoint for the recording studio (docs/DECISIONS.md D10, D12): the studio POSTs a recording and it is
 // written straight into src/audio/he/<phraseId>.<ext>, replacing any earlier take. Never part of a production build.
 
 const DIR = 'src/audio/he'
 const EXT: Record<string, string> = { 'audio/webm': 'webm', 'audio/ogg': 'ogg', 'audio/mp4': 'm4a', 'audio/mpeg': 'mp3', 'audio/wav': 'wav' }
-const ID = /^[a-z][\w.-]*$/i
+// Phrase IDs may contain Hebrew; the file name never does (see fileOfPhrase).
+const FILE = /^[a-z][\w.~-]*$/i
 
 export function studioPlugin(): Plugin {
   return {
@@ -15,9 +17,9 @@ export function studioPlugin(): Plugin {
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/__studio/save', (req, res) => {
-        const id = new URL(req.url ?? '', 'http://x').searchParams.get('id') ?? ''
+        const id = fileOfPhrase(new URL(req.url ?? '', 'http://x').searchParams.get('id') ?? '')
         const ext = EXT[(req.headers['content-type'] ?? '').split(';')[0]!.trim()]
-        if (req.method !== 'POST' || !ID.test(id) || !ext) {
+        if (req.method !== 'POST' || !FILE.test(id) || id.includes('..') || !ext) {
           res.statusCode = 400
           return res.end('Bad request')
         }
