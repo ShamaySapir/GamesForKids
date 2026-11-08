@@ -29,7 +29,7 @@ very short stories with understanding, and listens to read-along books with each
 | 2 | `reading.vowels-i` | חִירִיק | 1 | hebrew.letters-4 | 🍦 | hear-unit, see-unit |
 | 3 | `reading.vowels-o` | חוֹלָם | 1 | hebrew.letters-4 | 🍩 | hear-unit, see-unit |
 | 4 | `reading.vowels-u` | שׁוּרוּק וְקֻבּוּץ | 1 | hebrew.letters-4 | 🦉 | hear-unit, see-unit |
-| 5 | `reading.vowels-e` | צֵירֵה וּסֶגּוֹל | 1 | hebrew.letters-4 | 🥚 | hear-unit, see-unit |
+| 5 | `reading.vowels-e` | צֵירֵי וּסֶגּוֹל | 1 | hebrew.letters-4 | 🥚 | hear-unit, see-unit |
 | 6 | `reading.build` | בּוֹנִים מִילָּה | 1 | vowels-a | 🧱 | build |
 | 7 | `reading.word-picture` | קוֹרְאִים מִילָּה | 1 | vowels-a | 📖 | read-word, picture-word |
 | 8 | `reading.sentences` | קוֹרְאִים מִשְׁפָּט | 1 | word-picture | 📜 | sentence-picture |

@@ -26,7 +26,7 @@ on the same island, after the 1st-grade skills.
 | 11 | `math.place-value` | אֲחָדוֹת, עֲשָׂרוֹת, מֵאוֹת | 2 | number-line | 🏠 | build-number, flexible, compare-signs |
 | 12 | `math.count-1000` | סוֹפְרִים עַד 1000 | 2 | place-value | 🗺️ | skip-1000, hundred-chart |
 | 13 | `math.within-100` | חִבּוּר וְחִסּוּר עַד 100 | 2 | tens, place-value | 🧮 | solve, missing, estimate |
-| 14 | `math.facts-20` | עוּבְדוֹת עַד 20 בְּעַל פֶּה | 2 | within-20 | ⚡ | facts |
+| 14 | `math.facts-20` | עוּבְדּוֹת עַד 20 בְּעַל פֶּה | 2 | within-20 | ⚡ | facts |
 | 15 | `math.odd-even` | זוּגִי וְאִי זוּגִי | 2 | count-100 | 👟 | pairs, numbers |
 | 16 | `math.times` | כֶּפֶל | 2 | facts-20 | ✖️ | array, groups, tables |
 | 17 | `math.divide` | חִלּוּק | 2 | times | 🍪 | share, groups-of |

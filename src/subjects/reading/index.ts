@@ -39,7 +39,7 @@ export const island: IslandDef = {
     vowelSkill('i', 'חִירִיק', '🍦'),
     vowelSkill('o', 'חוֹלָם', '🍩'),
     vowelSkill('u', 'שׁוּרוּק וְקֻבּוּץ', '🦉'),
-    vowelSkill('e', 'צֵירֵה וּסֶגּוֹל', '🥚'),
+    vowelSkill('e', 'צֵירֵי וּסֶגּוֹל', '🥚'),
     {
       id: 'reading.build', title: 'בּוֹנִים מִילָּה', grade: 1, requires: ['reading.vowels-a'], sticker: '🧱',
       games: [defineGame({
