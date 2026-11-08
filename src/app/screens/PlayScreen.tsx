@@ -48,6 +48,8 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
     if (!correct) {
       sfx.oops()
       setFeedback({ id: 'app.tryAgain', mood: 'encouraging' })
+      // When this miss turns the aid on, the game speaks its hint instead (saying both would cut one off).
+      if (!(next.aid && !s.aid)) void say('app.tryAgain')
       return
     }
     busy.current = true
