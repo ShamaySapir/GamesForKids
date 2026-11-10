@@ -1,7 +1,10 @@
 import { create } from 'zustand'
 import { del, get, set } from 'idb-keyval'
 import type { Grade } from '../engine/types'
-import { applyRound, emptyProgress, markKnown, type Progress, type RoundOutcome, type RoundSummary } from '../progress/progress'
+import {
+  applyRound, applySprint, emptyProgress, markKnown,
+  type Progress, type RoundOutcome, type RoundSummary, type SprintOutcome, type SprintSummary,
+} from '../progress/progress'
 import { makeBackup, type Backup } from './backup'
 
 // The only module that touches persistent storage (docs/DECISIONS.md D2: local only).
@@ -24,6 +27,8 @@ interface State {
   createProfile: (p: Omit<Profile, 'id'>) => Promise<void>
   selectProfile: (id: string | null) => Promise<void>
   recordRound: (r: RoundSummary) => Promise<RoundOutcome>
+  /** A timed sprint (D23): Leitner and the game's record only. */
+  recordSprint: (r: SprintSummary) => Promise<SprintOutcome>
   updateProfile: (id: string, patch: Partial<Omit<Profile, 'id'>>) => Promise<void>
   deleteProfile: (id: string) => Promise<void>
   resetProgress: (id: string) => Promise<void>
@@ -81,6 +86,14 @@ export const useStore = create<State>((setState, getState) => ({
   async recordRound(r) {
     const { current, progress } = getState()
     const outcome = applyRound(progress, r)
+    setState({ progress: outcome.progress })
+    if (current) await safeSet(progressKey(current.id), outcome.progress)
+    return outcome
+  },
+
+  async recordSprint(r) {
+    const { current, progress } = getState()
+    const outcome = applySprint(progress, r)
     setState({ progress: outcome.progress })
     if (current) await safeSet(progressKey(current.id), outcome.progress)
     return outcome

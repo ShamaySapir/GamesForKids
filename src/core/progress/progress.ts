@@ -14,6 +14,8 @@ export interface Progress {
   leitner: Record<string, LeitnerEntry>
   stickers: string[]
   totalStars: number
+  /** Best sprint score per game (D23), keyed by `${skillId}|${gameId}`. Absent in progress saved before sprints. */
+  records?: Record<string, number>
 }
 
 export const emptyProgress = (): Progress => ({ skills: {}, leitner: {}, stickers: [], totalStars: 0 })
@@ -51,12 +53,44 @@ export function applyRound(p: Progress, r: RoundSummary): RoundOutcome {
     stars,
     newlyMastered,
     progress: {
+      ...p,
       skills: { ...p.skills, [r.skillId]: { rounds, mastered, bestStars: Math.max(prev.bestStars, stars) } },
       leitner,
       stickers: newlyMastered && !p.stickers.includes(r.sticker) ? [...p.stickers, r.sticker] : p.stickers,
       totalStars: p.totalStars + stars,
     },
   }
+}
+
+export interface SprintSummary {
+  skillId: string
+  gameId: string
+  /** Correct answers, in order (a key may repeat: a sprint can ask a fact again). */
+  correct: readonly string[]
+  missed: readonly string[]
+  at: number
+}
+
+export interface SprintOutcome {
+  progress: Progress
+  score: number
+  /** The record before this sprint (0 if none). */
+  previous: number
+  newRecord: boolean
+}
+
+/** A sprint (D23) updates Leitner and the game's record only: stars, rounds and mastery are left alone. */
+export function applySprint(p: Progress, r: SprintSummary): SprintOutcome {
+  const leitner = { ...p.leitner }
+  const missed = new Set(r.missed)
+  for (const key of new Set(r.correct)) if (!missed.has(key)) leitner[`${r.skillId}|${key}`] = updateLeitner(leitner[`${r.skillId}|${key}`], true, r.at)
+  for (const key of missed) leitner[`${r.skillId}|${key}`] = updateLeitner(leitner[`${r.skillId}|${key}`], false, r.at)
+  const recordKey = `${r.skillId}|${r.gameId}`
+  const previous = p.records?.[recordKey] ?? 0
+  const score = r.correct.length
+  const newRecord = score > previous
+  const records = newRecord ? { ...p.records, [recordKey]: score } : p.records
+  return { score, previous, newRecord, progress: { ...p, leitner, ...(records ? { records } : {}) } }
 }
 
 /** Leitner entries for one skill, keyed by item key. */

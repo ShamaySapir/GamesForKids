@@ -26,6 +26,15 @@ export const phrases: PhraseMap = {
   'app.mastered': 'וואו! קיבלתם מדבקה חדשה!',
   'app.oneMore': 'עוֹד סִבּוּב אֶחָד כָּזֶה וּמְקַבְּלִים מַדְבֵּקָה!',
   'app.stickers': 'אלבום המדבקות שלכם',
+  // Timed sprint (D23). The score sentence has a number in it, so it is read by the browser voice (SprintRound).
+  'app.sprint.ready': 'מוּכָנִים? עוֹנִים עַל כַּמָּה שֶׁיּוֹתֵר תַּרְגִּילִים עַד שֶׁהַפַּס נִגְמָר.',
+  'app.sprint.rules': 'עוֹנִים עַל כַּמָּה שֶׁיּוֹתֵר תַּרְגִּילִים עַד שֶׁהַפַּס נִגְמָר.',
+  'app.sprint.go': 'מַתְחִילִים!',
+  'app.sprint.best': 'הַשִּׂיא שֶׁלָּכֶם:',
+  'app.sprint.answerWas': 'הַתְּשׁוּבָה הִיא',
+  'app.sprint.newRecord': 'שִׂיא חָדָשׁ!',
+  'app.sprint.beatIt': 'בּוֹאוּ נְנַסֶּה לְשַׁבֵּר אוֹתוֹ בַּפַּעַם הַבָּאָה!',
+  'app.sprint.again': 'בּוֹאוּ נְנַסֶּה שׁוּב!',
   // Island names, said when the mouse rests on an island on the map. Same text as each island's title (tested), so
   // the recording is shared; English Island is said in Hebrew for the Hebrew-speaking child.
   'app.island.clock': 'אִי הַשָּׁעוֹן',

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { BOX_DELAYS, dueItems, nextAid, starsFor } from '../adaptive/adaptive'
-import { applyRound, emptyProgress, isUnlocked, skillLeitner } from './progress'
+import { applyRound, applySprint, emptyProgress, isUnlocked, skillLeitner } from './progress'
 
 const round = (firstTry: string[], missed: string[], at = 1000) =>
   ({ skillId: 'clock.hours', sticker: '🕐', firstTry, missed, total: firstTry.length + missed.length, at })
@@ -39,5 +39,36 @@ describe('applyRound', () => {
     expect(l['6:00']).toEqual({ box: 0, due: 0 })
     expect(l['1:00']).toEqual({ box: 1, due: BOX_DELAYS[1] })
     expect(dueItems(l, 0, () => true)).toEqual(['6:00'])
+  })
+})
+
+describe('applySprint', () => {
+  const sprint = (correct: string[], missed: string[], at = 1000) => ({ skillId: 'math.table', gameId: 'arena', correct, missed, at })
+
+  it('keeps the best score and never lowers it', () => {
+    const a = applySprint(emptyProgress(), sprint(['7x8', '6x7', '6x7'], []))
+    expect(a).toMatchObject({ score: 3, previous: 0, newRecord: true })
+    expect(a.progress.records).toEqual({ 'math.table|arena': 3 })
+    const b = applySprint(a.progress, sprint(['7x8'], ['9x6']))
+    expect(b).toMatchObject({ score: 1, previous: 3, newRecord: false })
+    expect(b.progress.records).toEqual({ 'math.table|arena': 3 })
+  })
+
+  it('sends misses to Leitner review but leaves stars, rounds and mastery alone', () => {
+    const p = applySprint(emptyProgress(), sprint(['7x8'], ['9x6'])).progress
+    expect(skillLeitner(p, 'math.table')).toMatchObject({ '9x6': { box: 0 }, '7x8': { box: 1 } })
+    expect(p.skills).toEqual({})
+    expect(p.totalStars).toBe(0)
+    expect(p.stickers).toEqual([])
+  })
+
+  it('treats a fact missed once in the sprint as missed, even if answered later', () => {
+    const p = applySprint(emptyProgress(), sprint(['9x6'], ['9x6'])).progress
+    expect(skillLeitner(p, 'math.table')['9x6']).toMatchObject({ box: 0 })
+  })
+
+  it('survives a normal round afterwards', () => {
+    const p = applySprint(emptyProgress(), sprint(['7x8'], [])).progress
+    expect(applyRound(p, round(['1:00'], [])).progress.records).toEqual({ 'math.table|arena': 1 })
   })
 })

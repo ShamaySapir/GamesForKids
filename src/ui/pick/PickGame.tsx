@@ -123,6 +123,9 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
     <div className={`pk-stage${question.hoverSays ? ' pk-hover-says' : ''}`}>
       <p className="pk-q">{phrases[question.instruction]}</p>
       <PromptView prompt={question.prompt} />
+      {aid && question.aidArt && (
+        <div className="pk-art-row pk-aid-art">{question.aidArt.map((a, i) => <ArtView key={i} art={a} size={120} />)}</div>
+      )}
       {aid && question.hint && (
         <button type="button" className="pill pk-hint" aria-label="🔊" onClick={() => void say(question.hint as PhraseRef)}>💡 🔊</button>
       )}

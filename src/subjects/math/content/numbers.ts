@@ -1,7 +1,7 @@
 import type { PhraseMap } from '../../../core/engine/types'
 
 // Spoken number building blocks, feminine counting form (as numbers are said when counting).
-// Written by the planner; numberPhrase() in ../numbers.ts composes them (0–1,000).
+// Written by the planner; numberPhrase() in ../numbers.ts composes them (0–10,000).
 
 const UNITS = ['אֶפֶס', 'אַחַת', 'שְׁתַּיִם', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע']
 const TEENS = ['עֶשֶׂר', 'אַחַת־עֶשְׂרֵה', 'שְׁתֵּים־עֶשְׂרֵה', 'שְׁלוֹשׁ־עֶשְׂרֵה', 'אַרְבַּע־עֶשְׂרֵה', 'חֲמֵשׁ־עֶשְׂרֵה',
@@ -19,6 +19,13 @@ const AND_TENS = ['', 'וְעֶשֶׂר', 'וְעֶשְׂרִים', 'וּשְׁ�
 const AND_TEENS = ['וְאַחַת־עֶשְׂרֵה', 'וּשְׁתֵּים־עֶשְׂרֵה', 'וּשְׁלוֹשׁ־עֶשְׂרֵה', 'וְאַרְבַּע־עֶשְׂרֵה', 'וַחֲמֵשׁ־עֶשְׂרֵה',
   'וְשֵׁשׁ־עֶשְׂרֵה', 'וּשְׁבַע־עֶשְׂרֵה', 'וּשְׁמוֹנֶה־עֶשְׂרֵה', 'וּתְשַׁע־עֶשְׂרֵה']
 
+/** Thousands for grade 3 (docs/specs/math-grade3.md): 1,000 is math.n.1000, 10,000 is math.n.10000. */
+const THOUSANDS = ['', '', 'אַלְפַּיִם', 'שְׁלוֹשֶׁת אֲלָפִים', 'אַרְבַּעַת אֲלָפִים', 'חֲמֵשֶׁת אֲלָפִים', 'שֵׁשֶׁת אֲלָפִים', 'שִׁבְעַת אֲלָפִים',
+  'שְׁמוֹנַת אֲלָפִים', 'תִּשְׁעַת אֲלָפִים']
+/** "and" + whole hundreds after thousands (אַלְפַּיִם וּשְׁלוֹשׁ מֵאוֹת): וּ before מ and before a shva, וַ before a chataf patach. */
+const AND_HUNDREDS = ['', 'וּמֵאָה', 'וּמָאתַיִם', 'וּשְׁלוֹשׁ מֵאוֹת', 'וְאַרְבַּע מֵאוֹת', 'וַחֲמֵשׁ מֵאוֹת', 'וְשֵׁשׁ מֵאוֹת', 'וּשְׁבַע מֵאוֹת',
+  'וּשְׁמוֹנֶה מֵאוֹת', 'וּתְשַׁע מֵאוֹת']
+
 export const NUMBER_PHRASES: PhraseMap = Object.fromEntries([
   ...UNITS.map((w, n) => [`math.n.${n}`, w]),
   ...TEENS.map((w, i) => [`math.n.${10 + i}`, w]),
@@ -29,6 +36,9 @@ export const NUMBER_PHRASES: PhraseMap = Object.fromEntries([
   ...AND_TENS.flatMap((w, t) => (w ? [[`math.andt.${t * 10}`, w]] : [])),
   ...AND_TEENS.map((w, i) => [`math.andteen.${11 + i}`, w]),
   ['math.n.1000', 'אֶלֶף'],
+  ...THOUSANDS.flatMap((w, k) => (w ? [[`math.k.${k}`, w]] : [])),
+  ...AND_HUNDREDS.flatMap((w, h) => (w ? [[`math.andh.${h}`, w]] : [])),
+  ['math.n.10000', 'עֲשֶׂרֶת אֲלָפִים'],
 ])
 
 /**

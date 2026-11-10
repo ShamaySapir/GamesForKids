@@ -1,6 +1,6 @@
 # Spec: Numbers island, 3rd grade (Stage 5a)
 
-- **Status:** Draft, awaiting user approval
+- **Status:** Approved by user on 2026-11-10 (numbers to 10,000 recorded as blocks; digital clock moved to the clock island)
 - **Stage:** 5a (docs/ROADMAP.md). Continues `docs/specs/math-grade2.md` (skills 11–17, built)
 - **Relies on:** DECISIONS D3, D6, D7, D14, D18, **D23** · docs/RESEARCH.md § "Math, grades 3–6: NEW curriculum" (grade 3, cited `[G3 p.N]`)
 
@@ -109,11 +109,11 @@ The soft locks of D19 still apply: a grade 3 child starts at skill 18 or 27, and
 
 **23. Division with a remainder.**
 - *share-left:* the grade 2 share game, where some cookies **don't fit**. They go to a "left over" bowl, and the instruction asks how many each plate gets and how many are left.
-- *remainder-pick:* `17 : 5 = ?`. Pick "3, and 2 is left over" from four options.
+- *remainder-pick:* `17 : 5 = ?`. Pick "3, שְׁאֵרִית 2" from four options.
   - Distractors: a remainder bigger than or equal to the divisor ("2, and 7 is left over"), a quotient off by one, and the remainder and quotient swapped.
   - Only from the 10×10 table, with a divisor of 2–9, never dividing by 0 [p.8].
 - *remainder-story:* a short word problem, read by the browser voice (D23): "23 children in boats of 4. How many full boats? How many children are left?" The answer is picked like *remainder-pick*.
-- The written form is "3 וְנִשְׁאָר 2". The `3(2)` form is never used [p.9].
+- The written form is "3, שְׁאֵרִית 2" (no verb agreement to get wrong). The `3(2)` form is never used [p.9].
 
 **24. Divisible by 2, 5 and 10.**
 - *which-divides:* "which number divides by 5 with nothing left?" Pick one of four numbers up to 1,000.
@@ -162,15 +162,16 @@ The arena is an extra game in `math.table`. It is optional and never needed for 
 
 ## Spoken numbers and word problems (D23)
 
-- **Up to 1,000:** the recorded blocks from grade 2 (`numberPhrase`), as now.
-- **Above 1,000:** the whole number is read by the **browser voice**, never half a recording and half TTS.
-  - A new `numberText(n)` (0–1,000,000, ready for grade 4) writes the words with full nikud, such as "שְׁלוֹשֶׁת אֲלָפִים אַרְבַּע מֵאוֹת וְשֶׁבַע".
-  - Content tests compare it with `numberPhrase` up to 1,000.
-- **Word problems** (*remainder-story*) are templates filled with numbers and objects, read by the browser voice, with a 🔊 button to replay them.
-- **The core needs one addition (T0):** a phrase part that is spoken text, not a phrase ID.
-  - `say` reads it with the browser voice.
-  - The studio never lists it, so there is nothing to record.
-  - It goes through `say` like everything else, so the CLAUDE.md audio rule holds.
+- **Numbers to 10,000 are recorded blocks** (user's choice on approval, 2026-11-10). `numberPhrase` grows to 10,000 with 18
+  new blocks: `math.k.2–9` (אַלְפַּיִם … תִּשְׁעַת אֲלָפִים, 1,000 stays `math.n.1000`), `math.andh.1–9` ("and" + whole hundreds:
+  וּמֵאָה, וּשְׁלוֹשׁ מֵאוֹת…) and `math.n.10000` (עֲשֶׂרֶת אֲלָפִים). "And" comes only before the last part:
+  3,347 → שְׁלוֹשֶׁת אֲלָפִים שְׁלוֹשׁ מֵאוֹת אַרְבָּעִים וְשֶׁבַע · 3,300 → שְׁלוֹשֶׁת אֲלָפִים וּשְׁלוֹשׁ מֵאוֹת · 3,007 → שְׁלוֹשֶׁת אֲלָפִים וְשֶׁבַע.
+- Until the blocks are recorded, `say` already reads consecutive unrecorded parts as **one** browser-voice sentence, so a
+  number never sounds half recorded and half synthetic.
+- **Word problems** (*remainder-story*, `content/remainder.ts`) and the arena's score sentence are text with digits, read by
+  the browser voice through the existing `raw(text)` phrase part, with a 🔊 to replay. Nothing to record, not in the studio.
+- **No core audio change was needed** (`raw` already exists). The pick UI gains `aidArt`: drawings shown only while the aid
+  is on (the right-angle corner, the rounding line).
 
 ## Games (mechanics)
 
@@ -181,7 +182,7 @@ The arena is an extra game in `math.table`. It is optional and never needed for 
 | `PlaceValueGame` | numbers island | 18 build-4 (adds a thousands column) | extend |
 | `PlaceGame` (number line) | numbers island | 18 line-10000, 20 aid | reuse |
 | `ShareGame` | numbers island | 23 share-left (adds a left-over bowl) | extend |
-| `PairsBoardGame` / bins | numbers island | 24 sort-divides | reuse if it fits; otherwise a small `SortGame` |
+| `SortGame` | new | 24 sort-divides (drag or tap numbers into two bins) | new |
 | `ColumnGame` | new | 21 column | new |
 | `SequenceGame` | new | 19 skip-big (two gaps), find-mistake (tap a number) | new |
 | `TapPartGame` | new | 26 first-step (tap a part of an exercise) | new |
@@ -230,7 +231,7 @@ The arena is an extra game in `math.table`. It is optional and never needed for 
 
 ## Phrases and recordings
 
-- **Recorded by the user** (D23, instructions only), about 40 in all:
+- **Recorded by the user** (D23, instructions only, plus the 18 number blocks above), about 60 in all:
   - around 28 short instructions, such as "בְּנוּ אֶת הַמִּסְפָּר", "אֵיזֶה מִסְפָּר לֹא בַּמָּקוֹם?", "מָה עוֹשִׂים קֹדֶם?" and "כַּמָּה מִשְׁבָּצוֹת?";
   - 4 angle names;
   - 6 triangle names;
@@ -274,9 +275,9 @@ The arena is an extra game in `math.table`. It is optional and never needed for 
 
 | # | Task | Owner | Files | Depends on |
 |---|---|---|---|---|
-| T0 | Core: spoken-text phrase parts in `say` and hidden from the studio. Sprint rounds (`GameDef.sprint`, a timer bar in PlayScreen, the end-of-round record screen, `records` in progress and backup, parents' page line). Math: new question types and IDs, `numberText`, all instruction phrases | planner | `src/core/**`, `src/app/**`, `src/subjects/math/{types,ids,numbers,phrases}.ts` | — |
+| T0 ✅ | Core: sprint rounds (`GameDef.sprint`, `SprintRound` screen with a calm timer bar and record screen, `applySprint` + `records` in progress, store and backup, parents' page line); `aidArt` in the pick UI. Math: question types and IDs (`M3`), `numberPhrase` to 10,000, all instruction phrases, `content/remainder.ts` | planner | `src/core/**`, `src/app/**`, `src/ui/pick/**`, `src/subjects/math/{types,ids,numbers,phrases}.ts`, `content/{numbers,remainder}.ts` | — |
 | T1 | Generators for skills 18–28, and their tests | builder | `generators-g3.ts`, `generators-g3.test.ts` | T0 |
-| T2 | `ColumnGame`, `SequenceGame`, `TapPartGame`, and their tests | builder | `games-column.tsx`, `games-sequence.tsx`, `games-tap.tsx`, `math-g3.css`, tests | T0 |
+| T2 | `ColumnGame`, `SequenceFillGame` + `SequenceMistakeGame`, `FirstStepGame`, `SortGame`, and their tests | builder | `games-column.tsx`, `games-sequence.tsx`, `games-tap.tsx`, `games-sort.tsx`, `math-g3.css`, tests | T0 |
 | T3 | `GridAreaGame`, the angle and triangle art, the thousands column in `PlaceValueGame`, the left-over bowl in `ShareGame`, and their tests | builder | `games-grid.tsx`, `art-g3.tsx`, `games-place.tsx`, `games-share.tsx`, `math-g3-art.css`, tests | T0 |
 | T4 | Wire it into `index.ts` with `describeItem` rules. E2E, screenshots, a full content and nikud review (Opus), docs | planner + reviewer | `index.ts`, `e2e/math.spec.ts` | T1–T3 |
 
@@ -286,7 +287,7 @@ The arena is an extra game in `math.table`. It is optional and never needed for 
 - **Double bar charts and pictograms (G3 p.19), and box nets (G3 p.18).** These go to a later "data and shapes" pass, together with grade 4's charts.
 - **Fractions.** Grade 3 has none in the new curriculum; they start in grade 4 (Stage 5b).
 
-## Open questions for the user
+## Answers on approval (2026-11-10)
 
-1. **Numbers above 1,000: your voice or the browser voice?** D23 says the browser voice. The alternative is to record about 18 more short blocks: אֶלֶף to תִּשְׁעַת אֲלָפִים, plus the "and hundreds" forms such as וּשְׁלוֹשׁ מֵאוֹת. Then every number up to 10,000 would be in your voice.
-2. **Digital 24-hour clocks.** Is it OK to add them to the clock island as a small follow-up, instead of to this stage?
+1. Numbers above 1,000: recorded blocks, in the user's voice (see Spoken numbers).
+2. Digital 12/24-hour clocks and durations: a separate small skill on the clock island (`clock.digital`), tracked in BACKLOG.

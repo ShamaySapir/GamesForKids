@@ -1,6 +1,6 @@
 import type { PhraseMap } from '../../core/engine/types'
 import { NUMBER_PHRASES, PRICE_PHRASES } from './content/numbers'
-import { M, OP, shopPhrase, storyPart, thingPhrase } from './ids'
+import { M, M3, OP, angleName, divisibleBy, findTriangle, roundTo, whichDivides, shopPhrase, storyPart, thingPhrase } from './ids'
 
 // Feminine plural nouns: the number blocks are feminine counting forms (שָׁלוֹשׁ בָּנָנוֹת).
 const THING_WORDS: Record<string, string> = {
@@ -134,6 +134,54 @@ const INSTRUCTIONS: Record<string, string> = {
   [M.ones]: 'אֲחָדוֹת',
   [M.check]: 'בְּדִיקָה',
   [M.reset]: 'מֵהַתְחָלָה',
+  // 3rd grade (Stage 5a)
+  [M3.whatNumber]: 'אֵיזֶה מִסְפָּר זֶה?',
+  [M3.skipBig]: 'אֵילוּ מִסְפָּרִים חֲסֵרִים?',
+  [M3.jumpHint]: 'כָּל קְפִיצָה קָדִימָה הִיא בְּאוֹתוֹ גֹּדֶל',
+  [M3.jumpBackHint]: 'כָּל קְפִיצָה אֲחוֹרָה הִיא בְּאוֹתוֹ גֹּדֶל',
+  [M3.closer]: 'לְאֵיזֶה מִסְפָּר הוּא קָרוֹב יוֹתֵר?',
+  [roundTo(10)]: 'עַגְּלוּ לָעֲשָׂרוֹת',
+  [roundTo(100)]: 'עַגְּלוּ לַמֵּאוֹת',
+  [roundTo(1000)]: 'עַגְּלוּ לָאֲלָפִים',
+  [M3.roundHint]: 'מֵחָמֵשׁ וָמַעְלָה מְעַגְּלִים לְמַעְלָה',
+  [M3.column]: 'פִּתְרוּ בִּמְאֻנָּךְ. מַתְחִילִים מֵהָאֲחָדוֹת.',
+  [M3.columnHint]: 'כְּשֶׁיּוֹצֵא עֶשֶׂר אוֹ יוֹתֵר, מַעֲבִירִים לַטּוּר הַבָּא',
+  [M3.borrowHint]: 'כְּשֶׁאֵין מַסְפִּיק, לוֹקְחִים עֶשֶׂר מֵהַטּוּר הַבָּא',
+  [M3.splitHint]: 'אֶפְשָׁר לְפָרֵק לִשְׁנֵי תַּרְגִּילִים קַלִּים',
+  [M3.shareLeft]: 'חַלְּקוּ שָׁוֶה בְּשָׁוֶה, וּמָה שֶׁנִּשְׁאָר שִׂימוּ בַּקְּעָרָה',
+  [M3.remainder]: 'כַּמָּה יוֹצֵא, וְכַמָּה נִשְׁאָר?',
+  [M3.remainderHint]: 'הַשְּׁאֵרִית תָּמִיד קְטַנָּה מֵהַמִּסְפָּר שֶׁמְּחַלְּקִים בּוֹ',
+  [whichDivides(2)]: 'אֵיזֶה מִסְפָּר מִתְחַלֵּק בִּשְׁתַּיִם בְּלִי שְׁאֵרִית?',
+  [whichDivides(5)]: 'אֵיזֶה מִסְפָּר מִתְחַלֵּק בְּחָמֵשׁ בְּלִי שְׁאֵרִית?',
+  [whichDivides(10)]: 'אֵיזֶה מִסְפָּר מִתְחַלֵּק בְּעֶשֶׂר בְּלִי שְׁאֵרִית?',
+  [M3.sortNumbers]: 'מַיְּנוּ אֶת הַמִּסְפָּרִים',
+  [divisibleBy(2)]: 'מִתְחַלֵּק בִּשְׁתַּיִם',
+  [divisibleBy(5)]: 'מִתְחַלֵּק בְּחָמֵשׁ',
+  [divisibleBy(10)]: 'מִתְחַלֵּק בְּעֶשֶׂר',
+  [M3.notDivisible]: 'לֹא מִתְחַלֵּק',
+  [M3.lastDigitHint]: 'הִסְתַּכְּלוּ עַל הַסִּפְרָה הָאַחֲרוֹנָה',
+  [M3.slideHint]: 'בְּכֶפֶל בְּעֶשֶׂר כָּל סִפְרָה זָזָה טוּר אֶחָד שְׂמֹאלָה',
+  [M3.firstStep]: 'מָה עוֹשִׂים קֹדֶם? לַחֲצוּ עַל הַפְּעֻלָּה.',
+  [M3.opsHint]: 'קֹדֶם מָה שֶׁבְּתוֹךְ הַסּוֹגְרַיִם, אַחַר כָּךְ כֶּפֶל וְחִלּוּק, וּבַסּוֹף חִבּוּר וְחִסּוּר',
+  [M3.angleType]: 'אֵיזוֹ זָוִית זוֹ?',
+  [angleName('acute')]: 'זָוִית חַדָּה',
+  [angleName('right')]: 'זָוִית יְשָׁרָה',
+  [angleName('obtuse')]: 'זָוִית קֵהָה',
+  [angleName('straight')]: 'זָוִית שְׁטוּחָה',
+  [M3.angleHint]: 'הַשְׁווּ לְפִנָּה יְשָׁרָה, כְּמוֹ הַפִּנָּה שֶׁל דַּף',
+  [findTriangle('acute')]: 'אֵיזֶה מְשֻׁלָּשׁ הוּא חַד זָוִיּוֹת?',
+  [findTriangle('right')]: 'אֵיזֶה מְשֻׁלָּשׁ הוּא יְשַׁר זָוִית?',
+  [findTriangle('obtuse')]: 'אֵיזֶה מְשֻׁלָּשׁ הוּא קְהֵה זָוִית?',
+  [findTriangle('equilateral')]: 'אֵיזֶה מְשֻׁלָּשׁ הוּא שְׁוֵה צְלָעוֹת?',
+  [findTriangle('isosceles')]: 'אֵיזֶה מְשֻׁלָּשׁ הוּא שְׁוֵה שׁוֹקַיִם?',
+  [findTriangle('scalene')]: 'אֵיזֶה מְשֻׁלָּשׁ הוּא שׁוֹנֵה צְלָעוֹת?',
+  [M3.triangleHint]: 'הִסְתַּכְּלוּ עַל הַזָּוִית הַגְּדוֹלָה בְּיוֹתֵר',
+  [M3.sidesHint]: 'הַקַּוִּים הַקְּטַנִּים מְסַמְּנִים צְלָעוֹת שָׁווֹת',
+  [M3.countSquares]: 'כַּמָּה מִשְׁבָּצוֹת יֵשׁ בַּצּוּרָה?',
+  [M3.area]: 'מָה הַשֶּׁטַח? כַּמָּה סַנְטִימֶטְרִים רְבוּעִים?',
+  [M3.areaHint]: 'כַּמָּה שׁוּרוֹת יֵשׁ, וְכַמָּה מִשְׁבָּצוֹת בְּכָל שׁוּרָה?',
+  [M3.thousands]: 'אֲלָפִים',
+  [M3.leftover]: 'שְׁאֵרִית',
 }
 
 export const phrases: PhraseMap = {
