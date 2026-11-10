@@ -40,7 +40,7 @@ export const NAMES: Readonly<Record<string, { he: string; def: string }>> = {
   cloud: { he: 'עָנָן', def: 'הֶעָנָן' },
   leaf: { he: 'עָלֶה', def: 'הֶעָלֶה' },
   seed: { he: 'זֶרַע', def: 'הַזֶּרַע' },
-  sprout: { he: 'נֵבֶט', def: 'הַנֵּבֶט' },
+  sprout: { he: 'נֶבֶט', def: 'הַנֶּבֶט' },
   face: { he: 'פָּנִים', def: 'הַפָּנִים' },
   house: { he: 'בַּיִת', def: 'הַבַּיִת' },
   tent: { he: 'אֹהֶל', def: 'הָאֹהֶל' },

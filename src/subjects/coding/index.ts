@@ -30,8 +30,8 @@ export const island: IslandDef = {
   phrases,
   skills: [
     {
-      id: 'code.steps', title: 'מָה קוֹדֵם?', grade: -1, requires: [], sticker: '🪥',
-      games: [defineGame({ id: 'order', title: 'מָה קוֹדֵם?', icon: '🪥', component: OrderGame, generate: ctx => g.stepsQuestion(ctx, STORIES), accepts: g.stepsAccepts })],
+      id: 'code.steps', title: 'מָה קֹדֶם?', grade: -1, requires: [], sticker: '🪥',
+      games: [defineGame({ id: 'order', title: 'מָה קֹדֶם?', icon: '🪥', component: OrderGame, generate: ctx => g.stepsQuestion(ctx, STORIES), accepts: g.stepsAccepts })],
     },
     {
       id: 'code.bug-steps', title: 'מָה לֹא בְּסֵדֶר?', grade: 0, requires: ['code.steps'], sticker: '🐞',

@@ -40,7 +40,7 @@ The child plans a path and builds a program from arrow cards. The child runs it,
 
 | # | ID | Title (child-facing) | Grade | Requires | Sticker | Games |
 |---|---|---|---|---|---|---|
-| 1 | `code.steps` | מָה קוֹדֵם? | −1 | — | 🪥 | order |
+| 1 | `code.steps` | מָה קֹדֶם? | −1 | — | 🪥 | order |
 | 2 | `code.bug-steps` | מָה לֹא בְּסֵדֶר? | 0 | steps | 🐞 | pick-bug |
 | 3 | `code.follow` | לְאָן הוּא יַגִּיעַ? | 0 | — | 🗺️ | follow |
 | 4 | `code.arrows` | מְתַכְנְתִים צַעַד צַעַד | 1 | follow | 🤖 | program |
@@ -202,4 +202,4 @@ Also out of scope: text code and any online sharing.
 
 1. **Name and icon:** "אִי הַתִּכְנוּת" 🤖. Approved.
 2. **Character on the board:** Shufi, dressed as a "programmer". He wears a small robot helmet with an antenna, drawn as an SVG variant of the owl in the island's art kit. We picked the helmet over glasses because it stays readable at board-cell size (about 56px). Glasses remain a fallback.
-3. **"מָה קוֹדֵם?"** starts at pre-kindergarten (Grade −1), like the thinking island.
+3. **"מָה קֹדֶם?"** starts at pre-kindergarten (Grade −1), like the thinking island.
