@@ -80,5 +80,16 @@ docs/         roadmap, decisions, specs
 
 ## Deploying
 
-The build is static and uses hash routing, so `dist/` can be served from GitHub Pages or any static host.
-Deploying requires the owner's approval.
+The site is live at **https://shamaysapir.github.io/GamesForKids/** (GitHub Pages, free). DECISIONS D20 has the details.
+
+- **Every pull request** runs lint, types, unit tests and the Playwright E2E tests (`.github/workflows/ci-cd.yml`). If a test fails, its report is attached to the run.
+- **Every merge to `main`** runs the same checks again and, only if all of them pass, builds and deploys the site. There is no separate deploy step: merging is deploying.
+- **One-time setup** for a new copy of the repo, or after a settings mistake: run `scripts/setup-pages.sh`. You need the GitHub CLI logged in as a repo admin. The script enables Pages for the workflow and sets the repo's homepage link.
+- **Custom domain, later:**
+  1. Buy the domain.
+  2. Add `public/CNAME` containing the domain name.
+  3. Point the domain's DNS at GitHub Pages: a `CNAME` record to `shamaysapir.github.io`, or GitHub's `A` records for an apex domain.
+  4. Run `CUSTOM_DOMAIN=your.domain scripts/setup-pages.sh`.
+
+  No code change is needed, because the build uses a relative base path and hash routing.
+- **What is public:** the whole app, including the recordings in `src/audio/he/`. The recording studio is never part of the build.

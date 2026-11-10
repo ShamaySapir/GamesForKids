@@ -29,4 +29,4 @@ When content changes, check new words the same way: WebSearch with `allowed_doma
 
 - `src/subjects/coding/board.tsx` `RoboShufi`: the eye colors `#fff` and `#1f2a5c` are hard-coded, the same as in `Mascot.tsx`. Move both to theme tokens.
 - **Coding island, Stage 8b (grades 3–6):** conditions, functions, variables, binary numbers, sorting and searching. Plan it after the user plays 8a.
-- **Later stages:** Stage 5 (math grades 3–6), Stage 2b (letter tracing, print first), and GitHub Pages deployment (needs the user's approval).
+- **Later stages:** Stage 5 (math grades 3–6), Stage 2b (letter tracing, print first).
