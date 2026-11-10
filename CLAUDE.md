@@ -51,10 +51,16 @@ Current stage: **Stage 8a built** (coding island, K–2); Stages 1–6 await the
 
 ## Next steps
 
-1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
-2. User plays the letters island; records its phrases (studio lists isolated sounds and syllables first).
-3. Next (user picks): Stage 2b (letter tracing, print first), Stage 5 (math grades 3–6), Stage 7 (parents' page), or deploying to GitHub Pages. Stage 2b (letter tracing) will use print letters first (D13).
-4. Set up GitHub Pages deployment (user approval needed).
+Details for every open item are in **`docs/BACKLOG.md`**. In order:
+
+1. **Stage 7, parents' page** (user said it is a must). Spec `docs/specs/parents.md`, then approval, then building, on branch `stage7/parents`.
+2. **Nikud audit:** keep searching the `NOT SEARCHED` lemmas in `docs/audit/nikud/`, then apply the findings (BACKLOG).
+3. **User:**
+   - push and merge `stage8/coding`;
+   - play-test all islands;
+   - record the phrases listed in BACKLOG;
+   - after the clock is approved, delete `legacy/`.
+4. **Later, the user picks:** Stage 8b (coding, grades 3–6), Stage 5 (math, grades 3–6), Stage 2b (letter tracing, print first, D13), or GitHub Pages deployment (needs the user's approval).
 
 ## Commands
 
@@ -73,6 +79,7 @@ Current stage: **Stage 8a built** (coding island, K–2); Stages 1–6 await the
 | How to do a task, quality bar, self-review | `docs/PLAYBOOK.md` |
 | Architecture, contracts, adding an island | `docs/ARCHITECTURE.md` |
 | Work stages and status | `docs/ROADMAP.md` |
+| Open items outside the stages (recordings to redo, nikud audit, follow-ups) | `docs/BACKLOG.md` |
 | Decisions and why | `docs/DECISIONS.md` |
 | Curriculum, prior art, technical research | `docs/RESEARCH.md` |
 | What to build for an island | `docs/specs/<island>.md` (template + clock example) |
