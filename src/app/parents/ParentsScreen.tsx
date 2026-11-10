@@ -60,7 +60,8 @@ function Settings({ child }: { child: Profile }) {
   const { updateProfile, deleteProfile, resetProgress } = useStore()
   const [confirm, setConfirm] = useState<'reset' | 'delete' | null>(null)
   const [done, setDone] = useState('')
-  const save = (patch: Partial<Omit<Profile, 'id'>>) => { void updateProfile(child.id, patch); setDone('נשמר ✓') }
+  // Say "saved" only once storage has it, so a parent who closes the app right away keeps the change.
+  const save = (patch: Partial<Omit<Profile, 'id'>>) => { setDone(''); void updateProfile(child.id, patch).then(() => setDone('נשמר ✓')) }
   return (
     <section className="card pr-section" aria-labelledby="pr-settings">
       <h2 id="pr-settings">הגדרות של {child.name}</h2>

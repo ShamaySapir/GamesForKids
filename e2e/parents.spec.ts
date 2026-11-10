@@ -35,6 +35,7 @@ test('a settings change persists after a reload', async ({ page }) => {
   const speak = page.getByRole('checkbox', { name: /השמעה אוטומטית/ })
   const before = await speak.isChecked()
   await speak.click()
+  await expect(page.getByRole('status').filter({ hasText: 'נשמר' })).toBeVisible()
   await page.reload()
   await passGate(page)
   await expect(page.getByRole('checkbox', { name: /השמעה אוטומטית/ })).toBeChecked({ checked: !before })
