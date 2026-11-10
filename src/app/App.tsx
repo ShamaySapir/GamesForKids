@@ -6,6 +6,7 @@ import { MapScreen } from './screens/MapScreen'
 import { IslandScreen } from './screens/IslandScreen'
 import { PlayScreen } from './screens/PlayScreen'
 import { StickersScreen } from './screens/StickersScreen'
+import { ParentsScreen } from './parents/ParentsScreen'
 
 // The recording studio exists only in dev builds (docs/DECISIONS.md D10).
 const Studio = import.meta.env.DEV ? lazy(() => import('../tools/studio/Studio')) : null
@@ -24,6 +25,7 @@ export function App() {
           <Route path="/profiles" element={<ProfileScreen />} />
           <Route path="/island/:islandId" element={<WithProfile><IslandScreen /></WithProfile>} />
           <Route path="/play/:islandId/:skillId/:gameId" element={<WithProfile><PlayScreen /></WithProfile>} />
+          <Route path="/parents" element={<ParentsScreen />} />
           <Route path="/stickers" element={<WithProfile><StickersScreen /></WithProfile>} />
           {Studio && <Route path="/studio" element={<Suspense><Studio /></Suspense>} />}
           <Route path="*" element={<Navigate to="/" replace />} />

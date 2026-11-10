@@ -1,0 +1,49 @@
+/* Parents' page: an adult screen, so denser than the children's screens; theme tokens only. */
+.pr { display: grid; gap: 18px; }
+.pr h2 { margin: 0 0 12px; font-size: 22px; }
+.pr-section { padding: 20px; }
+.pr-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.pr-mute { color: var(--mute); margin: 0 0 10px; }
+.pr-done { min-height: 1.4em; margin: 8px 0 0; color: var(--ok); font-weight: 700; }
+.pr-danger { color: var(--bad); border-color: var(--bad); }
+.pr-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.pr-tabs .on { border-color: var(--abc); background: var(--okbg); }
+.pr-tabs small { color: var(--mute); font-weight: 400; }
+
+.pr-gate { max-width: 460px; margin: 40px auto; display: grid; gap: 14px; text-align: center; }
+.pr-gate-words { font-size: 34px; font-weight: 800; margin: 0; }
+/* An input's default width grows with its font size; keep it inside the card at 390px. */
+.pr-gate input { font-size: 28px; text-align: center; width: 100%; min-width: 0; }
+
+.pr-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; text-align: center; }
+.pr-summary b { display: block; font-size: 26px; }
+.pr-summary small { color: var(--mute); }
+
+.pr-practice { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.pr-practice li { display: grid; gap: 4px; padding: 10px 12px; border: 2px solid var(--line); border-radius: 16px; }
+.pr-practice small { color: var(--mute); }
+
+.pr-island { border-top: 2px solid var(--line); padding: 10px 0; }
+.pr-island summary { display: grid; grid-template-columns: 1fr minmax(80px, 200px) auto; gap: 12px; align-items: center; cursor: pointer; font-weight: 700; min-height: 44px; }
+.pr-bar { height: 12px; border-radius: 6px; background: var(--line); overflow: hidden; }
+.pr-bar i { display: block; height: 100%; background: var(--c); }
+.pr-skills { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 16px; }
+.pr-skills th, .pr-skills td { text-align: start; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.pr-skills th { color: var(--mute); font-weight: 600; }
+.pr-locked td { color: var(--mute); }
+
+.pr-avatars { display: flex; flex-wrap: wrap; gap: 8px; }
+.pr-avatars .icon-btn { width: 52px; height: 52px; font-size: 28px; }
+.pr-avatars .on { border-color: var(--abc); }
+.pr-check { display: flex; gap: 10px; align-items: center; font-size: 18px; margin-top: 12px; }
+.pr-check input { width: 24px; height: 24px; }
+.pr-confirm { margin-top: 14px; padding: 14px; border: 2px solid var(--bad); border-radius: 16px; background: var(--badbg); display: grid; gap: 10px; }
+.pr-confirm input { font-size: 20px; padding: 8px; border-radius: 10px; border: 2px solid var(--line); background: var(--card); color: var(--ink); }
+.pr-file { position: relative; overflow: hidden; cursor: pointer; }
+.pr-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+@media (max-width: 600px) {
+  .pr-island summary { grid-template-columns: 1fr auto; }
+  .pr-island summary .pr-bar { grid-column: 1 / -1; }
+  .pr-skills { font-size: 14px; }
+}
