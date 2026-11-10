@@ -17,7 +17,7 @@ async function open(page: Page, mastered: string[], link: RegExp) {
   await page.getByRole('link', { name: link }).first().click()
 }
 
-/** Reads the drawn board: free/wall cells, and where Shufi and the apple are. */
+/** Reads the drawn board: free/wall cells, and where Oli and the apple are. */
 async function readBoard(page: Page) {
   return page.locator('.cd-play svg.cd-board').evaluate(el => {
     const svg = el as unknown as SVGSVGElement
@@ -27,7 +27,7 @@ async function readBoard(page: Page) {
     const cols = Math.round(svg.viewBox.baseVal.width / size)
     const rows = cells.length / cols
     const walls = cells.filter(c => c.classList.contains('cd-wall')).map(c => at(c.x.baseVal.value + 2, c.y.baseVal.value + 2).join(','))
-    // Screen boxes, mapped back into the board's own units (getBBox would ignore Shufi's transform).
+    // Screen boxes, mapped back into the board's own units (getBBox would ignore Oli's transform).
     const box = svg.getBoundingClientRect()
     const scale = svg.viewBox.baseVal.width / box.width
     const centre = (el: Element) => {
@@ -93,7 +93,7 @@ test('programming step by step: building programs by keyboard reaches the apple 
   await expect(page.getByText('אלופים! שלושה כוכבים!')).toBeVisible({ timeout: 15000 })
 })
 
-test('fix the bug: one edit to the given program makes Shufi reach the apple', async ({ page }) => {
+test('fix the bug: one edit to the given program makes Oli reach the apple', async ({ page }) => {
   await open(page, ['code.follow', 'code.steps', 'code.bug-steps', 'code.arrows'], /מְתַקְּנִים בָּאג/)
   for (let i = 0; i < 6; i++) {
     await atQuestion(page, i)

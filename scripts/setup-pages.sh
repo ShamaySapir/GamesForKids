@@ -3,7 +3,13 @@
 # Needs the GitHub CLI logged in as a repo admin: `gh auth login`.
 set -e
 repo=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-url="https://$(echo "${repo%%/*}" | tr '[:upper:]' '[:lower:]').github.io/${repo#*/}/"
+owner=$(echo "${repo%%/*}" | tr '[:upper:]' '[:lower:]')
+# A repo named <owner>.github.io is served at the root; any other repo under /<repo>/.
+if [ "$(echo "${repo#*/}" | tr '[:upper:]' '[:lower:]')" = "$owner.github.io" ]; then
+  url="https://$owner.github.io/"
+else
+  url="https://$owner.github.io/${repo#*/}/"
+fi
 
 # GitHub Pages, published by the CI/CD workflow (not from a branch).
 if gh api "repos/$repo/pages" >/dev/null 2>&1; then

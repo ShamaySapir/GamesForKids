@@ -8,6 +8,7 @@ Open work that is not a roadmap stage, so any agent (or the user, another day) c
 - **Push and merge** these branches in order: `stage8/coding` (coding island, spoken island names, the "אב" icon), then `stage7/parents` when it is built.
 - **Play-test and approve** the clock, letters, reading, numbers, thinking, English and coding islands. After the clock is approved, delete `legacy/`.
 - **Record in the studio** (`npm run dev` → `#/studio`):
+  - **The mascot is now אוֹלִי (D21).** Re-record the 25 phrases that say his name: `app.hello`, `clock.day.wake`, and the read-along books (titles, pages and questions of butterfly, elephant, winter, kindergarten and key). They show as missing in the studio.
   - Re-record these: `hebrew.word.afroax` (אֶפְרוֹחַ), `hebrew.word.anav` (עֵנָב) and `hebrew.word.axavish` (עַכָּבִישׁ, said "akavish"). Their old takes were removed. Also the winter book's page 3 and its first question (`reading.book.winter.2` and `.q0`: "חָבַשׁ כּוֹבַע וְכָרַךְ צָעִיף"). Also `hebrew.word.nora` (now נוּרָה), `hebrew.word.sear` (שֵׂעָר, not שַׂעַר), the letter ק if it was said "kof" (now קוּף), the kangaroo syllables (קֶנְ־גּוּ־רוּ), and דְּלַעַת if it was said "dal'at".
   - Coding island phrases rewritten on 2026-11-10: every story caption now says what its picture shows, plus story titles (`code.story.*`), new instructions, `code.ui.add`, `code.ui.program` and `code.ui.pickArrow`. Record these after the stories changed, not before.
   - Re-record `reading.q.seeUnit` (now "אֵיךְ קוֹרְאִים אֶת זֶה? שִׁמְעוּ כָּל רַמְקוֹל וּבַחֲרוּ."); the old take was removed.
@@ -27,6 +28,6 @@ When content changes, check new words the same way: WebSearch with `allowed_doma
 
 ## Small follow-ups
 
-- `src/subjects/coding/board.tsx` `RoboShufi`: the eye colors `#fff` and `#1f2a5c` are hard-coded, the same as in `Mascot.tsx`. Move both to theme tokens.
+- `src/subjects/coding/board.tsx` `RoboOli`: the eye colors `#fff` and `#1f2a5c` are hard-coded, the same as in `Mascot.tsx`. Move both to theme tokens.
 - **Coding island, Stage 8b (grades 3–6):** conditions, functions, variables, binary numbers, sorting and searching. Plan it after the user plays 8a.
 - **Later stages:** Stage 5 (math grades 3–6), Stage 2b (letter tracing, print first).

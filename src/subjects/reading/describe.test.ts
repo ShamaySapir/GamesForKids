@@ -62,7 +62,7 @@ describe('reading describeItem', () => {
     const skill = (id: string) => island.skills.find(s => s.id === id)!
     expect(skill('reading.vowels-a').describeItem!('m-a')).toBe('ההברה מ + קמץ או פתח')
     expect(skill('reading.build').describeItem!('kadur')).toBe('המילה כדור')
-    expect(skill('reading.books').describeItem!('butterfly')).toBe('הספר שופי והפרפר')
+    expect(skill('reading.books').describeItem!('butterfly')).toBe('הספר אולי והפרפר')
   })
 
   it('has a plain home-practice sentence', () => {

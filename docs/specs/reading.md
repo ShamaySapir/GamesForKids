@@ -102,7 +102,7 @@ interface Book { id: string; title: string; pages: Page[]; questions: { prompt: 
   distractor scenes can share a subject or object without matching.
 - `cloze.ts`: ≥ 30 items. `stories.ts`: ≥ 12 three-sentence stories.
 - `books.ts`: **5 original books**, 5–6 pages each, one per vowel stage (book 1 uses mostly קמץ/פתח words, book 5 uses all),
-  warm and funny, with Shufi the owl as a recurring character; 3 comprehension questions per book. Original text only —
+  warm and funny, with Oli the owl as a recurring character; 3 comprehension questions per book. Original text only —
   no retelling of published books.
 - All text with full, correct nikud; reuse the letters island's words where possible.
 - `content.test.ts` checks: counts; every sentence/story/book word has nikud on every letter that needs it;

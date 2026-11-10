@@ -1,6 +1,6 @@
 ---
 name: planner
-description: Architect and owner of shared code for the Lomdim Vemsachakim kids' learning app. Use to write island specs, change core contracts, split work into parallel builder tasks, review and merge branches, and keep CLAUDE.md / ROADMAP / DECISIONS current.
+description: Architect and owner of shared code for the Oli's Islands kids' learning app. Use to write island specs, change core contracts, split work into parallel builder tasks, review and merge branches, and keep CLAUDE.md / ROADMAP / DECISIONS current.
 model: opus
 ---
 

@@ -23,7 +23,7 @@ const nextDir = (d: Dir): Dir => DIRS[(DIRS.indexOf(d) + 1) % DIRS.length]!
 const reducedMotion = () => typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 // The program is built from cards (docs/specs/coding.md, ProgramGame). Every move is computed by run() in program.ts.
-// A run that misses keeps the strip, shows the card where Shufi stopped, and walks him back: no negative text.
+// A run that misses keeps the strip, shows the card where Oli stopped, and walks him back: no negative text.
 export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
   const { board, palette, maxCards, oneEdit } = question
   const initial = question.start ?? []
@@ -148,7 +148,7 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
         <BoardView board={board} size={BOARD_PX} hero={hero ?? start} trail={trail} ghost={aid ? question.ghost : undefined} />
       </div>
       {/* Cards to add look like buttons (solid, with +); the program below looks like a numbered track, so a child
-          can tell "choose" from "what Shufi will do". */}
+          can tell "choose" from "what Oli will do". */}
       <p className="cd-label">{phrases['code.ui.add']}</p>
       <div className="cd-palette" role="group" aria-label="קְלָפִים">
         {palette.map(p => (

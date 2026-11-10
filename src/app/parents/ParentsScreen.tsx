@@ -109,7 +109,7 @@ function BackupBox() {
     const url = URL.createObjectURL(new Blob([JSON.stringify(b, null, 1)], { type: 'application/json' }))
     const a = document.createElement('a')
     a.href = url
-    a.download = `lomdim-backup-${new Date(b.savedAt).toISOString().slice(0, 10)}.json`
+    a.download = `olis-islands-backup-${new Date(b.savedAt).toISOString().slice(0, 10)}.json`
     a.click()
     URL.revokeObjectURL(url)
     setMsg('הגיבוי נשמר בתיקיית ההורדות.')

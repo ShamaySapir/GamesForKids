@@ -39,7 +39,13 @@
       "Bash(perl -CSD -i -pe \"s/findLetter: 'איפה האות'/findLetter: 'אֵיפֹה הָאוֹת'/; s/firstLetter: 'באיזו אות מתחילה המילה'/firstLetter: 'בְּאֵיזוֹ אוֹת מַתְחִילָה הַמִּילָּה'/; s/check: 'בדיקה'/check: 'בְּדִיקָה'/; s/reset: 'מהתחלה'/reset: 'מֵהַתְחָלָה'/\" src/subjects/hebrew/phrases.ts)",
       "Bash(perl -CSD -i -pe \"s/text: 'פַּנָּס', emoji: '🔦', syllables: \\\\['פַּ', 'נָּס'\\\\], opening: 'פַּ'/text: 'פָּנָס', emoji: '🔦', syllables: ['פָּ', 'נָס'], opening: 'פָּ'/; s/text: 'אָגָס', emoji: '🍐', syllables: \\\\['אָ', 'גָס'\\\\], opening: 'אָ'/text: 'אַגָּס', emoji: '🍐', syllables: ['אַ', 'גָּס'], opening: 'אַ'/\" src/subjects/hebrew/content/words.ts)",
       "Bash(git commit -q -m 'Move English sounds and blends to an optional studio tab *)",
-      "Bash(git commit -q -m 'Draw the owl'\\\\''s speech-bubble tail outside the bubble; clicking the bubble replays too *)"
+      "Bash(git commit -q -m 'Draw the owl'\\\\''s speech-bubble tail outside the bubble; clicking the bubble replays too *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(git commit -q -m 'Host on GitHub Pages with CI/CD as code \\(D20\\) *)",
+      "Bash(./scripts/setup-pages.sh)",
+      "Bash(node -p \"require\\('./node_modules/@playwright/test/package.json'\\).version\")",
+      "Bash(gh run *)"
     ]
   }
 }

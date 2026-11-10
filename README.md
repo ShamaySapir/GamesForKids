@@ -1,4 +1,4 @@
-# Lomdim Vemsachakim (Learn & Play)
+# Oli's Islands (Learn & Play)
 
 Playful learning games for Israeli kids from kindergarten to 6th grade: telling time, Hebrew,
 math and English. Hebrew RTL UI, an owl guide, and a world map of subject islands.
@@ -13,15 +13,15 @@ Runs fully in the browser with no server. Progress is saved locally on each devi
 
 ### 1. Install once
 
-- **Git**, with access to `git@github.com:ShamaySapir/GamesForKids.git` (add the computer's SSH key to GitHub).
+- **Git**, with access to `git@github.com:olis-islands/olis-islands.github.io.git` (add the computer's SSH key to GitHub).
 - **Node.js 22 LTS or newer** (Vite needs ≥ 20.19 or ≥ 22.12). Check with `node -v`.
 - **Claude Code** (optional, for working with the agents), signed in to your account.
 
 ### 2. Get the code
 
 ```sh
-git clone git@github.com:ShamaySapir/GamesForKids.git
-cd GamesForKids
+git clone git@github.com:olis-islands/olis-islands.github.io.git olis-islands
+cd olis-islands
 npm ci                       # installs the exact versions from package-lock.json
 npx playwright install       # only needed for end-to-end tests
 ```
@@ -80,7 +80,7 @@ docs/         roadmap, decisions, specs
 
 ## Deploying
 
-The site is live at **https://shamaysapir.github.io/GamesForKids/** (GitHub Pages, free). DECISIONS D20 has the details.
+The site is live at **https://olis-islands.github.io/** (GitHub Pages, free). DECISIONS D20 and D22 have the details.
 
 - **Every pull request** runs lint, types, unit tests and the Playwright E2E tests (`.github/workflows/ci-cd.yml`). If a test fails, its report is attached to the run.
 - **Every merge to `main`** runs the same checks again and, only if all of them pass, builds and deploys the site. There is no separate deploy step: merging is deploying.
@@ -94,7 +94,7 @@ The site is live at **https://shamaysapir.github.io/GamesForKids/** (GitHub Page
 - **Custom domain, later:**
   1. Buy the domain.
   2. Add `public/CNAME` containing the domain name.
-  3. Point the domain's DNS at GitHub Pages: a `CNAME` record to `shamaysapir.github.io`, or GitHub's `A` records for an apex domain.
+  3. Point the domain's DNS at GitHub Pages: a `CNAME` record to `olis-islands.github.io`, or GitHub's `A` records for an apex domain.
   4. Run `CUSTOM_DOMAIN=your.domain scripts/setup-pages.sh`.
 
   No code change is needed, because the build uses a relative base path and hash routing.

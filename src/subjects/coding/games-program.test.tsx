@@ -95,7 +95,7 @@ describe('ProgramGame run', () => {
     expect(onAttempt).toHaveBeenCalledTimes(1)
   })
 
-  it('reports a miss once, keeps the strip, marks the card, and walks Shufi back', () => {
+  it('reports a miss once, keeps the strip, marks the card, and walks Oli back', () => {
     const onAttempt = vi.fn()
     const { container } = render(<ProgramGame question={q({ start: [mv('right'), mv('down'), mv('down')] })} aid={false} onAttempt={onAttempt} />)
     const home = hero(container)
@@ -114,7 +114,7 @@ describe('ProgramGame run', () => {
     expect(onAttempt).toHaveBeenCalledTimes(1)
   })
 
-  it('shows the card where a wall stopped Shufi', () => {
+  it('shows the card where a wall stopped Oli', () => {
     const onAttempt = vi.fn()
     const { container } = render(<ProgramGame question={q({ start: [mv('right'), mv('up')] })} aid={false} onAttempt={onAttempt} />)
     fireEvent.click(runBtn())

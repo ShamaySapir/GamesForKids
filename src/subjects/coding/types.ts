@@ -10,7 +10,7 @@ export type Dir = 'up' | 'down' | 'left' | 'right'
 export type Card = { kind: 'move'; dir: Dir } | { kind: 'repeat'; times: number; body: readonly Dir[] }
 export type Program = readonly Card[]
 
-/** A board in the maze row format: '#' wall, '.' free, 'S' Shufi's start, 'G' the goal (🍎). Rectangular. */
+/** A board in the maze row format: '#' wall, '.' free, 'S' Oli's start, 'G' the goal (🍎). Rectangular. */
 export interface Board { id: string; rows: readonly string[] }
 
 export type Cell = readonly [row: number, col: number]
@@ -33,7 +33,7 @@ export interface Story {
   notMissing: readonly [StoryStep, StoryStep]
 }
 
-/** "Where will Shufi get to?": an open 4×4 board (no walls, no goal) and a 2–4 move program that stays on it. */
+/** "Where will Oli get to?": an open 4×4 board (no walls, no goal) and a 2–4 move program that stays on it. */
 export interface FollowItem { id: string; board: Board; program: readonly Dir[] }
 
 /**
@@ -52,7 +52,7 @@ export interface MovePattern { id: string; unit: readonly string[]; times: numbe
 
 export type PaletteCard = Dir | 'repeat'
 
-/** Build (or fix) a program that takes Shufi to the goal. The component checks with `run` from program.ts. */
+/** Build (or fix) a program that takes Oli to the goal. The component checks with `run` from program.ts. */
 export interface ProgramQ extends Question<null> {
   /** Child-facing instruction phrase ID, shown as text. */
   instruction: string

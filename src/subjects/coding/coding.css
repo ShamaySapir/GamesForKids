@@ -21,7 +21,7 @@
   min-height: calc(var(--tap) + 16px); padding: 8px 12px; border-radius: 20px; background: var(--bg-sea); box-sizing: border-box;
   border: 3px dashed var(--line);
 }
-/* Shufi marks where the program starts; numbers show the order the cards run in. */
+/* Oli marks where the program starts; numbers show the order the cards run in. */
 .cd-start { font-size: 34px; margin-inline-end: 4px; }
 .cd-card { position: relative; }
 .cd-n {

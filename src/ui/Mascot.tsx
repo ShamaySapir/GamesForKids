@@ -16,7 +16,7 @@ interface Props {
   size?: number
 }
 
-/** Shufi the owl. Clicking replays what it said. */
+/** Oli the owl. Clicking replays what it said. */
 export function Mascot({ mood = 'idle', line, text = line && phrases[line], speak = line, size = 120 }: Props) {
   const [talking, setTalking] = useState(false)
   const shown: Mood = talking ? 'talking' : mood
