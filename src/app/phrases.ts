@@ -20,4 +20,13 @@ export const phrases: PhraseMap = {
   'app.mastered': 'וואו! קיבלתם מדבקה חדשה!',
   'app.oneMore': 'עוֹד סִבּוּב אֶחָד כָּזֶה וּמְקַבְּלִים מַדְבֵּקָה!',
   'app.stickers': 'אלבום המדבקות שלכם',
+  // Island names, said when the mouse rests on an island on the map. Same text as each island's title (tested), so
+  // the recording is shared; English Island is said in Hebrew for the Hebrew-speaking child.
+  'app.island.clock': 'אִי הַשָּׁעוֹן',
+  'app.island.hebrew': 'אִי הָאוֹתִיּוֹת',
+  'app.island.reading': 'אִי הַקְּרִיאָה',
+  'app.island.math': 'אִי הַמִּסְפָּרִים',
+  'app.island.thinking': 'אִי הַחֲשִׁיבָה',
+  'app.island.english': 'אִי הָאַנְגְּלִית',
+  'app.island.coding': 'אִי הַתִּכְנוּת',
 }
