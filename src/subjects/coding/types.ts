@@ -26,6 +26,8 @@ export interface StoryStep { emoji: string; text: string }
  */
 export interface Story {
   id: string
+  /** The question the steps answer, spoken first ("אֵיךְ מְצַחְצְחִים שִׁנַּיִם?"); phrase storyPhrase(id). */
+  title: string
   steps: readonly StoryStep[]
   wrong: { at: number; step: StoryStep }
   notMissing: readonly [StoryStep, StoryStep]

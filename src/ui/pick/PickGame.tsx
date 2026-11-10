@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { phrases, say } from '../../core/audio/audio'
 import type { GameProps, PhraseRef } from '../../core/engine/types'
 import { ArtView } from './art'
@@ -8,7 +8,9 @@ import type { PickOption, PickPrompt, PickQ } from './types'
 import './pick.css'
 
 // Shared by all islands (DECISIONS D14). Remounted by PlayScreen for every question.
-// Options speak only through their own 🔊 button, never on hover (user's choice: sound only when asked for).
+// Options speak only through their own 🔊 button, never on hover (user's choice) — except questions marked
+// `hoverSays`, whose options are sounds shown as a speaker.
+const HOVER_SAY_MS = 350
 
 function PromptView({ prompt }: { prompt: PickPrompt }) {
   const { picture, letter, word, sentence, objects, expr, art } = prompt
@@ -52,12 +54,17 @@ type Speaking = Extract<PickOption, { say?: PhraseRef }>
 const hasSay = (o: PickOption): o is Speaking & { say: PhraseRef } =>
   'say' in o && !!o.say && (typeof o.say === 'string' || o.say.length > 0)
 
-function optionFace(o: PickOption) {
+function optionFace(o: PickOption, speaker = false) {
+  if (speaker && o.kind === 'sound') return <span className="pk-emoji" aria-hidden="true">🔊</span>
   switch (o.kind) {
-    case 'picture': return <span className="pk-emoji" aria-hidden="true">{o.emoji}</span>
+    case 'picture': return o.caption
+      ? <><span className="pk-emoji" aria-hidden="true">{o.emoji}</span><span className="he-text pk-caption">{o.caption}</span></>
+      : <span className="pk-emoji" aria-hidden="true">{o.emoji}</span>
     case 'sound': return o.label === undefined
       ? <span className="he-text pk-opt-name">{phrases[o.say]}</span>
-      : <span className="he-letter pk-opt-letter">{o.label}</span>
+      : o.label.length > 2
+        ? <span className="he-text pk-opt-name">{o.label}</span>
+        : <span className="he-letter pk-opt-letter">{o.label}</span>
     case 'text': return o.lang === 'en'
       ? <span className="en-text pk-opt-name" dir="ltr">{o.label}</span>
       : <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>
@@ -70,7 +77,7 @@ function optionFace(o: PickOption) {
 
 function optionLabel(o: PickOption): string {
   switch (o.kind) {
-    case 'picture': return o.emoji
+    case 'picture': return o.caption ?? o.emoji
     case 'sound': return o.label ?? phrases[o.say] ?? ''
     case 'objects': return `${o.group.count}`
     case 'art': {
@@ -87,6 +94,15 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
   const [wrong, setWrong] = useState<string[]>([])
   const [right, setRight] = useState(false)
   const hinted = useRef(false)
+  const hover = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hoverEnd = () => { if (hover.current) clearTimeout(hover.current) }
+  useEffect(() => hoverEnd, [])
+  const hoverStart = (e: ReactPointerEvent, o: PickOption) => {
+    if (!question.hoverSays || e.pointerType !== 'mouse' || !hasSay(o)) return
+    hoverEnd()
+    const ref = o.say
+    hover.current = setTimeout(() => void say(ref), HOVER_SAY_MS)
+  }
 
   useEffect(() => {
     if (aid && question.hint && !hinted.current) {
@@ -104,7 +120,7 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
   }
 
   return (
-    <div className="pk-stage">
+    <div className={`pk-stage${question.hoverSays ? ' pk-hover-says' : ''}`}>
       <p className="pk-q">{phrases[question.instruction]}</p>
       <PromptView prompt={question.prompt} />
       {aid && question.hint && (
@@ -114,10 +130,10 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
         {question.options.map(o => {
           const cls = right && o.id === question.answer ? ' ok' : wrong.includes(o.id) ? ' bad' : ''
           return (
-            <div key={o.id} className="pk-opt-wrap">
+            <div key={o.id} className="pk-opt-wrap" onPointerEnter={e => hoverStart(e, o)} onPointerLeave={hoverEnd}>
               <button type="button" className={`opt pk-opt pk-opt-${o.kind}${cls}`} disabled={wrong.includes(o.id)}
                 aria-label={optionLabel(o)} onClick={() => choose(o.id)}>
-                {optionFace(o)}
+                {optionFace(o, question.hoverSays)}
               </button>
               {hasSay(o) && <SayButton id={o.say} />}
             </div>

@@ -42,19 +42,25 @@ computer-first with touch support.
 | Shared pick UI | ✅ | `src/ui/pick/` — `PickGame`, `SayButton`, `Objects`, `PickQ` (D14) |
 | Numbers island (K–2) | ✅ built, ⏳ awaiting user play-test | 17 skills (K–1: `docs/specs/math-k2.md`, grade 2: `docs/specs/math-grade2.md`), 9 game components; numbers spoken 0–1,000; ~185 phrases to record |
 | Thinking island | ✅ built, ⏳ awaiting user play-test | 12 skills, 53 original SVG drawings (`art/`), 4 new games; pre-kindergarten level (Grade −1); ~190 phrases to record |
+| Parents' page | ✅ built, ⏳ awaiting user play-test | `#/parents` behind a number-in-words gate (D18): summary, what to practise, settings, backup; soft locks with "start here" by grade and a parent's "already knows this" (D19); spec `docs/specs/parents.md` |
 | Coding island (K–2) | ✅ built, ⏳ awaiting user play-test | 7 skills (story algorithms, follow, arrow programs, debug, loops), `ProgramGame` + `program.ts` simulator; spec `docs/specs/coding.md`; ~90 phrases to record |
 | English island | ✅ built, ⏳ awaiting user play-test | 13 skills (Pre-A1 → early A1), English by browser voice (D17), Andika font, LTR; 16 Hebrew instructions to record | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
 | Git | ✅ | Stages 0–4b merged to `main` (PR #1–#6). Current work: `stage6/english` |
 
-Current stage: **Stage 8a built** (coding island, K–2); Stages 1–6 await the user's play-test and recordings.
+Current stage: **Stage 7 built** (parents' page) after Stage 8a (coding island, K–2); Stages 1–6 await the user's play-test and recordings.
 
 ## Next steps
 
-1. User plays the clock island and approves (or lists changes); user records phrases in the studio. Then delete `legacy/`.
-2. User plays the letters island; records its phrases (studio lists isolated sounds and syllables first).
-3. Next (user picks): Stage 2b (letter tracing, print first), Stage 5 (math grades 3–6), Stage 7 (parents' page), or deploying to GitHub Pages. Stage 2b (letter tracing) will use print letters first (D13).
-4. Set up GitHub Pages deployment (user approval needed).
+Details for every open item are in **`docs/BACKLOG.md`**. In order:
+
+1. **User:** push and merge `stage7/parents` (parents' page, soft locks, map in rows, nikud audit done).
+2. **User:**
+   - push and merge `stage8/coding`;
+   - play-test all islands;
+   - record the phrases listed in BACKLOG;
+   - after the clock is approved, delete `legacy/`.
+3. **Later, the user picks:** Stage 8b (coding, grades 3–6), Stage 5 (math, grades 3–6), Stage 2b (letter tracing, print first, D13), or GitHub Pages deployment (needs the user's approval).
 
 ## Commands
 
@@ -73,6 +79,7 @@ Current stage: **Stage 8a built** (coding island, K–2); Stages 1–6 await the
 | How to do a task, quality bar, self-review | `docs/PLAYBOOK.md` |
 | Architecture, contracts, adding an island | `docs/ARCHITECTURE.md` |
 | Work stages and status | `docs/ROADMAP.md` |
+| Open items outside the stages (recordings to redo, nikud audit, follow-ups) | `docs/BACKLOG.md` |
 | Decisions and why | `docs/DECISIONS.md` |
 | Curriculum, prior art, technical research | `docs/RESEARCH.md` |
 | What to build for an island | `docs/specs/<island>.md` (template + clock example) |

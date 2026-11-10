@@ -61,3 +61,13 @@ that emoji cannot give, and other islands may reuse the drawings.
 `englishPhrases`; `say()` switches voice per part). Isolated English sounds and blends may optionally be recorded in the studio.
 English text is shown left to right in Andika (school-print a/g). Instructions on the English island stay in Hebrew.
 Why: native-quality English TTS exists on every device and saves ~250 recordings; Hebrew instructions match the other islands.
+
+**D18 · 2026-11-10 · user** — The parents' page (`#/parents`) is for adults: plain Hebrew without nikud, never spoken, no phrase IDs or recordings, so its labels live in `src/app/parents/`. It is entered from the profile picker through a captcha-like gate (a random number in Hebrew words, typed as digits). Backups are local JSON files the parent saves and loads; nothing is sent anywhere (D2).
+
+**D19 · 2026-11-10 · user** — Soft locks. This replaces only D7's unlocking rule; mastery and stickers are unchanged.
+- **Every skill is playable.** Mastering a skill no longer unlocks the next one.
+- **"Start here":** each island marks a recommended skill, chosen from the child's grade. It is the first skill in path order that is not mastered and whose grade is at least the child's grade minus one.
+- **Challenge:** a skill above the child's grade whose prerequisites aren't mastered is tagged "challenge". When the child starts it, Shufi says it is harder but fine to try.
+- **Easier step:** after a one-star round, the results screen offers the easier prerequisite.
+- **Parents' "already knows this":** a parent can mark a skill mastered from the parents' page. The skill is flagged `byParent`, gives no sticker, and can be undone.
+

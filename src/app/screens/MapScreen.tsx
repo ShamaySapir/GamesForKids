@@ -7,10 +7,12 @@ import { islandPhrase, islands } from '../islands'
 import { TopBar } from '../TopBar'
 import './map.css'
 
-// Spots on the sea in map order (percent of the map box), gently staggered so they read as islands, with room
-// between them. From the reading side (right) in RTL: two rows of three, or four over three for seven islands.
-const SPOTS_6 = [[17, 26], [50, 21], [83, 26], [17, 74], [50, 79], [83, 74]] as const
-const SPOTS_7 = [[12, 25], [37, 20], [63, 25], [88, 20], [25, 76], [50, 81], [75, 76]] as const
+// Islands sit in rows on the sea (4 over 3 for seven, 3 over 3 for six), evenly spaced; every other island is set
+// a little lower so the rows read as an archipelago, not a table. Rows wrap on narrow screens (map.css).
+const rowsOf = <T,>(items: readonly T[]): T[][] => {
+  const top = items.length <= 6 ? Math.min(3, items.length) : Math.ceil(items.length / 2)
+  return [items.slice(0, top), items.slice(top)].filter(r => r.length)
+}
 /** A mouse resting on an island says its name (pre-readers); a passing pointer says nothing. */
 const HOVER_SAY_MS = 400
 
@@ -26,13 +28,13 @@ export function MapScreen() {
       <TopBar title="לומדים ומשחקים" back={null} />
       <Mascot line="app.pickIsland" size={96} />
       <div className="map">
-        {islands.map((island, i) => {
-          const spots = islands.length > 6 ? SPOTS_7 : SPOTS_6
-          const [x, y] = spots[i % spots.length]!
+        {rowsOf(islands).map((row, r) => (
+        <div key={r} className="map-row">
+        {row.map(island => {
           const mastered = island.skills.filter(s => progress.skills[s.id]?.mastered).length
           return (
             <button key={island.id} className={`island${island.comingSoon ? ' soon' : ''}`}
-              style={{ insetInlineStart: `${x}%`, top: `${y}%`, ['--c' as string]: `var(${island.color})` }}
+              style={{ ['--c' as string]: `var(${island.color})` }}
               onPointerEnter={e => {
                 if (e.pointerType !== 'mouse') return
                 hoverEnd()
@@ -48,6 +50,8 @@ export function MapScreen() {
             </button>
           )
         })}
+        </div>
+        ))}
       </div>
     </>
   )

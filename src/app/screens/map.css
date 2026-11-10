@@ -1,15 +1,17 @@
 .map {
-  position: relative; margin-top: 20px; aspect-ratio: 16 / 9; min-height: 420px;
+  margin-top: 20px; padding: 44px 32px 56px; display: grid; gap: 56px; align-content: center; min-height: 420px;
   background: radial-gradient(ellipse at 50% 40%, var(--bg-sea), var(--bg) 85%);
   border-radius: 36px; border: 3px solid var(--line); overflow: hidden;
 }
+/* Even spacing that never overlaps; every other island sits a little lower, like islands on a sea. */
+.map-row { display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-start; gap: 40px 32px; }
+.map-row .island:nth-child(even) { margin-top: 34px; }
 .island {
-  position: absolute; translate: 50% -50%; display: grid; justify-items: center; gap: 2px;
+  display: grid; justify-items: center; gap: 2px; width: 190px;
   background: var(--sand); border: 4px solid var(--c); border-radius: 48% 52% 46% 54% / 55% 45% 55% 45%;
-  padding: 14px 26px 12px; min-width: 170px; cursor: pointer; box-shadow: 0 8px 0 var(--c);
+  padding: 14px 20px 12px; cursor: pointer; box-shadow: 0 8px 0 var(--c);
   transition: transform .15s;
 }
-[dir='ltr'] .island { translate: -50% -50%; }
 .island:hover { transform: scale(1.06); }
 .island:active { transform: translateY(4px); }
 .island-icon { font-size: 48px; line-height: 1.1; }
@@ -18,7 +20,8 @@
 .island small { font-size: 15px; color: var(--mute); }
 .island.soon { filter: grayscale(.7); opacity: .8; }
 @media (max-width: 700px) {
-  .map { aspect-ratio: auto; display: grid; gap: 22px; padding: 22px; }
-  .island { position: static; translate: none; }
-  [dir='ltr'] .island { translate: none; }
+  .map { padding: 22px; gap: 22px; }
+  .map-row { flex-direction: column; align-items: center; gap: 22px; }
+  .map-row .island:nth-child(even) { margin-top: 0; }
+  .island { width: 100%; }
 }

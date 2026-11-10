@@ -14,6 +14,8 @@
 .pk-opt-wrap { display: grid; gap: 8px; justify-items: center; align-content: start; }
 .pk-opt { width: 100%; min-height: 128px; }
 .pk-emoji { font-size: 76px; line-height: 1.1; }
+.pk-opt-picture { flex-direction: column; }
+.pk-caption { display: block; font-size: 18px; font-weight: 700; line-height: 1.3; margin-top: 4px; }
 .pk-opt-letter { font-size: 72px; }
 .pk-say {
   min-width: var(--tap); min-height: var(--tap); border-radius: 999px; border: 3px solid var(--line);
@@ -57,3 +59,6 @@
 .pk-objs-array { display: grid; gap: 2px; justify-items: center; direction: ltr; }
 .pk-objs-groups { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; direction: ltr; }
 .pk-objs-group { display: flex; flex-wrap: wrap; max-width: 6.5em; gap: 2px; padding: 6px 8px; border: 3px dashed var(--line); border-radius: 18px; }
+
+/* hoverSays questions: on mouse devices the speaker option itself plays on hover, so its small 🔊 is redundant. */
+@media (hover: hover) and (pointer: fine) { .pk-hover-says .pk-say { display: none; } }

@@ -1,10 +1,10 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useStore } from '../../core/storage/store'
 import { GRADE_NAMES, gradeName, type Grade } from '../../core/engine/types'
 import { Mascot } from '../../ui/Mascot'
 
-const AVATARS = ['🦊', '🐼', '🐯', '🐸', '🐵', '🦄', '🐙', '🐶', '🐱', '🐰', '🦁', '🐨']
+export const AVATARS = ['🦊', '🐼', '🐯', '🐸', '🐵', '🦄', '🐙', '🐶', '🐱', '🐰', '🦁', '🐨']
 
 export function ProfileScreen() {
   const { profiles, selectProfile, createProfile } = useStore()
@@ -34,6 +34,8 @@ export function ProfileScreen() {
             </button>
           </div>
         )}
+      {/* Adults only, behind a gate (DECISIONS D18); kept small and out of the top bar so children don't wander in. */}
+      <p style={{ marginTop: 32, textAlign: 'center' }}><Link className="pill" to="/parents">👪 לַהוֹרִים</Link></p>
     </>
   )
 }

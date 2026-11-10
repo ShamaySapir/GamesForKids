@@ -19,7 +19,7 @@ export const bookTitlePhrase = (bookId: string) => `reading.book.${bookId}.title
 /** Instructions and labels. */
 export const R = {
   hearUnit: 'reading.q.hearUnit', //       "אֵיפֹה כָּתוּב…" + unit
-  seeUnit: 'reading.q.seeUnit', //         "אֵיךְ קוֹרְאִים אֶת זֶה?"
+  seeUnit: 'reading.q.seeUnit', //         "אֵיךְ קוֹרְאִים אֶת זֶה? שִׁמְעוּ כָּל רַמְקוֹל וּבַחֲרוּ."
   build: 'reading.q.build', //             "בְּנוּ אֶת הַמִּילָּה"
   readWord: 'reading.q.readWord', //       "קִרְאוּ אֶת הַמִּילָּה וּבַחֲרוּ תְּמוּנָה"
   pictureWord: 'reading.q.pictureWord', // "אֵיזוֹ מִילָּה מַתְאִימָה לַתְּמוּנָה?"

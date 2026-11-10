@@ -5,7 +5,8 @@ import { phrases, say, sfx, stop } from '../../core/audio/audio'
 import { advance, attempt, startSession, type SessionState } from '../../core/engine/session'
 import { pick } from '../../core/engine/random'
 import type { GameDef, IslandDef, SkillDef } from '../../core/engine/types'
-import { isUnlocked, skillLeitner } from '../../core/progress/progress'
+import { easierStep, isChallenge } from '../../core/progress/path'
+import { skillLeitner } from '../../core/progress/progress'
 import { useStore } from '../../core/storage/store'
 import { Mascot, type Mood } from '../../ui/Mascot'
 import { StickerProgress, goodRounds } from '../../ui/StickerProgress'
@@ -20,8 +21,8 @@ export function PlayScreen() {
   const island = findIsland(islandId)
   const skill = findSkill(island, skillId)
   const game = skill?.games.find(g => g.id === gameId)
-  const progress = useStore(s => s.progress)
-  if (!island || !skill || !game || !isUnlocked(progress, skill.requires)) return <Navigate to="/" replace />
+  // Soft locks (D19): any skill can be played; nothing redirects away.
+  if (!island || !skill || !game) return <Navigate to="/" replace />
   // Remount on replay so every round starts fresh.
   return <Round key={`${skill.id}/${game.id}`} island={island} skill={skill} game={game} />
 }
@@ -33,13 +34,21 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
   const [review] = useState(() =>
     dueItems(skillLeitner(useStore.getState().progress, skill.id), Date.now(), k => game.accepts?.(k) ?? false))
   const [s, setS] = useState<SessionState>(() => startSession(game, Math.random, review))
+  // A stretch skill (D19) opens with Shufi saying it is harder but fine to try, once per round screen.
+  const [stretch] = useState(() => { const st = useStore.getState(); return isChallenge(st.progress, skill, st.current?.grade ?? 0) })
+  const introduced = useRef(false)
   const [feedback, setFeedback] = useState<{ id: string; mood: Mood } | null>(null)
   const [result, setResult] = useState<{ stars: Stars; newlyMastered: boolean } | null>(null)
   const busy = useRef(false)
 
   useEffect(() => {
-    if (autoSpeak && !s.done) void say(s.question.say)
-  }, [autoSpeak, s.question, s.done])
+    if (s.done) return
+    const intro = stretch && !introduced.current
+    introduced.current = true
+    const question = typeof s.question.say === 'string' ? [s.question.say] : s.question.say
+    if (intro) void say(autoSpeak ? ['app.challenge', ...question] : 'app.challenge')
+    else if (autoSpeak) void say(s.question.say)
+  }, [autoSpeak, s.question, s.done, stretch])
   useEffect(() => stop, [])
 
   const onAttempt = (correct: boolean) => {
@@ -72,7 +81,9 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
         sfx.win()
         // A 3-star round that didn't master the skill yet (D7 needs two): tell the child one more such round earns the sticker.
         const oneMore = outcome.stars === 3 && !useStore.getState().progress.skills[skill.id]?.mastered
-        void say(outcome.newlyMastered ? ['app.end.' + outcome.stars, 'app.mastered'] : oneMore ? ['app.end.3', 'app.oneMore'] : 'app.end.' + outcome.stars)
+        // A weak round with an easier step not yet mastered suggests it (D19); the results screen links to it.
+        const easier = outcome.stars === 1 && !!easierStep(useStore.getState().progress, island, skill)
+        void say(outcome.newlyMastered ? ['app.end.' + outcome.stars, 'app.mastered'] : oneMore ? ['app.end.3', 'app.oneMore'] : easier ? ['app.end.1', 'app.tryEasier'] : 'app.end.' + outcome.stars)
       }
     }, NEXT_DELAY_MS)
   }
@@ -113,6 +124,7 @@ interface ResultsProps {
 function Results({ island, skill, result, firstTry, total, onAgain }: ResultsProps) {
   const sp = useStore(st => st.progress.skills[skill.id])
   const mastered = !!sp?.mastered
+  const easier = useStore(st => (result.stars === 1 ? easierStep(st.progress, island, skill) : undefined))
   return (
     <>
       <TopBar back={`/island/${island.id}`} />
@@ -131,7 +143,11 @@ function Results({ island, skill, result, firstTry, total, onAgain }: ResultsPro
             <span style={{ fontSize: 64, display: 'block' }}>{skill.sticker}</span>{phrases['app.mastered']}
           </p>
         )}
+        {easier && easier.games[0] && <p className="sub">{phrases['app.tryEasier']}</p>}
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+          {easier && easier.games[0] && (
+            <Link className="pill" to={`/play/${island.id}/${easier.id}/${easier.games[0].id}`}>{easier.sticker} {easier.title}</Link>
+          )}
           <button className="cta" onClick={onAgain} autoFocus>שחקו שוב</button>
           <Link className="pill" to={`/island/${island.id}`}>משחק אחר</Link>
         </div>

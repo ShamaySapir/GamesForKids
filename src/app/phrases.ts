@@ -8,7 +8,12 @@ export const phrases: PhraseMap = {
   'app.pickIsland': 'לאן נפליג היום? בחרו אי.',
   'app.pickSkill': 'בחרו משחק.',
   'app.soon': 'האי הזה עוד בבנייה. נגיע אליו בקרוב!',
-  'app.locked': 'עוֹד לֹא! קֹדֶם מְקַבְּלִים שְׁלוֹשָׁה כּוֹכָבִים פַּעֲמַיִם בַּמִּשְׂחָק הַקּוֹדֵם.',
+  'app.startHere': 'כַּדַּאי לְהַתְחִיל מִכָּאן',
+  // Shufi's line on an island with a recommendation: it points at the ⭐ badge rather than saying "here" with nothing there.
+  'app.pickSkillStar': 'בַּחֲרוּ מִשְׂחָק. הַכּוֹכָב מַרְאֶה מֵאֵיפֹה כַּדַּאי לְהַתְחִיל.',
+  'app.challengeTag': 'אֶתְגָּר',
+  'app.challenge': 'זֶה קָצָת קָשֶׁה יוֹתֵר, אֶפְשָׁר לְנַסּוֹת!',
+  'app.tryEasier': 'בּוֹאוּ נְנַסֶּה קֹדֶם מַשֶּׁהוּ קַל יוֹתֵר',
   'app.good.1': 'כל הכבוד!',
   'app.good.2': 'יפה מאוד!',
   'app.good.3': 'מצוין!',

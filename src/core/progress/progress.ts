@@ -4,6 +4,8 @@ export interface SkillProgress {
   rounds: RoundResult[]
   mastered: boolean
   bestStars: number
+  /** Marked "already knows this" by a parent (DECISIONS D19): mastered without playing, no sticker, undoable. */
+  byParent?: boolean
 }
 
 export interface Progress {
@@ -66,3 +68,15 @@ export function skillLeitner(p: Progress, skillId: string): Record<string, Leitn
 }
 
 export const isUnlocked = (p: Progress, requires: readonly string[]) => requires.every(id => p.skills[id]?.mastered)
+
+/** A parent's "already knows this" (D19), or undoing it. Undo only clears a parent's mark, never a played mastery. */
+export function markKnown(p: Progress, skillId: string, known: boolean): Progress {
+  const prev = p.skills[skillId] ?? { rounds: [], mastered: false, bestStars: 0 }
+  if (!known && !prev.byParent) return p
+  const next: SkillProgress = known
+    ? { ...prev, mastered: true, byParent: prev.mastered && !prev.byParent ? undefined : true }
+    : { ...prev, mastered: isMastered(prev.rounds), byParent: undefined }
+  if (next.byParent === undefined) delete next.byParent
+  return { ...p, skills: { ...p.skills, [skillId]: next } }
+}
+

@@ -94,7 +94,7 @@ export function OrderGame({ question, onAttempt }: GameProps<OrderQ>) {
     const cls = tile ? ' filled' : i === placed.length && !done ? ' next' : ''
     return (
       <div key={i} ref={el => { slots.current[i] = el }} className={`rb-slot${cls}${done ? ' ok' : ''}`}>
-        {layout === 'sentences' && <span className="rb-num" aria-hidden="true">{i + 1}</span>}
+        {(layout === 'sentences' || question.numbered) && <span className="rb-num" aria-hidden="true">{i + 1}</span>}
         {tile && <span className={`${textCls} ${layout === 'units' ? 'rb-unit' : 'rb-line'}`} dir={dir}>{tile.text}</span>}
       </div>
     )

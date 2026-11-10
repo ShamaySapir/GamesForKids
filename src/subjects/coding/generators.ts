@@ -2,7 +2,7 @@ import { shuffle, type Rng } from '../../core/engine/random'
 import type { GenContext } from '../../core/engine/types'
 import type { ArtRef, PickOption, PickQ } from '../../ui/pick/types'
 import type { OrderQ } from '../reading/types'
-import { C, otherPhrase, stepPhrase, wrongPhrase } from './ids'
+import { C, otherPhrase, stepPhrase, storyPhrase, wrongPhrase } from './ids'
 import { ARROW, DIRS, compress, find, moves, run, sameCell } from './program'
 import type { Board, Cell, DebugItem, Dir, FollowItem, Level, MovePattern, PaletteCard, ProgramQ, Story } from './types'
 
@@ -104,7 +104,8 @@ export function stepsQuestion(ctx: GenContext, stories: readonly Story[]): Order
     const tiles = s.steps.map((st, n) => ({ id: `${s.id}.${n}`, text: st.emoji, say: stepPhrase(s.id, n) }))
     let shuffled = shuffle(ctx.rng, tiles)
     while (shuffled.every((t, i) => t === tiles[i])) shuffled = shuffle(ctx.rng, tiles)
-    return { itemKey: s.id, answer: tiles.map(t => t.id), say: C.steps, instruction: C.steps, layout: 'units', tiles: shuffled }
+    // The story's question first ("אֵיךְ מְצַחְצְחִים שִׁנַּיִם?"), then what to do; numbered slots show where to start.
+    return { itemKey: s.id, answer: tiles.map(t => t.id), say: [storyPhrase(s.id), C.steps], instruction: storyPhrase(s.id), layout: 'units', numbered: true, tiles: shuffled }
   })
 }
 
@@ -125,18 +126,18 @@ export function bugQuestion(ctx: GenContext, stories: readonly Story[]): PickQ {
       const shown = s.steps.map((st, n) => (n === at ? step : st))
       if (new Set(shown.map(st => st.emoji)).size !== shown.length) return null
       const options: PickOption[] = shown.map((st, n) => ({
-        id: `s${n}`, kind: 'picture', emoji: st.emoji, say: n === at ? wrongPhrase(s.id) : stepPhrase(s.id, n),
+        id: `s${n}`, kind: 'picture', emoji: st.emoji, caption: st.text, say: n === at ? wrongPhrase(s.id) : stepPhrase(s.id, n),
       }))
-      return { itemKey: bugKey(s.id), answer: `s${at}`, say: C.bug, instruction: C.bug, prompt: {}, options }
+      return { itemKey: bugKey(s.id), answer: `s${at}`, say: [storyPhrase(s.id), C.bug], instruction: C.bug, prompt: { sentence: { text: s.title } }, options, hint: C.bug }
     }
     const gap = Math.floor(ctx.rng() * s.steps.length)
-    const missing = { emoji: s.steps[gap]!.emoji, say: stepPhrase(s.id, gap) }
-    const others = s.notMissing.map((st, n) => ({ emoji: st.emoji, say: otherPhrase(s.id, n as 0 | 1) }))
+    const missing = { emoji: s.steps[gap]!.emoji, caption: s.steps[gap]!.text, say: stepPhrase(s.id, gap) }
+    const others = s.notMissing.map((st, n) => ({ emoji: st.emoji, caption: st.text, say: otherPhrase(s.id, n as 0 | 1) }))
     if (new Set([missing, ...others].map(o => o.emoji)).size !== 3) return null
     const { items, answer } = arrange(ctx.rng, missing, others)
-    const options: PickOption[] = items.map((o, i) => ({ id: SLOTS[i]!, kind: 'picture', emoji: o.emoji, say: o.say }))
+    const options: PickOption[] = items.map((o, i) => ({ id: SLOTS[i]!, kind: 'picture', emoji: o.emoji, caption: o.caption, say: o.say }))
     const strip: ArtRef = { name: 'code-steps', props: { steps: s.steps.map(st => st.emoji).join('|'), gap } }
-    return { itemKey: missingKey(s.id), answer, say: C.missing, instruction: C.missing, prompt: { art: [strip] }, options }
+    return { itemKey: missingKey(s.id), answer, say: [storyPhrase(s.id), C.missing], instruction: C.missing, prompt: { sentence: { text: s.title }, art: [strip] }, options, hint: C.missing }
   })
 }
 

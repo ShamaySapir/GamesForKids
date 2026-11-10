@@ -49,13 +49,13 @@ export const BOOKS: readonly Book[] = [
     pages: [
       { text: 'הַחֹרֶף בָּא.', scene: '❄️' },
       { text: 'הָיָה קַר וְיָרַד גֶּשֶׁם.', scene: '🌧️🥶' },
-      { text: 'שׁוּפִי לָבַשׁ כּוֹבַע וְצָעִיף.', scene: '🦉🧢🧣' },
+      { text: 'שׁוּפִי חָבַשׁ כּוֹבַע וְכָרַךְ צָעִיף.', scene: '🦉🧢🧣' },
       { text: 'הַדֹּב הָלַךְ לִישׁוֹן.', scene: '🐻💤' },
       { text: 'שׁוּפִי שָׁתָה שׁוֹקוֹלָד חַם\nוְשָׁר שִׁיר.', scene: '🦉☕🎵' },
       { text: '"חֹרֶף טוֹב!"\nאָמַר שׁוּפִי.', scene: '🦉⛄' },
     ],
     questions: [
-      { prompt: 'מָה לָבַשׁ שׁוּפִי?', options: [{ scene: '🩴' }, { scene: '🧢🧣' }, { scene: '🕶️' }], answer: 1 },
+      { prompt: 'מָה שׁוּפִי שָׂם כִּי הָיָה קַר?', options: [{ scene: '🩴' }, { scene: '🧢🧣' }, { scene: '🕶️' }], answer: 1 },
       { prompt: 'מִי הָלַךְ לִישׁוֹן?', options: [{ scene: '🐻' }, { scene: '🐶' }, { scene: '🐘' }], answer: 0 },
       { prompt: 'מָה שָׁתָה שׁוּפִי?', options: [{ text: 'חָלָב קַר' }, { text: 'מִיץ קַר' }, { text: 'שׁוֹקוֹלָד חַם' }], answer: 2 },
     ],

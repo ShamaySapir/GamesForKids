@@ -74,7 +74,8 @@ test('what comes first: a story-ordering round completes', async ({ page }) => {
     const shown = await page.locator('.rb-tile').allInnerTexts()
     const story = STORIES.find(s => s.steps.length === shown.length && s.steps.every(st => shown.some(t => t.trim() === st.emoji)))
     expect(story, shown.join(' ')).toBeTruthy()
-    for (const step of story!.steps) await page.locator('.rb-tile', { hasText: step.emoji }).first().click()
+    // Exact text: a step can be two emoji (🪥🦷) that contain another step's emoji (🪥).
+    for (const step of story!.steps) await page.locator('.rb-tile').filter({ hasText: new RegExp(`^${step.emoji}$`, 'u') }).first().click()
   }
   await expect(page.getByRole('button', { name: 'שחקו שוב' })).toBeVisible()
 })
@@ -98,7 +99,8 @@ test('fix the bug: one edit to the given program makes Shufi reach the apple', a
     await atQuestion(page, i)
     await expect(page.locator('.cd-strip .cd-card').first()).toBeVisible()
     const board = await readBoard(page)
-    const program = (await page.locator('.cd-strip .cd-card').allInnerTexts()).map(t => ARROW[t.trim()]!)
+    // A card shows its order number before the arrow.
+    const program = (await page.locator('.cd-strip .cd-card').allInnerTexts()).map(t => ARROW[t.replace(/\d+/g, '').trim()]!)
     const turn = program.flatMap((d, at) => DIRS.filter(x => x !== d).map(x => ({ at, to: x })))
       .find(({ at, to }) => walk(board, program.map((d, k) => (k === at ? to : d))))
     const remove = program.findIndex((_, at) => walk(board, program.filter((_, k) => k !== at)))

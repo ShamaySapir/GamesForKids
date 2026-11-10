@@ -85,9 +85,11 @@ export function hearUnitQuestion(ctx: GenContext, units: readonly Unit[], letter
   })
 }
 
-export const SEE_UNIT_LABELS = ['🔴', '🟢', '🔵'] as const
+// The options are sounds: shown as a speaker that plays on hover (play-test); the numbered names are their labels
+// for screen readers and touch, where a color would mean nothing.
+export const SEE_UNIT_LABELS = ['צְלִיל 1', 'צְלִיל 2', 'צְלִיל 3'] as const
 
-/** Skills 1–5, game B: see a big unit, pick its sound among 3 colored buttons. Labels follow the shuffled order. */
+/** Skills 1–5, game B: see a big unit, pick its sound among 3 numbered sound buttons. Labels follow the shuffled order. */
 export function seeUnitQuestion(ctx: GenContext, units: readonly Unit[], letters: readonly Letter[], vowel: Vowel): PickQ {
   return make(ctx, vowelUnits(units, vowel), u => u.key, target => {
     const wrong = unitDistractors(ctx.rng, units, letters, target, 2)
@@ -95,7 +97,7 @@ export function seeUnitQuestion(ctx: GenContext, units: readonly Unit[], letters
     return {
       itemKey: target.key, answer: target.key, say: R.seeUnit, instruction: R.seeUnit, prompt: { letter: spelling(ctx.rng, target) },
       options: shuffle(ctx.rng, [target, ...wrong]).map((u, i) => ({ id: u.key, kind: 'sound' as const, label: SEE_UNIT_LABELS[i]!, say: unitPhrase(u.key) })),
-      hint: unitPhrase(target.key),
+      hint: unitPhrase(target.key), hoverSays: true,
     }
   })
 }

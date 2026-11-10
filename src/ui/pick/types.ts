@@ -35,7 +35,8 @@ export interface ObjectGroup {
  * `label` (a letter), or without a label the text of its single `say` phrase (e.g. a letter's name, "בֵּית").
  */
 export type PickOption =
-  | { id: string; kind: 'picture'; emoji: string; say: PhraseRef }
+  /** `caption`: a short line under the picture (a story step: what the picture shows), read aloud by its 🔊. */
+  | { id: string; kind: 'picture'; emoji: string; say: PhraseRef; caption?: string }
   | { id: string; kind: 'letter'; label: string; lang?: 'en' }
   | { id: string; kind: 'sound'; label?: string; say: string }
   /** Readable text with nikud (a unit, word or short phrase); optional 🔊 reads it. */
@@ -74,4 +75,9 @@ export interface PickQ extends Question<string> {
   options: PickOption[]
   /** Spoken again when the adaptive aid turns on. */
   hint?: PhraseRef
+  /**
+   * Sound options show a big speaker and play when the mouse rests on them (the option *is* a sound). Everywhere else
+   * options speak only from their 🔊 (user's choice); here touch devices keep that 🔊, mouse devices hide it.
+   */
+  hoverSays?: boolean
 }
