@@ -52,6 +52,11 @@ export interface GameDef<Q extends Question = Question> {
   accepts?: (itemKey: string) => boolean
   /** Questions per round, when different from the default. */
   roundLength?: number
+  /**
+   * A timed sprint (DECISIONS D23, grade 3 and up): the round ends after `seconds`, a miss shows the answer and moves on,
+   * and the score is a personal record. Sprints never count toward stars, stickers or mastery; misses still reach Leitner.
+   */
+  sprint?: { seconds: number }
 }
 
 export interface SkillDef {

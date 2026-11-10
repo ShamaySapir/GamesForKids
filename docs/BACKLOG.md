@@ -14,6 +14,7 @@ Open work that is not a roadmap stage, so any agent (or the user, another day) c
   - Re-record `reading.q.seeUnit` (now "אֵיךְ קוֹרְאִים אֶת זֶה? שִׁמְעוּ כָּל רַמְקוֹל וּבַחֲרוּ."); the old take was removed.
   - New phrases: `app.pickSkillStar`, `app.startHere`, `app.challengeTag`, `app.challenge`, `app.tryEasier`, `app.oneMore`, `hebrew.ui.reset` ("סוֹפְרִים מֵחָדָשׁ"), the 7 island names (`app.island.*`), and the coding island (about 90).
   - English sounds and blends are optional. They are in their own studio tab.
+  - **Math grade 3 (Stage 5a):** the 18 number blocks to 10,000 (`math.k.2–9`, `math.andh.1–9`, `math.n.10000`), about 40 grade 3 instructions, hints, angle and triangle names (`math.q.*`, `math.hint.*`, `math.angle.*`, `math.ui.*`), and the arena lines (`app.sprint.*`). Word problems and the arena's score sentence are read by the browser voice; nothing to record for them.
 - **Question for the user:** the coding island's hand-washing story opens with 👆 for "open the tap". Check it is clear to a child.
 
 ## Nikud audit against the Academy of the Hebrew Language: done 2026-11-10
@@ -28,6 +29,8 @@ When content changes, check new words the same way: WebSearch with `allowed_doma
 
 ## Small follow-ups
 
+- **Clock island, `clock.digital` (grade 3, user's choice 2026-11-10):** digital 12- and 24-hour time and durations in whole hours and minutes (new curriculum G3 p.18–19, docs/RESEARCH.md). A small spec addendum to `docs/specs/clock.md`, then one builder.
+- **Link preview image:** `public/og.png` is rendered from `scripts/og.html` with `node scripts/make-og.mjs`. Re-render after changing the owl or the title.
 - `src/subjects/coding/board.tsx` `RoboOli`: the eye colors `#fff` and `#1f2a5c` are hard-coded, the same as in `Mascot.tsx`. Move both to theme tokens.
 - **Coding island, Stage 8b (grades 3–6):** conditions, functions, variables, binary numbers, sorting and searching. Plan it after the user plays 8a.
-- **Later stages:** Stage 5 (math grades 3–6), Stage 2b (letter tracing, print first).
+- **Later stages:** Stage 5b–5d (math grades 4–6, one per spec, D23), Stage 2b (letter tracing, print first).

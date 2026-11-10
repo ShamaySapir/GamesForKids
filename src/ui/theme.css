@@ -104,6 +104,10 @@ h1 { font-size: 34px; margin: 4px 0; }
 .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--line); }
 .dot.done { background: var(--c); }
 .dot.now { outline: 3px solid var(--c); outline-offset: 2px; }
+/* Sprint timer (D23): a calm bar that empties, in the island colour, never red. */
+.sprint-bar { height: 14px; border-radius: 7px; background: var(--line); overflow: hidden; margin: 4px 0 8px; }
+.sprint-bar > i { display: block; height: 100%; background: var(--c); border-radius: 7px; transition: width .25s linear; }
+.sprint-count { text-align: center; font-weight: 800; font-size: 22px; margin: 0 0 8px; }
 
 .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 20px; }
 .opt {

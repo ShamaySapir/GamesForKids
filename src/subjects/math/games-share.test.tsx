@@ -6,7 +6,7 @@ import { M } from './ids'
 import type { ShareQ } from './types'
 
 vi.mock('../../core/audio/audio', () => ({
-  phrases: { 'math.q.share': 'share', 'math.ui.check': 'check', 'math.ui.reset': 'reset' },
+  phrases: { 'math.ui.leftover': 'left', 'math.q.share': 'share', 'math.ui.check': 'check', 'math.ui.reset': 'reset' },
   say: vi.fn(() => Promise.resolve()),
 }))
 afterEach(cleanup)
@@ -83,7 +83,7 @@ describe('ShareGame', () => {
     await check()
     expect(onAttempt).toHaveBeenCalledTimes(1)
     expect(onAttempt).toHaveBeenCalledWith(true)
-    expect(screen.getByRole('status')).toHaveTextContent('6 ÷ 3 = 2')
+    expect(screen.getByRole('status')).toHaveTextContent('6 : 3 = 2')
     expect(screen.getByRole('status')).toHaveAttribute('dir', 'ltr')
   })
 
@@ -111,5 +111,70 @@ describe('ShareGame', () => {
     render(<ShareGame question={q} aid={true} onAttempt={vi.fn()} />)
     await userEvent.click(plate(1))
     expect(counts()).toEqual(['1', '0', '0'])
+  })
+
+  describe('with a left-over bowl', () => {
+    const lq: ShareQ = { itemKey: 'rem:7/3', answer: 2, say: 'x', instruction: M.share, emoji: '🍪', total: 7, plates: 3, leftover: true }
+    const run = () => {
+      const onAttempt = vi.fn()
+      render(<ShareGame question={lq} aid={false} onAttempt={onAttempt} />)
+      return onAttempt
+    }
+    const bowlBtn = () => screen.getByRole('button', { name: /🥣/ })
+    const inBowl = () => document.querySelectorAll('.g3a-bowl .sh-placed').length
+    const fill = async (plateList: number[], bowl: number) => {
+      for (const p of plateList) await userEvent.click(plate(p))
+      for (let i = 0; i < bowl; i++) await userEvent.click(bowlBtn())
+    }
+
+    it('has no bowl without leftover', () => {
+      setup()
+      expect(document.querySelector('.g3a-bowl')).toBeNull()
+    })
+
+    it('moves items into the bowl and back', async () => {
+      run()
+      await userEvent.click(bowlBtn())
+      await userEvent.click(bowlBtn())
+      expect(inBowl()).toBe(2)
+      expect(pileCount()).toBe(5)
+      await userEvent.click(document.querySelector('.g3a-bowl .sh-placed')!)
+      expect(inBowl()).toBe(1)
+      expect(pileCount()).toBe(6)
+    })
+
+    it('drags an item into the bowl', () => {
+      run()
+      const rect = { left: 0, right: 100, top: 200, bottom: 300, width: 100, height: 100, x: 0, y: 200, toJSON: () => ({}) } as DOMRect
+      document.querySelector('.g3a-bowl')!.getBoundingClientRect = () => rect
+      const item = document.querySelector('.sh-pile .sh-item')!
+      fireEvent.pointerDown(item, { clientX: 500, clientY: 500, pointerId: 1, button: 0 })
+      fireEvent.pointerMove(item, { clientX: 50, clientY: 250, pointerId: 1 })
+      fireEvent.pointerUp(item, { clientX: 50, clientY: 250, pointerId: 1 })
+      expect(inBowl()).toBe(1)
+    })
+
+    it('accepts equal plates plus the remainder in the bowl, and says it', async () => {
+      const onAttempt = run()
+      await fill([1, 1, 2, 2, 3, 3], 1)
+      await check()
+      expect(onAttempt).toHaveBeenCalledWith(true)
+      expect(screen.getByRole('status')).toHaveTextContent('7 : 3 = 2, left 1')
+    })
+
+    it('rejects a bowl that holds a whole share or more', async () => {
+      const onAttempt = run()
+      await fill([1, 1, 2, 2], 3)
+      await check()
+      expect(onAttempt).toHaveBeenCalledWith(false)
+      expect(onAttempt).toHaveBeenCalledTimes(1)
+    })
+
+    it('rejects equal plates with the wrong bowl count', async () => {
+      const onAttempt = run()
+      await fill([1, 1, 2, 2, 3], 2)
+      await check()
+      expect(onAttempt).toHaveBeenCalledWith(false)
+    })
   })
 })

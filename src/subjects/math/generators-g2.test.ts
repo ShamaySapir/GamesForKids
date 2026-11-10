@@ -562,7 +562,7 @@ describe('groups of', () => {
       expect(q.answer).toBeLessThanOrEqual(10)
       expect(g.count).toBeLessThanOrEqual(50)
       expect(tableFactor(q.answer, g.cols!)).toBe(true)
-      expect(q.prompt.expr).toBe(`${g.count} ÷ ${g.cols} = ?`)
+      expect(q.prompt.expr).toBe(`${g.count} : ${g.cols} = ?`)
       expect(String(q.answer).length).toBeLessThanOrEqual(q.maxDigits)
       expect(groupsOfAccepts(q.itemKey)).toBe(true)
       expectKnown([q.say, q.instruction])

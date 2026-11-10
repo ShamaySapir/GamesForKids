@@ -42,7 +42,7 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
       {expr && <div className="pk-expr digi" dir="ltr">{expr}</div>}
       {art && (
         // Patterns read in the page's direction (RTL): the first item is on the right.
-        <div className="pk-art-row">{art.map((a, i) => <ArtView key={i} art={a} size={art.length > 4 ? 72 : 120} />)}</div>
+        <div className="pk-art-row">{art.map((a, i) => <ArtView key={i} art={a} size={prompt.artSize ?? (art.length > 4 ? 72 : 120)} />)}</div>
       )}
     </div>
   )
@@ -68,7 +68,7 @@ function optionFace(o: PickOption, speaker = false) {
     case 'text': return o.lang === 'en'
       ? <span className="en-text pk-opt-name" dir="ltr">{o.label}</span>
       : <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>
-    case 'number': return <span className="pk-opt-number digi" dir="ltr">{o.label}</span>
+    case 'number': return <span className={`pk-opt-number digi${o.label.length >= 4 ? ' long' : ''}`} dir="ltr">{o.label}</span>
     case 'objects': return <Objects group={o.group} size={30} />
     case 'art': return <ArtView art={o.art} size={96} />
     case 'letter': return <span className={`${o.lang === 'en' ? 'en-letter' : 'he-letter'} pk-opt-letter`} dir={o.lang === 'en' ? 'ltr' : undefined}>{o.label}</span>
@@ -123,6 +123,9 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
     <div className={`pk-stage${question.hoverSays ? ' pk-hover-says' : ''}`}>
       <p className="pk-q">{phrases[question.instruction]}</p>
       <PromptView prompt={question.prompt} />
+      {aid && question.aidArt && (
+        <div className="pk-art-row pk-aid-art">{question.aidArt.map((a, i) => <ArtView key={i} art={a} size={question.prompt.artSize ?? 120} />)}</div>
+      )}
       {aid && question.hint && (
         <button type="button" className="pill pk-hint" aria-label="🔊" onClick={() => void say(question.hint as PhraseRef)}>💡 🔊</button>
       )}

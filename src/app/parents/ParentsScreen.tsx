@@ -214,9 +214,14 @@ function Report({ child }: { child: Profile }) {
                   {island.skills.map(skill => {
                     const r = skillStatus(progress, skill)
                     const note = r.byParent ? ' (סומן ע״י הורה)' : r.state === 'practising' ? ` (${r.good}/2 סבבים טובים, ${'⭐'.repeat(r.bestStars)})` : ''
+                    // Sprint records (D23): "שיא בזירה: 23" per timed game the child has played.
+                    const records = skill.games.flatMap(g => {
+                      const best = g.sprint ? progress.records?.[`${skill.id}|${g.id}`] : undefined
+                      return best ? [` · שיא ב${g.title.replace(/[\u0591-\u05C7]/g, '')}: ${best}`] : []
+                    }).join('')
                     return (
                       <tr key={skill.id} className={`pr-${r.state}`}>
-                        <td>{skill.title}</td><td>{gradeShort(skill.grade)}</td><td>{STATE[r.state]}{note}</td><td>{date(r.lastPlayed)}</td>
+                        <td>{skill.title}</td><td>{gradeShort(skill.grade)}</td><td>{STATE[r.state]}{note}{records}</td><td>{date(r.lastPlayed)}</td>
                         <td>
                           {r.state !== 'mastered' && <button type="button" className="pill pr-small" onClick={() => know(skill.id, true)}>כבר יודע ✓</button>}
                           {r.byParent && <button type="button" className="pill pr-small" onClick={() => know(skill.id, false)}>בטל</button>}

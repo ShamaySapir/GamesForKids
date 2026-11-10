@@ -1,20 +1,9 @@
 import { readFile } from 'node:fs/promises'
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { numberWords } from '../src/app/parents/gate'
-import { createProfile } from './helpers'
+import { createProfile, passGate } from './helpers'
 
 // The parents' page through the real UI (docs/specs/parents.md): gate, settings, practice list, backup.
-
-/** Reads the number written in words and types it, as a parent would. */
-async function passGate(page: Page) {
-  await page.goto('/#/parents')
-  const words = await page.locator('.pr-gate-words').innerText()
-  const n = Array.from({ length: 79 }, (_, i) => 21 + i).find(k => numberWords(k) === words.trim())
-  expect(n, words).toBeDefined()
-  await page.getByLabel('המספר').fill(String(n))
-  await page.getByRole('button', { name: 'כניסה' }).click()
-  await expect(page.getByRole('heading', { name: 'דף הורים' })).toBeVisible()
-}
 
 test('the gate opens only on the right number, and asks a new one after a wrong answer', async ({ page }) => {
   await createProfile(page)

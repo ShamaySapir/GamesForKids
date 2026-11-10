@@ -11,17 +11,35 @@ import { NumberPadGame } from './games-pad'
 import { HundredChartGame } from './games-chart'
 import { PairsBoardGame } from './games-pairs'
 import { PlaceValueGame } from './games-place'
+import { registerMathArt } from './art-g3'
+import { ColumnGame } from './games-column'
+import { GridAreaGame } from './games-grid'
+import { SequenceFillGame, SequenceMistakeGame } from './games-sequence'
+import { SortGame } from './games-sort'
+import { FirstStepGame } from './games-tap'
 import { ShareGame } from './games-share'
 import * as g from './generators'
 import * as g2 from './generators-g2'
+import * as g3 from './generators-g3'
 import { phrases } from './phrases'
 import type { PadQ } from './types'
 
 // Skills 1–10: docs/specs/math-k2.md (kindergarten and the new 1st-grade curriculum).
 // Skills 11–17: docs/specs/math-grade2.md (the new 2nd-grade curriculum).
+// Skills 18–28: docs/specs/math-grade3.md (the new 3rd-grade curriculum).
+
+registerMathArt()
 
 const sign = (op: string) => (op === '+' ? '+' : '−')
 const skipLabel = (step: string, start: string) => (Number(step) < 0 ? `ספירה לאחור בקפיצות של ${-Number(step)} מ-${start}` : `ספירה בקפיצות של ${step} מ-${start}`)
+const PLACE: Record<string, string> = { 10: 'עשרות', 100: 'מאות', 1000: 'אלפים' }
+const ANGLE: Record<string, string> = { acute: 'חדה', right: 'ישרה', obtuse: 'קהה', straight: 'שטוחה' }
+const TRIANGLE: Record<string, string> = {
+  acute: 'חד זוויות', right: 'ישר זווית', obtuse: 'קהה זווית', equilateral: 'שווה צלעות', isosceles: 'שווה שוקיים', scalene: 'שונה צלעות',
+}
+const STORY: Record<string, string> = { boats: 'סירות', eggs: 'ביצים', cookies: 'עוגיות', teams: 'קבוצות', flowers: 'פרחים', pencils: 'עפרונות' }
+const nearLabel = (n: number, p: number) => `האם ${n} קרוב יותר ל-${Math.floor(n / p) * p} או ל-${(Math.floor(n / p) + 1) * p}`
+const exercise = (s: string) => s.replace(/x/g, ' × ').replace(/([+\-:=])/g, ' $1 ').replace(/\s+/g, ' ').trim()
 type Rule = [RegExp, (m: string[]) => string]
 const RULES: Rule[] = [
   [/^count:(\d+)$/, m => `ספירת ${m[1]} חפצים`],
@@ -54,6 +72,31 @@ const RULES: Rule[] = [
   [/^tbl:(\d+)x(\d+)$/, m => `${m[1]} × ${m[2]}`],
   [/^share:(\d+)÷(\d+)$/, m => `${m[1]} ÷ ${m[2]} (חלוקה שווה לצלחות)`],
   [/^groupsof:(\d+)÷(\d+)$/, m => `${m[1]} ÷ ${m[2]} (כמה קבוצות)`],
+  // Grade 3
+  [/^pv4:(\d+)$/, m => `בניית המספר ${m[1]} מאלפים, מאות, עשרות ואחדות`],
+  [/^flex4:(\d+):[htw]$/, m => `פירוק גמיש של ${m[1]}`],
+  [/^sign4:(\d+):(\d+)$/, m => `השוואה בין ${m[1]} ל-${m[2]}`],
+  [/^line10k:(\d+)(:z)?$/, m => `${m[1]} על ישר המספרים${m[2] ? ' (בין אלף לאלף)' : ' (עד 10000)'}`],
+  [/^skipbig:(-?\d+):(\d+)$/, m => skipLabel(m[1]!, m[2]!)],
+  [/^mistake:(-?\d+):(\d+)$/, m => `מציאת טעות בסדרה: ${skipLabel(m[1]!, m[2]!)}`],
+  [/^near:(\d+):(\d+)$/, m => nearLabel(Number(m[1]), Number(m[2]))],
+  [/^round:(\d+):(\d+)$/, m => `עיגול ${m[1]} ל${PLACE[m[2]!] ?? m[2]}`],
+  [/^col:(\d+)([+-])(\d+)$/, m => `${m[1]} ${sign(m[2]!)} ${m[3]} במאונך`],
+  [/^mleft:(.+)$/, m => `מספר חסר: ${exercise(m[1]!)}`],
+  [/^est10k:(\d+)([+-])(\d+)$/, m => `אומדן: ${m[1]} ${sign(m[2]!)} ${m[3]}`],
+  [/^mfac:(.+)$/, m => `מספר חסר: ${exercise(m[1]!)}`],
+  [/^arrbig:(\d+)x(\d+)$/, m => `פירוק ${m[1]} × ${m[2]} לשני תרגילים קלים`],
+  [/^rem:(\d+):(\d+)$/, m => `${m[1]} : ${m[2]} עם שארית`],
+  [/^remstory:(\w+):(\d+):(\d+)$/, m => `בעיה מילולית (${STORY[m[1]!] ?? m[1]}): ${m[2]} : ${m[3]} עם שארית`],
+  [/^div(\d+):(\d+)$/, m => `האם ${m[2]} מתחלק ב-${m[1]}`],
+  [/^sortdiv:(\d+):([\d,]+)$/, m => `מיון לפי התחלקות ב-${m[1]}: ${m[2]!.split(',').join(', ')}`],
+  [/^(?:x10|rt):(.+)$/, m => exercise(m[1]!)],
+  [/^ops:(.+)$/, m => `סדר פעולות, מה קודם: ${exercise(m[1]!)}`],
+  [/^opsr:(.+)$/, m => `סדר פעולות, התוצאה: ${exercise(m[1]!)}`],
+  [/^angle:(\w+)(?::(\d+))?$/, m => `זווית ${ANGLE[m[1]!] ?? m[1]}${m[2] ? ` (${m[2]} מעלות)` : ''}`],
+  [/^(?:tri|side):(\w+)$/, m => `משולש ${TRIANGLE[m[1]!] ?? m[1]}`],
+  [/^area:(\d+)x(\d+)$/, m => `שטח של מלבן ${m[1]} על ${m[2]}`],
+  [/^areaL:(\d+)x(\d+)\+(\d+)x(\d+)$/, m => `שטח של צורה משני מלבנים: ${m[1]} על ${m[2]} ו-${m[3]} על ${m[4]}`],
 ]
 
 /** Adult-readable label for a practice item key, plain Hebrew without nikud (D18). */
@@ -198,6 +241,90 @@ export const island: IslandDef = {
       games: [
         game({ id: 'share', title: 'מְחַלְּקִים לַצַּלָּחוֹת', icon: '🍪', component: ShareGame, generate: ctx => g2.shareQuestion(ctx, THINGS), accepts: g2.shareAccepts }),
         pad('groups-of', 'כַּמָּה קְבוּצוֹת?', '🧺', ctx => g2.groupsOfQuestion(ctx, THINGS), g2.groupsOfAccepts),
+      ],
+    },
+    {
+      id: 'math.place-10000', title: 'מִסְפָּרִים עַד 10000', grade: 3, requires: ['math.place-value'], sticker: '🏰',
+      games: [
+        game({ id: 'build-4', title: 'בּוֹנִים עִם אֲלָפִים', icon: '🏰', component: PlaceValueGame, generate: g3.build4Question, accepts: g3.build4Accepts }),
+        pad('flexible-4', 'פֵּרוּק גָּמִישׁ', '🧩', g3.flexible4Question, g3.flexible4Accepts),
+        pick('compare-4', 'גָּדוֹל, קָטָן, שָׁוֶה', '⚖️', g3.compare4Question, g3.compare4Accepts),
+        game({ id: 'line-10000', title: 'עַל יְשַׁר הַמִּסְפָּרִים', icon: '📏', component: PlaceGame, generate: g3.line10000Question, accepts: g3.line10000Accepts }),
+      ],
+    },
+    {
+      id: 'math.skip-10000', title: 'קְפִיצוֹת עַד 10000', grade: 3, requires: ['math.count-1000', 'math.place-10000'], sticker: '🦘',
+      games: [
+        game({ id: 'skip-big', title: 'מָה חָסֵר בַּסִּדְרָה?', icon: '🦘', component: SequenceFillGame, generate: g3.skipBigQuestion, accepts: g3.skipBigAccepts }),
+        game({ id: 'find-mistake', title: 'מִצְאוּ אֶת הַטָּעוּת', icon: '🔎', component: SequenceMistakeGame, generate: g3.mistakeQuestion, accepts: g3.mistakeAccepts }),
+      ],
+    },
+    {
+      id: 'math.round', title: 'מְעַגְּלִים', grade: 3, requires: ['math.place-10000'], sticker: '🎯',
+      games: [
+        pick('closer-to', 'קָרוֹב יוֹתֵר', '🧲', g3.closerQuestion, g3.closerAccepts),
+        pick('round-pick', 'עִגּוּל', '🎯', g3.roundPickQuestion, g3.roundPickAccepts),
+      ],
+    },
+    {
+      id: 'math.add-10000', title: 'חִבּוּר וְחִסּוּר עַד 10000', grade: 3, requires: ['math.within-100', 'math.place-10000'], sticker: '🧱',
+      games: [
+        game({ id: 'column', title: 'בִּמְאֻנָּךְ', icon: '🧱', component: ColumnGame, roundLength: 4, generate: g3.columnQuestion, accepts: g3.columnAccepts }),
+        pad('missing-left', 'הַמִּסְפָּר הֶחָסֵר', '❔', g3.missingLeftQuestion, g3.missingLeftAccepts),
+        pick('estimate-big', 'יוֹתֵר אוֹ פָּחוֹת?', '🎯', g3.estimateBigQuestion, g3.estimateBigAccepts),
+      ],
+    },
+    {
+      id: 'math.table', title: 'לוּחַ הַכֶּפֶל', grade: 3, requires: ['math.times'], sticker: '🏅',
+      games: [
+        pad('table-new', 'הַלּוּחַ הַמָּלֵא', '✖️', g3.tableNewQuestion, g3.tableNewAccepts),
+        pad('missing-factor', 'מָה חָסֵר?', '❔', g3.missingFactorQuestion, g3.missingFactorAccepts),
+        pick('array-big', 'מְפָרְקִים לִשְׁנַיִם', '🍫', ctx => g3.arrayBigQuestion(ctx, THINGS), g3.arrayBigAccepts),
+        defineGame({ id: 'arena', title: 'זִירַת הַכֶּפֶל', icon: '⏱️', component: NumberPadGame, sprint: { seconds: 60 }, generate: g3.arenaQuestion, accepts: g3.arenaAccepts }),
+      ],
+    },
+    {
+      id: 'math.remainder', title: 'חִלּוּק עִם שְׁאֵרִית', grade: 3, requires: ['math.divide', 'math.table'], sticker: '🧁',
+      games: [
+        game({ id: 'share-left', title: 'מָה נִשְׁאָר?', icon: '🧁', component: ShareGame, generate: ctx => g3.shareLeftQuestion(ctx, THINGS), accepts: g3.shareLeftAccepts }),
+        pick('remainder-pick', 'כַּמָּה וְכַמָּה נִשְׁאָר', '➗', g3.remainderPickQuestion, g3.remainderPickAccepts),
+        pick('remainder-story', 'סִפּוּרֵי חִלּוּק', '🚣', g3.remainderStoryQuestion, g3.remainderStoryAccepts),
+      ],
+    },
+    {
+      id: 'math.divisible', title: 'מִתְחַלֵּק בְּ־2, 5, 10', grade: 3, requires: ['math.table'], sticker: '🔍',
+      games: [
+        pick('which-divides', 'מִי מִתְחַלֵּק?', '🔍', g3.whichDividesQuestion, g3.whichDividesAccepts),
+        game({ id: 'sort-divides', title: 'מְמַיְּנִים', icon: '🗂️', component: SortGame, roundLength: 4, generate: g3.sortDividesQuestion, accepts: g3.sortDividesAccepts }),
+      ],
+    },
+    {
+      id: 'math.times-10', title: 'כּוֹפְלִים בְּ־10, 100, 1000', grade: 3, requires: ['math.table', 'math.place-10000'], sticker: '🚀',
+      games: [
+        pad('times-ten', 'כֶּפֶל בְּ־10, 100, 1000', '🚀', g3.timesTenQuestion, g3.timesTenAccepts),
+        pad('round-times', 'עֲשָׂרוֹת וּמֵאוֹת', '💯', g3.roundTimesQuestion, g3.roundTimesAccepts),
+      ],
+    },
+    {
+      id: 'math.order-ops', title: 'סֵדֶר פְּעֻלּוֹת', grade: 3, requires: ['math.table'], sticker: '🧩',
+      games: [
+        game({ id: 'first-step', title: 'מָה עוֹשִׂים קֹדֶם?', icon: '👆', component: FirstStepGame, generate: g3.firstStepQuestion, accepts: g3.firstStepAccepts }),
+        pick('result', 'כַּמָּה יוֹצֵא?', '🧩', g3.resultQuestion, g3.resultAccepts),
+      ],
+    },
+    {
+      id: 'math.angles', title: 'זָוִיּוֹת וּמְשֻׁלָּשִׁים', grade: 3, requires: [], sticker: '📐',
+      games: [
+        pick('angle-type', 'אֵיזוֹ זָוִית?', '📐', g3.angleTypeQuestion, g3.angleTypeAccepts),
+        pick('triangle-angles', 'מְשֻׁלָּשִׁים לְפִי זָוִיּוֹת', '🔺', g3.triangleAnglesQuestion, g3.triangleAnglesAccepts),
+        pick('triangle-sides', 'מְשֻׁלָּשִׁים לְפִי צְלָעוֹת', '📏', g3.triangleSidesQuestion, g3.triangleSidesAccepts),
+      ],
+    },
+    {
+      id: 'math.area', title: 'שֶׁטַח', grade: 3, requires: ['math.table'], sticker: '🟩',
+      games: [
+        game({ id: 'count-squares', title: 'סוֹפְרִים מִשְׁבָּצוֹת', icon: '🟩', component: GridAreaGame, roundLength: 4, generate: g3.countSquaresQuestion, accepts: g3.countSquaresAccepts }),
+        game({ id: 'length-width', title: 'אֹרֶךְ וְרֹחַב', icon: '📐', component: GridAreaGame, roundLength: 4, generate: g3.lengthWidthQuestion, accepts: g3.lengthWidthAccepts }),
       ],
     },
   ]),

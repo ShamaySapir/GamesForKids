@@ -65,6 +65,7 @@ const inTables = (a: number, b: number) => TABLES.some(t => t === a || t === b)
 const PLUS = '+'
 const MINUS = '−'
 const TIMES = '×'
+/** In item keys only (kept for Leitner history). Shown division is ':' as in Israeli schools (new curriculum, G3 p.9). */
 const DIV = '÷'
 
 /* ---------- 11. place value ---------- */
@@ -453,7 +454,7 @@ export function groupsOfQuestion(ctx: GenContext, things: readonly Thing[]): Pad
     itemKey: groupsOfKey(f), answer: f.groups, maxDigits: 2, say: M.groupsOf, instruction: M.groupsOf,
     prompt: {
       objects: [{ emoji: pick(ctx.rng, things).emoji, count: f.groups * f.size, layout: 'groups', cols: f.size }],
-      expr: `${f.groups * f.size} ${DIV} ${f.size} = ?`,
+      expr: `${f.groups * f.size} : ${f.size} = ?`,
     },
   }))
 }

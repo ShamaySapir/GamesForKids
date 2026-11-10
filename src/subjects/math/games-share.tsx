@@ -2,9 +2,10 @@ import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { phrases } from '../../core/audio/audio'
 import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake } from './games-pad'
-import { M } from './ids'
+import { M, M3 } from './ids'
 import type { ShareQ } from './types'
 import './math-g2.css'
+import './math-g3-art.css'
 
 // Per-question state; PlayScreen remounts this component for every question.
 
@@ -13,13 +14,16 @@ const DRAG_THRESHOLD = 8
 interface Drag { index: number; sx: number; sy: number; dx: number; dy: number; moved: boolean; over: number }
 
 export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
-  const { emoji, total, plates, answer } = question
+  const { emoji, total, plates, answer, leftover } = question
+  const rest = total % plates
   const [pile, setPile] = useState(total)
   const [onPlate, setOnPlate] = useState<number[]>(() => Array.from({ length: plates }, () => 0))
+  const [bowl, setBowl] = useState(0)
   const [drag, setDrag] = useState<Drag | null>(null)
   const [done, setDone] = useState(false)
   const [shaking, shake] = useShake()
   const plateEls = useRef<(HTMLDivElement | null)[]>([])
+  const bowlEl = useRef<HTMLDivElement | null>(null)
   const suppressClick = useRef(false)
   useHintOnAid(aid, question.hint)
 
@@ -33,11 +37,25 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
     setPile(n => n + 1)
     setOnPlate(c => c.map((n, i) => (i === p ? n - 1 : n)))
   }
-  const plateAt = (x: number, y: number) =>
-    plateEls.current.findIndex(el => {
-      const r = el?.getBoundingClientRect()
-      return !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom
-    })
+  const giveBowl = () => {
+    if (done || pile === 0) return
+    setPile(n => n - 1)
+    setBowl(n => n + 1)
+  }
+  const takeBowl = () => {
+    if (done || bowl === 0) return
+    setPile(n => n + 1)
+    setBowl(n => n - 1)
+  }
+  const inside = (el: HTMLElement | null | undefined, x: number, y: number) => {
+    const r = el?.getBoundingClientRect()
+    return !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom
+  }
+  /** Index of the plate under the point, `plates` for the left-over bowl, -1 for neither. */
+  const plateAt = (x: number, y: number) => {
+    const p = plateEls.current.findIndex(el => inside(el, x, y))
+    return p >= 0 ? p : leftover && inside(bowlEl.current, x, y) ? plates : -1
+  }
 
   const onDown = (e: ReactPointerEvent<HTMLElement>, index: number) => {
     if (done || (e.pointerType === 'mouse' && e.button !== 0)) return
@@ -60,7 +78,8 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
     suppressClick.current = true
     setTimeout(() => { suppressClick.current = false }, 0)
     const p = plateAt(e.clientX, e.clientY)
-    if (p >= 0) give(p)
+    if (p === plates) giveBowl()
+    else if (p >= 0) give(p)
   }
   const onPlateClick = (p: number) => {
     if (suppressClick.current) { suppressClick.current = false; return }
@@ -69,7 +88,7 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
 
   const check = () => {
     if (done) return
-    if (pile === 0 && onPlate.every(n => n === answer)) {
+    if (pile === 0 && onPlate.every(n => n === answer) && bowl === (leftover ? rest : 0)) {
       setDone(true)
       onAttempt(true)
     } else {
@@ -79,6 +98,7 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
   }
   const reset = () => {
     setPile(total)
+    setBowl(0)
     setOnPlate(onPlate.map(() => 0))
   }
 
@@ -109,8 +129,24 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
           </div>
         ))}
       </div>
+      {leftover && (
+        <div ref={bowlEl} className={`g3a-bowl${drag?.over === plates ? ' aim' : ''}${done ? ' ok' : ''}`}>
+          <div className="g3a-bowl-label">{phrases[M3.leftover]}</div>
+          <button type="button" className="g3a-bowl-dish" aria-label={`🥣 ${phrases[M3.leftover]}`} disabled={done || pile === 0} onClick={giveBowl}>🥣</button>
+          <div className="sh-on">
+            {Array.from({ length: bowl }, (_, k) => (
+              <button key={k} type="button" className="sh-item sh-placed" aria-label={`${emoji} ✕`} disabled={done} onClick={takeBowl}>{emoji}</button>
+            ))}
+          </div>
+          <div className="sh-count digi" dir="ltr" aria-hidden={!aid}>{aid ? bowl : ''}</div>
+        </div>
+      )}
       {done
-        ? <div className="sh-eq digi" dir="ltr" role="status">{total} ÷ {plates} = {answer}</div>
+        ? (
+          <div className="sh-eq digi" dir="ltr" role="status">
+            {total} : {plates} = {answer}{leftover ? `, ${phrases[M3.leftover]} ${rest}` : ''}
+          </div>
+        )
         : (
           <div className="pv-actions">
             <button type="button" className="cta" disabled={pile === total} onClick={check}>{phrases[M.check]}</button>

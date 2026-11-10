@@ -5,8 +5,8 @@ import { numberPhrase, pricePhrase } from './numbers'
 const say = (n: number) => numberPhrase(n).map(id => NUMBER_PHRASES[id]).join(' ')
 
 describe('numberPhrase', () => {
-  it('uses only declared blocks for 0–1,000', () => {
-    for (let n = 0; n <= 1000; n++) for (const id of numberPhrase(n)) expect(NUMBER_PHRASES[id], `${n} → ${id}`).toBeDefined()
+  it('uses only declared blocks for 0–10,000', () => {
+    for (let n = 0; n <= 10000; n++) for (const id of numberPhrase(n)) expect(NUMBER_PHRASES[id], `${n} → ${id}`).toBeDefined()
   })
 
   it('says numbers in the counting form', () => {
@@ -32,10 +32,25 @@ describe('numberPhrase', () => {
     expect(say(1000)).toBe('אֶלֶף')
   })
 
-  it('rejects numbers outside 0–1,000', () => {
+  it('rejects numbers outside 0–10,000', () => {
     expect(() => numberPhrase(-1)).toThrow()
-    expect(() => numberPhrase(1001)).toThrow()
+    expect(() => numberPhrase(10001)).toThrow()
     expect(() => numberPhrase(2.5)).toThrow()
+  })
+
+  it('says thousands with "and" only before the last part (grade 3)', () => {
+    expect(say(1001)).toBe('אֶלֶף וְאַחַת')
+    expect(say(1010)).toBe('אֶלֶף וְעֶשֶׂר')
+    expect(say(1100)).toBe('אֶלֶף וּמֵאָה')
+    expect(say(2000)).toBe('אַלְפַּיִם')
+    expect(say(3300)).toBe('שְׁלוֹשֶׁת אֲלָפִים וּשְׁלוֹשׁ מֵאוֹת')
+    expect(say(3407)).toBe('שְׁלוֹשֶׁת אֲלָפִים אַרְבַּע מֵאוֹת וְשֶׁבַע')
+    expect(say(3047)).toBe('שְׁלוֹשֶׁת אֲלָפִים אַרְבָּעִים וְשֶׁבַע')
+    expect(say(5015)).toBe('חֲמֵשֶׁת אֲלָפִים וַחֲמֵשׁ־עֶשְׂרֵה')
+    expect(say(7050)).toBe('שִׁבְעַת אֲלָפִים וַחֲמִשִּׁים')
+    expect(say(9999)).toBe('תִּשְׁעַת אֲלָפִים תְּשַׁע מֵאוֹת תִּשְׁעִים וְתֵשַׁע')
+    expect(say(10000)).toBe('עֲשֶׂרֶת אֲלָפִים')
+    expect(() => numberPhrase(10001)).toThrow()
   })
 })
 

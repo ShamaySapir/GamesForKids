@@ -72,3 +72,50 @@ export const M = {
   check: 'math.ui.check', //          "בְּדִיקָה"
   reset: 'math.ui.reset', //          "מֵהַתְחָלָה"
 } as const
+
+/**
+ * 3rd grade (Stage 5a, docs/specs/math-grade3.md). Reused from above: M.build, M.flexible, M.compare, M.place,
+ * M.misplaced, M.missing, M.estimate (+ moreThan/lessThan), M.facts, M.whichExercise, M.solve, M.check, M.reset.
+ * Word problems (content/remainder.ts) and numbers in sentences are read by the browser voice via raw() (D23).
+ */
+export const M3 = {
+  whatNumber: 'math.q.whatNumber', //     "אֵיזֶה מִסְפָּר זֶה?" (23 hundreds and 56 ones = ?)
+  skipBig: 'math.q.skipBig', //           "אֵילוּ מִסְפָּרִים חֲסֵרִים?"
+  jumpHint: 'math.hint.jump', //          "כָּל קְפִיצָה קָדִימָה הִיא בְּאוֹתוֹ גֹּדֶל"
+  jumpBackHint: 'math.hint.jumpBack', //  "כָּל קְפִיצָה אֲחוֹרָה הִיא בְּאוֹתוֹ גֹּדֶל"
+  closer: 'math.q.closer', //             "לְאֵיזֶה מִסְפָּר הוּא קָרוֹב יוֹתֵר?"
+  roundHint: 'math.hint.round', //        "מֵחָמֵשׁ וָמַעְלָה מְעַגְּלִים לְמַעְלָה"
+  column: 'math.q.column', //             "פִּתְרוּ בִּמְאֻנָּךְ. מַתְחִילִים מֵהָאֲחָדוֹת."
+  columnHint: 'math.hint.column', //      "כְּשֶׁיּוֹצֵא עֶשֶׂר אוֹ יוֹתֵר, מַעֲבִירִים לַטּוּר הַבָּא"
+  borrowHint: 'math.hint.borrow', //      "כְּשֶׁאֵין מַסְפִּיק, לוֹקְחִים עֶשֶׂר מֵהַטּוּר הַבָּא"
+  splitHint: 'math.hint.split', //        "אֶפְשָׁר לְפָרֵק לִשְׁנֵי תַּרְגִּילִים קַלִּים"
+  shareLeft: 'math.q.shareLeft', //       "חַלְּקוּ שָׁוֶה בְּשָׁוֶה, וּמָה שֶׁנִּשְׁאָר שִׂימוּ בַּקְּעָרָה"
+  remainder: 'math.q.remainder', //       "כַּמָּה יוֹצֵא, וְכַמָּה נִשְׁאָר?"
+  remainderHint: 'math.hint.remainder', // "הַשְּׁאֵרִית תָּמִיד קְטַנָּה מֵהַמִּסְפָּר שֶׁמְּחַלְּקִים בּוֹ"
+  sortNumbers: 'math.q.sortNumbers', //   "מַיְּנוּ אֶת הַמִּסְפָּרִים"
+  notDivisible: 'math.ui.notDivisible', // "לֹא מִתְחַלֵּק"
+  lastDigitHint: 'math.hint.lastDigit', // "הִסְתַּכְּלוּ עַל הַסִּפְרָה הָאַחֲרוֹנָה"
+  slideHint: 'math.hint.slide', //        "בְּכֶפֶל בְּעֶשֶׂר כָּל סִפְרָה זָזָה טוּר אֶחָד שְׂמֹאלָה"
+  firstStep: 'math.q.firstStep', //       "מָה עוֹשִׂים קֹדֶם? לַחֲצוּ עַל הַפְּעֻלָּה."
+  opsHint: 'math.hint.ops', //            "קֹדֶם מָה שֶׁבְּתוֹךְ הַסּוֹגְרַיִם, אַחַר כָּךְ כֶּפֶל וְחִלּוּק, וּבַסּוֹף חִבּוּר וְחִסּוּר"
+  angleType: 'math.q.angleType', //       "אֵיזוֹ זָוִית זוֹ?"
+  angleHint: 'math.hint.angle', //        "הַשְׁווּ לְפִנָּה יְשָׁרָה, כְּמוֹ הַפִּנָּה שֶׁל דַּף"
+  triangleHint: 'math.hint.triangle', //  "הִסְתַּכְּלוּ עַל הַזָּוִית הַגְּדוֹלָה בְּיוֹתֵר"
+  sidesHint: 'math.hint.sides', //        "הַקַּוִּים הַקְּטַנִּים מְסַמְּנִים צְלָעוֹת שָׁווֹת"
+  countSquares: 'math.q.countSquares', // "כַּמָּה מִשְׁבָּצוֹת יֵשׁ בַּצּוּרָה?"
+  area: 'math.q.area', //                 "מָה הַשֶּׁטַח? כַּמָּה סַנְטִימֶטְרִים רְבוּעִים?"
+  areaHint: 'math.hint.area', //          "כַּמָּה שׁוּרוֹת יֵשׁ, וְכַמָּה מִשְׁבָּצוֹת בְּכָל שׁוּרָה?"
+  thousands: 'math.ui.thousands', //      "אֲלָפִים"
+  leftover: 'math.ui.leftover', //        "שְׁאֵרִית" (the left-over bowl, and "3, שְׁאֵרִית 2")
+} as const
+
+/** "round to the nearest 10 / 100 / 1,000". */
+export const roundTo = (place: 10 | 100 | 1000) => `math.q.roundTo.${place}`
+/** "which number divides by 2 / 5 / 10 with nothing left?" */
+export const whichDivides = (d: 2 | 5 | 10) => `math.q.whichDivides.${d}`
+/** Bin label "divides by 2 / 5 / 10". */
+export const divisibleBy = (d: 2 | 5 | 10) => `math.ui.divisibleBy.${d}`
+/** Angle names: "acute angle", … (option labels and their 🔊). */
+export const angleName = (k: 'acute' | 'right' | 'obtuse' | 'straight') => `math.angle.${k}`
+/** "which triangle is right-angled?" and so on, by angles or by sides. */
+export const findTriangle = (k: 'acute' | 'right' | 'obtuse' | 'equilateral' | 'isosceles' | 'scalene') => `math.q.triangle.${k}`

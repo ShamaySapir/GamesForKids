@@ -26,7 +26,8 @@ function isProgress(v: unknown): v is Progress {
   const skillsOk = Object.values(v.skills).every(s => isObj(s) && Array.isArray(s.rounds) && typeof s.mastered === 'boolean' && typeof s.bestStars === 'number'
     && s.rounds.every(r => isObj(r) && typeof r.at === 'number' && typeof r.firstTry === 'number' && typeof r.total === 'number'))
   const leitnerOk = Object.values(v.leitner).every(e => isObj(e) && typeof e.box === 'number' && typeof e.due === 'number')
-  return skillsOk && leitnerOk && v.stickers.every(s => typeof s === 'string')
+  const recordsOk = v.records === undefined || (isObj(v.records) && Object.values(v.records).every(n => typeof n === 'number'))
+  return skillsOk && leitnerOk && recordsOk && v.stickers.every(s => typeof s === 'string')
 }
 
 export const makeBackup = (profiles: Profile[], progress: Record<string, Progress>, savedAt: number): Backup =>

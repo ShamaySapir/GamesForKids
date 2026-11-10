@@ -26,8 +26,11 @@ function scatter(count: number): [number, number][] {
 /** A countable group of objects. Rows are split in fives, which supports grouping (curriculum: grouping into 10s). */
 export function Objects({ group, size = 44 }: { group: ObjectGroup; size?: number }) {
   const { emoji, count, layout = 'row', faded = 0, covered = 0 } = group
+  // A wide array (grade 3: up to 10 columns) shrinks to the screen, so a phone never scrolls sideways.
+  const fit = (layout === 'array' || layout === 'groups') && group.cols && group.cols > 5
+    ? `min(${size}px, calc((100vw - 110px) / ${group.cols * 1.25}))` : size
   const item = (i: number) => (
-    <span key={i} className={`pk-obj${i >= count - faded ? ' faded' : ''}`} style={{ fontSize: size }} aria-hidden="true">{emoji}</span>
+    <span key={i} className={`pk-obj${i >= count - faded ? ' faded' : ''}`} style={{ fontSize: fit }} aria-hidden="true">{emoji}</span>
   )
   // A covered group must not announce its total: that is the answer.
   const label = covered ? `${count - covered} + ?` : `${count}`

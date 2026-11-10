@@ -12,6 +12,7 @@ import { Mascot, type Mood } from '../../ui/Mascot'
 import { StickerProgress, goodRounds } from '../../ui/StickerProgress'
 import { findIsland, findSkill } from '../islands'
 import { TopBar } from '../TopBar'
+import { SprintRound } from './SprintRound'
 
 const NEXT_DELAY_MS = 1100
 const GOOD = ['app.good.1', 'app.good.2', 'app.good.3', 'app.good.4']
@@ -24,6 +25,7 @@ export function PlayScreen() {
   // Soft locks (D19): any skill can be played; nothing redirects away.
   if (!island || !skill || !game) return <Navigate to="/" replace />
   // Remount on replay so every round starts fresh.
+  if (game.sprint) return <SprintRound key={`${skill.id}/${game.id}`} island={island} skill={skill} game={game} />
   return <Round key={`${skill.id}/${game.id}`} island={island} skill={skill} game={game} />
 }
 

@@ -87,3 +87,10 @@ Why: native-quality English TTS exists on every device and saves ~250 recordings
 - **Where it lives:** the repository was transferred to the GitHub organization `olis-islands` and renamed `olis-islands.github.io`, so Pages serves it at the domain root. The old address `shamaysapir.github.io/GamesForKids` no longer works, because GitHub doesn't redirect Pages sites.
 - **What didn't change:** the workflow, the setup script and the relative build. A custom domain can still be added with `CUSTOM_DOMAIN`.
 
+**D23 · 2026-11-10 · user** — Math for grades 3–6 (Stage 5):
+- **Built one grade at a time,** each with its own spec and play-test: 5a is grade 3, then 5b, 5c and 5d.
+- **Curriculum:** follows the Ministry's new curriculum documents for each grade.
+- **Multiplication arena:** an optional timed mode where the child beats their own record. It never shows a negative, has no lives, and missed facts return for review. This is allowed from grade 3 by CLAUDE.md.
+- **Recordings:** the user records only the short instructions. Large numbers and word problems are read by the browser voice and replayed with 🔊.
+- **Nikud:** child-facing text keeps full nikud in every grade, the same across the app. The curriculum phases nikud out during grade 3, but the user chose to keep it.
+
