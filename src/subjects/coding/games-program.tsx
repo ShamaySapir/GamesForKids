@@ -142,7 +142,7 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
       <div className="cd-play" role="group" tabIndex={0} aria-label={phrases[question.instruction] ?? ''}>
         <BoardView board={board} size={BOARD_PX} hero={hero ?? start} trail={trail} ghost={aid ? question.ghost : undefined} />
       </div>
-      <div className="cd-palette" role="group" aria-label="cards">
+      <div className="cd-palette" role="group" aria-label="קְלָפִים">
         {palette.map(p => (
           <button key={p} type="button" className="cd-pal" disabled={!editing} onClick={() => append(p)}
             aria-label={p === 'repeat' ? (phrases[C.repeatCard] ?? '🔁') : dirName(p)}>
@@ -151,7 +151,7 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
           </button>
         ))}
       </div>
-      <div className="cd-strip" dir="ltr" role="list" aria-label="program">
+      <div className="cd-strip" dir="ltr" role="list" aria-label="הַתָּכְנִית">
         {Array.from({ length: slots }, (_, i) => {
           const c = program[i]
           if (!c) return <span key={i} className="cd-slot" aria-hidden="true" />

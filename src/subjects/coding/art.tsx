@@ -23,7 +23,8 @@ function CodeBoard(p: ArtProps) {
   const program = [...str(p.program)]
   return (
     <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-      <BoardView board={{ id: 'art', rows }} size={Math.max(p.size, 120)} marks={marks} plain={p.plain === true} />
+      {/* Bigger than other art: a child has to count squares (the prompt board most of all). */}
+      <BoardView board={{ id: 'art', rows }} size={program.length > 0 ? 220 : Math.max(p.size, 150)} marks={marks} plain={p.plain === true} />
       {program.length > 0 && (
         <div style={{ ...row, direction: 'ltr' }} aria-hidden="true">
           {program.map((a, i) => <span key={i} style={chip}>{a}</span>)}
@@ -71,7 +72,7 @@ function CodeLoop(p: ArtProps) {
     background: 'var(--card)', border: '3px solid var(--code)',
   }
   const head: ReactNode = (
-    <span style={{ color: 'var(--code)', fontWeight: 800, fontSize: 22, direction: 'ltr' }}>↻ ×{typeof p.times === 'number' ? p.times : '?'}</span>
+    <span style={{ color: 'var(--code)', fontWeight: 800, fontSize: 22, direction: 'ltr' }}>🔁 ×{typeof p.times === 'number' ? p.times : '?'}</span>
   )
   return (
     <div style={frame} aria-hidden="true">
