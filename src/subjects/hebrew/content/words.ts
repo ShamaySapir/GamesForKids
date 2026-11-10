@@ -122,7 +122,7 @@ export const WORDS: readonly Word[] = [
   { id: 'nesher', text: 'נֶשֶׁר', emoji: '🦅', syllables: ['נֶ', 'שֶׁר'], opening: 'נֶ', first: 'n', last: 'r', rhyme: 'esher' },
   { id: 'nemala', text: 'נְמָלָה', emoji: '🐜', syllables: ['נְ', 'מָ', 'לָה'], opening: 'נְ', first: 'n', last: null },
   { id: 'notsa', text: 'נוֹצָה', emoji: '🪶', syllables: ['נוֹ', 'צָה'], opening: 'נוֹ', first: 'n', last: null },
-  { id: 'nora', text: 'נוֹרָה', emoji: '💡', syllables: ['נוֹ', 'רָה'], opening: 'נוֹ', first: 'n', last: null },
+  { id: 'nora', text: 'נוּרָה', emoji: '💡', syllables: ['נוּ', 'רָה'], opening: 'נוּ', first: 'n', last: null },
   { id: 'sus', text: 'סוּס', emoji: '🐴', syllables: ['סוּס'], opening: 'סוּ', first: 's', last: 's' },
   { id: 'sabon', text: 'סַבּוֹן', emoji: '🧼', syllables: ['סַ', 'בּוֹן'], opening: 'סַ', first: 's', last: 'n', rhyme: 'on' },
   { id: 'sefer', text: 'סֵפֶר', emoji: '📖', syllables: ['סֵ', 'פֶר'], opening: 'סֵ', first: 's', last: 'r' },
@@ -205,7 +205,7 @@ export const WORDS: readonly Word[] = [
 export const MILEL: readonly string[] = ['bayit', 'zayit', 'gesher', 'nesher', 'rakevet', 'arnevet', 'maxberet', 'sharsheret', 'garbayim', 'mayim', 'misparayim', 'mishkafayim', 'maxnasayim', 'shinayim', 'raglayim', 'einayim']
 
 /** Opening consonant+vowel units for the opening-cv skill; every unit opens at least two words. */
-export const CV_UNITS: readonly string[] = ['שֶׁ', 'שׁוֹ', 'שָׁ', 'שַׁ', 'זֶ', 'סַ', 'לַ', 'רַ', 'מַ', 'מִ', 'נָ', 'נוֹ', 'חַ', 'חָ', 'בַּ', 'בָּ', 'כַּ', 'כִּ', 'כּוֹ', 'תַּ', 'פִּי', 'פֶּ', 'פָּ', 'קֶ', 'קַ', 'גֶּ', 'עֵ', 'עָ', 'יוֹ']
+export const CV_UNITS: readonly string[] = ['שֶׁ', 'שׁוֹ', 'שָׁ', 'שַׁ', 'זֶ', 'סַ', 'לַ', 'רַ', 'מַ', 'מִ', 'נָ', 'חַ', 'חָ', 'בַּ', 'בָּ', 'כַּ', 'כִּ', 'כּוֹ', 'תַּ', 'פִּי', 'פֶּ', 'פָּ', 'קֶ', 'קַ', 'גֶּ', 'עֵ', 'עָ', 'יוֹ']
 
 /** Words with a syllable-by-syllable phrase (1 to 4 syllables). Only words whose clap count is unambiguous: no initial shva cluster, no final patach genuvah. */
 export const SYLLABLE_WORDS: readonly string[] = [
