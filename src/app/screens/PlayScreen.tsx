@@ -69,7 +69,9 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
         })
         setResult(outcome)
         sfx.win()
-        void say(outcome.newlyMastered ? ['app.end.' + outcome.stars, 'app.mastered'] : 'app.end.' + outcome.stars)
+        // A 3-star round that didn't master the skill yet (D7 needs two): tell the child one more such round earns the sticker.
+        const oneMore = outcome.stars === 3 && !useStore.getState().progress.skills[skill.id]?.mastered
+        void say(outcome.newlyMastered ? ['app.end.' + outcome.stars, 'app.mastered'] : oneMore ? ['app.end.3', 'app.oneMore'] : 'app.end.' + outcome.stars)
       }
     }, NEXT_DELAY_MS)
   }
@@ -108,6 +110,7 @@ interface ResultsProps {
 }
 
 function Results({ island, skill, result, firstTry, total, onAgain }: ResultsProps) {
+  const mastered = useStore(st => !!st.progress.skills[skill.id]?.mastered)
   return (
     <>
       <TopBar back={`/island/${island.id}`} />
@@ -115,6 +118,7 @@ function Results({ island, skill, result, firstTry, total, onAgain }: ResultsPro
         <div className="pop" style={{ fontSize: 80 }}>{'⭐'.repeat(result.stars)}</div>
         <h1>{phrases['app.end.' + result.stars]}</h1>
         <p className="sub">{firstTry} מתוך {total} בניסיון הראשון</p>
+        {result.stars === 3 && !result.newlyMastered && !mastered && <p className="sub">{phrases['app.oneMore']}</p>}
         {result.newlyMastered && (
           <p className="pop" style={{ fontSize: 26, fontWeight: 800 }}>
             <span style={{ fontSize: 64, display: 'block' }}>{skill.sticker}</span>{phrases['app.mastered']}

@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { say } from '../../core/audio/audio'
 import { isUnlocked } from '../../core/progress/progress'
 import { gradeShort } from '../../core/engine/types'
+import { MASTERY_ACCURACY, MASTERY_ROUNDS } from '../../core/adaptive/adaptive'
 import { useStore } from '../../core/storage/store'
 import { Mascot } from '../../ui/Mascot'
 import { findIsland } from '../islands'
@@ -22,12 +23,17 @@ export function IslandScreen() {
         {island.skills.map((skill, i) => {
           const sp = progress.skills[skill.id]
           const open = isUnlocked(progress, skill.requires)
+          // Rounds that count toward mastery (D7), shown so a 3-star round that didn't unlock the next skill makes sense.
+          const good = Math.min(MASTERY_ROUNDS, sp?.rounds.filter(r => r.total > 0 && r.firstTry / r.total >= MASTERY_ACCURACY).length ?? 0)
           return (
             <li key={skill.id} className="tile" style={{ ['--c' as string]: `var(${island.color})`, cursor: 'default', flexWrap: 'wrap', opacity: open ? 1 : 0.6 }}>
               <span className="ic">{sp?.mastered ? skill.sticker : open ? i + 1 : '🔒'}</span>
               <div style={{ flex: 1, minWidth: 180 }}>
                 <b>{skill.title}</b>
                 <small>{gradeShort(skill.grade)} · {'⭐'.repeat(sp?.bestStars ?? 0) || 'עוד לא שיחקנו'}</small>
+                {open && !sp?.mastered && good > 0 && (
+                  <small style={{ display: 'block', marginTop: 4 }} aria-label={`${good} / ${MASTERY_ROUNDS}`}>{'🟢'.repeat(good)}{'⚪'.repeat(MASTERY_ROUNDS - good)} עוֹד סִבּוּב טוֹב וּמְקַבְּלִים מַדְבֵּקָה</small>
+                )}
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 {skill.games.map(g => open
