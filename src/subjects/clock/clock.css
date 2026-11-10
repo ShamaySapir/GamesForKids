@@ -14,3 +14,7 @@
 .match-card.sel { border-color: var(--sun); box-shadow: 0 0 0 4px var(--sun); }
 .match-card.done { background: var(--okbg); border-color: var(--ok); cursor: default; }
 @media (max-width: 700px) { .match { grid-template-columns: repeat(2, 1fr); } }
+
+/* An answer and its 🔊 side by side; the speaker never answers. */
+.clock-opt-row { display: flex; align-items: center; gap: 8px; }
+.clock-opt-row .opt { flex: 1; }

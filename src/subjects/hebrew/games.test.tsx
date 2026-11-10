@@ -55,33 +55,17 @@ describe('PickGame', () => {
     expect(onAttempt.mock.calls).toEqual([[true]])
   })
 
-  it('plays the sound without answering: small speaker click and 400ms hover', async () => {
+  it('plays a sound only from its speaker, never on hover, and never answers', () => {
     vi.useFakeTimers()
     const onAttempt = vi.fn()
     const { container } = render(<PickGame question={pickQ} aid={false} onAttempt={onAttempt} />)
-    const speakers = container.querySelectorAll('.pk-say')
-    expect(speakers).toHaveLength(3)
+    expect(container.querySelectorAll('.pk-say')).toHaveLength(3)
+    fireEvent.pointerEnter(nth(container, '.pk-opt-wrap', 0), { pointerType: 'mouse' })
+    act(() => { vi.advanceTimersByTime(1000) })
+    expect(say).not.toHaveBeenCalled()
     fireEvent.click(nth(container, '.pk-say', 2))
     expect(say).toHaveBeenLastCalledWith('hebrew.sound.m')
-
-    const wrap = nth(container, '.pk-opt-wrap', 0)
-    fireEvent.pointerEnter(wrap, { pointerType: 'mouse' })
-    act(() => { vi.advanceTimersByTime(300) })
-    expect(say).toHaveBeenCalledTimes(1)
-    act(() => { vi.advanceTimersByTime(150) })
-    expect(say).toHaveBeenLastCalledWith('hebrew.word.tapuach')
     expect(onAttempt).not.toHaveBeenCalled()
-  })
-
-  it('does not hover-play when the pointer leaves early', () => {
-    vi.useFakeTimers()
-    const { container } = render(<PickGame question={pickQ} aid={false} onAttempt={vi.fn()} />)
-    const wrap = nth(container, '.pk-opt-wrap', 0)
-    fireEvent.pointerEnter(wrap, { pointerType: 'mouse' })
-    act(() => { vi.advanceTimersByTime(200) })
-    fireEvent.pointerLeave(wrap)
-    act(() => { vi.advanceTimersByTime(500) })
-    expect(say).not.toHaveBeenCalled()
   })
 
   it('shows letter options and a blank at the start of a word', () => {

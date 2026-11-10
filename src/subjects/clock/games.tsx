@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
-import { phrases, say } from '../../core/audio/audio'
+import { useState, type ReactNode } from 'react'
+import { phrases } from '../../core/audio/audio'
 import { shuffle } from '../../core/engine/random'
 import type { GameProps } from '../../core/engine/types'
 import { Clock, type Hand } from './Clock'
 import type { HandQ, MatchQ, ReadQ, SetQ } from './generators'
+import { SayButton } from '../../ui/pick/SayButton'
 import { sameTime, timeKey, timePhrase, timeText, type Time } from './time'
-
-// Like the shared pick options: a mouse resting on an answer reads it aloud, for children who don't read yet.
-const HOVER_SAY_MS = 400
 import './clock.css'
 
 // Components keep per-question state; PlayScreen remounts them via `key` on each new question.
@@ -20,17 +18,8 @@ function Prompt({ id, children }: { id: string; children?: ReactNode }) {
 export function ReadGame({ question, aid, onAttempt }: GameProps<ReadQ>) {
   const [wrong, setWrong] = useState<string[]>([])
   const [right, setRight] = useState(false)
-  const hover = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const hoverEnd = () => { if (hover.current) clearTimeout(hover.current) }
-  const hoverStart = (e: ReactPointerEvent, t: Time) => {
-    if (e.pointerType !== 'mouse') return
-    hoverEnd()
-    hover.current = setTimeout(() => void say(timePhrase(t)), HOVER_SAY_MS)
-  }
-  useEffect(() => hoverEnd, [])
   const choose = (t: Time) => {
     if (right) return
-    hoverEnd()
     const ok = sameTime(t, question.answer)
     if (ok) setRight(true)
     else setWrong(w => [...w, timeKey(t)])
@@ -46,12 +35,14 @@ export function ReadGame({ question, aid, onAttempt }: GameProps<ReadQ>) {
           const key = timeKey(t)
           const isRight = right && sameTime(t, question.answer)
           return (
-            <button key={key} className={`opt${isRight ? ' ok' : wrong.includes(key) ? ' bad' : ''}`}
-              disabled={wrong.includes(key)} onClick={() => choose(t)}
-              onPointerEnter={e => hoverStart(e, t)} onPointerLeave={hoverEnd}>
-              <span className="digi">{key}</span>
-              <span className="clock-opt-text">{timeText(t)}</span>
-            </button>
+            <div key={key} className="clock-opt-row">
+              <button className={`opt${isRight ? ' ok' : wrong.includes(key) ? ' bad' : ''}`}
+                disabled={wrong.includes(key)} onClick={() => choose(t)}>
+                <span className="digi">{key}</span>
+                <span className="clock-opt-text">{timeText(t)}</span>
+              </button>
+              <SayButton id={timePhrase(t)} />
+            </div>
           )
         })}
       </div>
