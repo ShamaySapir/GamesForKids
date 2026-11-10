@@ -184,6 +184,13 @@ describe('ProgramGame repeat card', () => {
     fireEvent.click(palette('🔁'))
     const times = () => document.querySelector('.cd-times')!
     expect(times().textContent).toBe('×2')
+    expect(times().getAttribute('aria-label')).toBe('פַּעֲמַיִם')
+    fireEvent.click(times())
+    expect(times().getAttribute('aria-label')).toMatch(/^3 /)
+    fireEvent.click(times())
+    fireEvent.click(times())
+    fireEvent.click(times())
+    expect(times().textContent).toBe('×2')
     fireEvent.click(times())
     fireEvent.click(times())
     expect(times().textContent).toBe('×4')

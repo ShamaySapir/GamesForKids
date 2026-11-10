@@ -165,7 +165,7 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
             <span key={i} role="listitem" className={`${cardCls(i)} cd-rep`}>
               <span aria-hidden="true">🔁</span>
               <button type="button" className="cd-sub cd-times" disabled={!editing}
-                aria-label={`${c.times} ${phrases[C.times] ?? '×'}`}
+                aria-label={c.times === 2 ? 'פַּעֲמַיִם' : `${c.times} ${phrases[C.times] ?? '×'}`}
                 onClick={() => edit(i, r => ({ ...r, times: r.times >= MAX_TIMES ? MIN_TIMES : r.times + 1 }))}>×{c.times}</button>
               {c.body.map((d, j) => (
                 <button key={j} type="button" className="cd-sub" disabled={!editing} aria-label={dirName(d)}
