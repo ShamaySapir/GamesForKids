@@ -85,9 +85,10 @@ export function hearUnitQuestion(ctx: GenContext, units: readonly Unit[], letter
   })
 }
 
-export const SEE_UNIT_LABELS = ['🔴', '🟢', '🔵'] as const
+// Sounds are named by number, not color: a color says nothing to a child, "צְלִיל 1" says "listen to me" (play-test).
+export const SEE_UNIT_LABELS = ['צְלִיל 1', 'צְלִיל 2', 'צְלִיל 3'] as const
 
-/** Skills 1–5, game B: see a big unit, pick its sound among 3 colored buttons. Labels follow the shuffled order. */
+/** Skills 1–5, game B: see a big unit, pick its sound among 3 numbered sound buttons. Labels follow the shuffled order. */
 export function seeUnitQuestion(ctx: GenContext, units: readonly Unit[], letters: readonly Letter[], vowel: Vowel): PickQ {
   return make(ctx, vowelUnits(units, vowel), u => u.key, target => {
     const wrong = unitDistractors(ctx.rng, units, letters, target, 2)

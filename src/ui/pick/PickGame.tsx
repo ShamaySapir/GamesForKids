@@ -59,7 +59,9 @@ function optionFace(o: PickOption) {
       : <span className="pk-emoji" aria-hidden="true">{o.emoji}</span>
     case 'sound': return o.label === undefined
       ? <span className="he-text pk-opt-name">{phrases[o.say]}</span>
-      : <span className="he-letter pk-opt-letter">{o.label}</span>
+      : o.label.length > 2
+        ? <span className="he-text pk-opt-name">{o.label}</span>
+        : <span className="he-letter pk-opt-letter">{o.label}</span>
     case 'text': return o.lang === 'en'
       ? <span className="en-text pk-opt-name" dir="ltr">{o.label}</span>
       : <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>

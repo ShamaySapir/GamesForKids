@@ -13,7 +13,7 @@ const oneLine = (text: string) => text.replace(/\s*\n\s*/g, ' ')
 
 const instructions: Record<string, string> = {
   [R.hearUnit]: 'אֵיפֹה כָּתוּב',
-  [R.seeUnit]: 'אֵיךְ קוֹרְאִים אֶת זֶה?',
+  [R.seeUnit]: 'אֵיךְ קוֹרְאִים אֶת זֶה? שִׁמְעוּ כָּל צְלִיל וּבַחֲרוּ.',
   [R.build]: 'בְּנוּ אֶת הַמִּילָּה',
   [R.readWord]: 'קִרְאוּ אֶת הַמִּילָּה וּבַחֲרוּ תְּמוּנָה',
   [R.pictureWord]: 'אֵיזוֹ מִילָּה מַתְאִימָה לַתְּמוּנָה?',
