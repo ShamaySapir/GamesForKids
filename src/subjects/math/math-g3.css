@@ -1,0 +1,125 @@
+/* 3rd grade math games: written columns, number sequences, first step, sorting. Tokens only. */
+
+.g3-stage { gap: 14px; --g3-cell: clamp(52px, 14vw, 76px); }
+.g3-pad { display: grid; grid-template-columns: repeat(3, 76px); gap: 10px; direction: ltr; }
+@media (max-width: 520px) { .g3-pad { grid-template-columns: repeat(3, 72px); gap: 8px; } }
+
+/* ---- column board ---- */
+.g3-col {
+  display: grid; justify-content: center; align-items: center; row-gap: 4px; column-gap: 4px; padding: 12px 14px;
+  background: var(--card); border: 4px solid var(--line); border-radius: 24px; max-width: 100%;
+}
+.g3-col.bad { animation: shake .35s; border-color: var(--bad); }
+.g3-col.ok { border-color: var(--ok); background: var(--okbg); }
+.g3-cell {
+  min-height: 56px; display: grid; place-items: center; font-size: clamp(34px, 9vw, 52px); font-weight: 800; color: var(--ink);
+  border-radius: 12px; line-height: 1;
+}
+.g3-carry { min-height: 28px; }
+.g3-carry small { font-size: clamp(16px, 4.4vw, 22px); font-weight: 800; color: var(--bad); }
+.g3-op { font-size: clamp(30px, 8vw, 44px); font-weight: 800; color: var(--mute); padding-inline-end: 6px; text-align: center; }
+.g3-rule { grid-column: 1 / -1; height: 4px; background: var(--ink); border-radius: 2px; margin-block: 2px; }
+.g3-res { min-height: 68px; background: var(--sand); border: 3px dashed var(--line); }
+.g3-res.cur { border-style: solid; border-color: var(--num); box-shadow: 0 0 0 3px var(--sun); }
+.g3-cell.hl { background: var(--sun); color: var(--sun-ink); }
+.g3-res.hl { background: var(--sun); }
+.g3-sum { margin: 0; min-height: 32px; font-size: 24px; font-weight: 700; color: var(--mute); }
+
+/* ---- sequences ---- */
+.g3-terms {
+  display: grid; grid-template-columns: repeat(var(--n, 6), minmax(0, 1fr)); gap: 14px; width: 100%; max-width: 680px; padding-top: 6px;
+}
+.g3-terms.aid { padding-top: 34px; }
+.g3-term {
+  position: relative; min-height: var(--tap); display: grid; align-items: stretch; font-size: clamp(22px, 5vw, 34px); font-weight: 800;
+}
+.g3-term.fixed, .g3-term.ok {
+  place-items: center; background: var(--card); border: 3px solid var(--line); border-radius: 18px; color: var(--ink); min-height: 72px;
+}
+.g3-term.ok { background: var(--okbg); border-color: var(--ok); }
+.g3-blank, .g3-pick {
+  min-height: 72px; min-width: 0; padding: 0 2px; font: inherit; font-weight: 800; color: var(--ink); background: var(--card);
+  border: 3px solid var(--line); border-radius: 18px; cursor: pointer; box-shadow: 0 4px 0 var(--line);
+}
+.g3-blank { background: var(--sun); color: var(--sun-ink); border-color: var(--sun); }
+.g3-blank.sel { outline: 4px solid var(--abc); outline-offset: 2px; }
+.g3-blank.bad, .g3-pick.bad { background: var(--badbg); border-color: var(--bad); color: var(--ink); }
+.g3-blank.shake { animation: shake .35s; }
+.g3-pick:hover:not(:disabled) { border-color: var(--num); }
+.g3-pick:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--line); }
+.g3-pick.ok { background: var(--okbg); border-color: var(--ok); }
+.g3-pick:disabled { cursor: default; opacity: .6; }
+.g3-pick.ok:disabled { opacity: 1; }
+.g3-blank:focus-visible, .g3-pick:focus-visible { outline: 4px solid var(--abc); outline-offset: 2px; }
+.g3-terms.shake { animation: shake .35s; }
+.g3-jump {
+  position: absolute; top: -32px; left: calc(-7px); transform: translateX(-50%); padding: 0 8px; border-radius: 999px;
+  background: var(--card); border: 3px solid var(--abc); color: var(--abc); font-size: 18px; font-weight: 800; line-height: 26px; white-space: nowrap;
+  z-index: 1;
+}
+@media (max-width: 520px) {
+  .g3-terms { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 12px; }
+  .g3-terms:not(.aid) { gap: 14px 12px; }
+  .g3-term:nth-child(3n + 1) .g3-jump { display: none; }
+  .g3-jump { left: -6px; }
+}
+
+/* ---- first step ---- */
+.g3-expr { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; max-width: 100%; }
+.g3-expr.shake { animation: shake .35s; }
+.g3-tok {
+  min-width: 36px; min-height: var(--tap); display: grid; place-items: center; padding: 0 6px; border-radius: 16px; border: 3px solid transparent;
+  font-size: clamp(40px, 11vw, 64px); font-weight: 800; line-height: 1; color: var(--ink); background: transparent;
+}
+.g3-tok.paren { color: var(--mute); min-width: 20px; padding: 0; }
+.g3-tok.paren.aid { color: var(--abc); }
+.g3-tok.near { background: var(--sun); color: var(--sun-ink); }
+.g3-tok.op {
+  min-width: var(--tap); background: var(--card); border-color: var(--line); box-shadow: 0 4px 0 var(--line); cursor: pointer; font-family: inherit;
+}
+.g3-tok.op:hover:not(:disabled), .g3-tok.op.lit { border-color: var(--num); }
+.g3-tok.op:focus-visible { outline: 4px solid var(--abc); outline-offset: 2px; }
+.g3-tok.op:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--line); }
+.g3-tok.op.bad { background: var(--badbg); border-color: var(--bad); }
+.g3-tok.op.ok { background: var(--okbg); border-color: var(--ok); }
+.g3-tok.op:disabled { cursor: default; }
+
+/* ---- sorting ---- */
+.g3-pool {
+  display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 10px; width: 100%; max-width: 640px;
+  min-height: 96px; padding: 10px; background: var(--sand); border-radius: 24px; border: 4px dashed transparent;
+}
+.g3-pool.aim { border-color: var(--num); }
+.g3-pool.shake { animation: shake .35s; }
+.g3-chip {
+  min-width: var(--tap); min-height: var(--tap); padding: 0 12px; border-radius: 18px; border: 3px solid var(--line); background: var(--card);
+  color: var(--ink); font: inherit; font-size: 28px; font-weight: 800; cursor: grab; touch-action: none; user-select: none; position: relative;
+  box-shadow: 0 4px 0 var(--line);
+}
+.g3-chip.sel { border-color: var(--num); box-shadow: 0 0 0 4px var(--sun); }
+.g3-chip.dragging { z-index: 10; pointer-events: none; opacity: .9; }
+.g3-chip.ok { background: var(--okbg); border-color: var(--ok); cursor: default; opacity: 1; }
+.g3-chip:focus-visible { outline: 4px solid var(--abc); outline-offset: 2px; }
+.g3-last { text-decoration-thickness: 4px; text-underline-offset: 5px; text-decoration-color: var(--bad); }
+.g3-bins { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 640px; }
+.g3-bin {
+  display: grid; grid-template-rows: auto 1fr; gap: 8px; min-height: 160px; padding: 8px; background: var(--card);
+  border: 4px dashed var(--line); border-radius: 24px; min-width: 0;
+}
+.g3-bin.ready { border-color: var(--num); }
+.g3-bin.aim { border-style: solid; border-color: var(--num); box-shadow: 0 0 0 4px var(--sun); }
+.g3-bin-label {
+  min-height: var(--tap); padding: 4px 10px; border-radius: 16px; border: 3px solid var(--line); background: transparent; font: inherit;
+  font-size: 20px; font-weight: 800; color: var(--ink); cursor: pointer;
+}
+.g3-bin-label:focus-visible { outline: 4px solid var(--abc); outline-offset: 2px; }
+.g3-bin-label:disabled { cursor: default; }
+.g3-key {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--ink); color: var(--card);
+  font-size: 18px; font-weight: 800;
+}
+.g3-bin-chips { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 8px; }
+@media (max-width: 520px) {
+  .g3-chip { font-size: 24px; padding: 0 8px; }
+  .g3-bin-label { font-size: 17px; padding: 4px 6px; }
+}
