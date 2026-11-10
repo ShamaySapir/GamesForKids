@@ -1,0 +1,67 @@
+/* Grade 3 additions: thousands column, left-over bowl, grid area game, angle/triangle/rounding drawings. Tokens only. */
+
+/* ---- place-value house with a thousands column ---- */
+.pv-k { fill: var(--abc); }
+.pv-k-top { fill: var(--abc); opacity: .6; }
+.pv-k-side { fill: var(--abc); opacity: .8; }
+.pv-thousand { width: 38px; height: 38px; }
+.pv-house-4 .pv-cols { gap: 6px; padding: 6px; }
+.pv-house-4 .pv-col { padding: 8px 2px; gap: 4px; }
+.pv-house-4 .pv-label { font-size: 17px; }
+.pv-house-4 .pv-count { font-size: 17px; min-height: 24px; white-space: nowrap; }
+.pv-house-4 .pv-pieces-thousand { gap: 2px; }
+@media (max-width: 600px) {
+  .pv-house-4 .pv-thousand { width: 28px; height: 28px; }
+  .pv-house-4 .pv-hundred { width: 26px; height: 26px; }
+  .pv-house-4 .pv-ten { width: 7px; height: 28px; }
+  .pv-house-4 .pv-one { width: 12px; height: 12px; }
+  .pv-house-4 .pv-pieces-one { max-width: 40px; }
+  .pv-house-4 .pv-pieces { min-height: 96px; }
+  .pv-house-4 .pv-label { font-size: 15px; }
+  .pv-house-4 .pv-count { font-size: 14px; }
+}
+
+/* ---- left-over bowl ---- */
+.g3a-bowl {
+  display: grid; justify-items: center; gap: 4px; min-width: 140px; min-height: 120px; padding: 6px 12px; background: var(--card);
+  border: 4px dashed var(--bad); border-radius: 28px;
+}
+.g3a-bowl.aim { border-style: solid; box-shadow: 0 0 0 4px var(--sun); }
+.g3a-bowl.ok { border-style: solid; border-color: var(--ok); background: var(--okbg); }
+.g3a-bowl-label { font-size: 20px; font-weight: 800; color: var(--ink); }
+.g3a-bowl-dish { min-width: var(--tap); min-height: var(--tap); font-size: 48px; line-height: 1; background: transparent; border: 0; cursor: pointer; }
+.g3a-bowl-dish:disabled { cursor: default; }
+
+/* ---- grid area game ---- */
+.g3a-stage { gap: 14px; }
+.g3a-board { width: 100%; max-width: 420px; display: grid; justify-items: center; }
+.g3a-svg { width: 100%; height: auto; display: block; direction: ltr; overflow: visible; }
+.g3a-shape { --c: var(--num); fill: var(--c); fill-opacity: .28; stroke: none; }
+.g3a-edge { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+.g3a-cell { fill: none; stroke: var(--ink); stroke-opacity: .45; stroke-width: 1.2; }
+.g3a-side { font-weight: 800; fill: var(--ink); font-size: 22px; }
+.g3a-rowcount { font-weight: 800; fill: var(--mute); font-size: 14px; }
+.g3a-answer-row { display: flex; align-items: center; gap: 10px; direction: ltr; }
+.g3a-unit { font-size: 28px; font-weight: 800; color: var(--ink); direction: rtl; }
+@media (prefers-reduced-motion: no-preference) {
+  .g3a-cell, .g3a-rowcount { animation: g3a-fade .3s ease-out; }
+}
+@keyframes g3a-fade { from { opacity: 0; } }
+@media (max-width: 600px) {
+  .g3a-side { font-size: 20px; }
+  .g3a-unit { font-size: 22px; }
+}
+
+/* ---- drawings ---- */
+.g3a-art { display: block; overflow: visible; }
+.g3a-arm { stroke: var(--ink); stroke-width: 5; stroke-linecap: round; fill: none; }
+.g3a-arc { stroke: var(--c, var(--clock)); stroke-width: 3.5; fill: none; }
+.g3a-dot { fill: var(--ink); }
+.g3a-corner { stroke: var(--c, var(--clock)); stroke-width: 2.5; stroke-dasharray: 4 3; fill: none; }
+.g3a-tri { fill: var(--c, var(--read)); fill-opacity: .25; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
+.g3a-tick { stroke: var(--clock); stroke-width: 3; stroke-linecap: round; }
+.g3a-line { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.g3a-mid { stroke: var(--mute); stroke-width: 2.5; stroke-dasharray: 4 3; }
+.g3a-mark { fill: var(--clock); stroke: var(--card); stroke-width: 2; }
+.g3a-label { font-weight: 800; fill: var(--ink); text-anchor: middle; }
+.g3a-label-n { font-weight: 800; fill: var(--clock); text-anchor: middle; }
