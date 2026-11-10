@@ -8,6 +8,7 @@ import type { GameDef, IslandDef, SkillDef } from '../../core/engine/types'
 import { isUnlocked, skillLeitner } from '../../core/progress/progress'
 import { useStore } from '../../core/storage/store'
 import { Mascot, type Mood } from '../../ui/Mascot'
+import { StickerProgress, goodRounds } from '../../ui/StickerProgress'
 import { findIsland, findSkill } from '../islands'
 import { TopBar } from '../TopBar'
 
@@ -110,7 +111,8 @@ interface ResultsProps {
 }
 
 function Results({ island, skill, result, firstTry, total, onAgain }: ResultsProps) {
-  const mastered = useStore(st => !!st.progress.skills[skill.id]?.mastered)
+  const sp = useStore(st => st.progress.skills[skill.id])
+  const mastered = !!sp?.mastered
   return (
     <>
       <TopBar back={`/island/${island.id}`} />
@@ -118,7 +120,12 @@ function Results({ island, skill, result, firstTry, total, onAgain }: ResultsPro
         <div className="pop" style={{ fontSize: 80 }}>{'⭐'.repeat(result.stars)}</div>
         <h1>{phrases['app.end.' + result.stars]}</h1>
         <p className="sub">{firstTry} מתוך {total} בניסיון הראשון</p>
-        {result.stars === 3 && !result.newlyMastered && !mastered && <p className="sub">{phrases['app.oneMore']}</p>}
+        {result.stars === 3 && !result.newlyMastered && !mastered && (
+          <p className="pop" style={{ fontSize: 24, fontWeight: 800, ['--c' as string]: `var(${island.color})` }}>
+            <span style={{ display: 'block', marginBottom: 8 }}><StickerProgress sticker={skill.sticker} good={goodRounds(sp?.rounds)} size={72} /></span>
+            {phrases['app.oneMore']}
+          </p>
+        )}
         {result.newlyMastered && (
           <p className="pop" style={{ fontSize: 26, fontWeight: 800 }}>
             <span style={{ fontSize: 64, display: 'block' }}>{skill.sticker}</span>{phrases['app.mastered']}
