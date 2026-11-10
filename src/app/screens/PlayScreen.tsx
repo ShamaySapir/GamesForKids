@@ -8,6 +8,7 @@ import type { GameDef, IslandDef, SkillDef } from '../../core/engine/types'
 import { isUnlocked, skillLeitner } from '../../core/progress/progress'
 import { useStore } from '../../core/storage/store'
 import { Mascot, type Mood } from '../../ui/Mascot'
+import { StickerProgress, goodRounds } from '../../ui/StickerProgress'
 import { findIsland, findSkill } from '../islands'
 import { TopBar } from '../TopBar'
 
@@ -48,6 +49,8 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
     if (!correct) {
       sfx.oops()
       setFeedback({ id: 'app.tryAgain', mood: 'encouraging' })
+      // When this miss turns the aid on, the game speaks its hint instead (saying both would cut one off).
+      if (!(next.aid && !s.aid)) void say('app.tryAgain')
       return
     }
     busy.current = true
@@ -67,7 +70,9 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
         })
         setResult(outcome)
         sfx.win()
-        void say(outcome.newlyMastered ? ['app.end.' + outcome.stars, 'app.mastered'] : 'app.end.' + outcome.stars)
+        // A 3-star round that didn't master the skill yet (D7 needs two): tell the child one more such round earns the sticker.
+        const oneMore = outcome.stars === 3 && !useStore.getState().progress.skills[skill.id]?.mastered
+        void say(outcome.newlyMastered ? ['app.end.' + outcome.stars, 'app.mastered'] : oneMore ? ['app.end.3', 'app.oneMore'] : 'app.end.' + outcome.stars)
       }
     }, NEXT_DELAY_MS)
   }
@@ -106,6 +111,8 @@ interface ResultsProps {
 }
 
 function Results({ island, skill, result, firstTry, total, onAgain }: ResultsProps) {
+  const sp = useStore(st => st.progress.skills[skill.id])
+  const mastered = !!sp?.mastered
   return (
     <>
       <TopBar back={`/island/${island.id}`} />
@@ -113,6 +120,12 @@ function Results({ island, skill, result, firstTry, total, onAgain }: ResultsPro
         <div className="pop" style={{ fontSize: 80 }}>{'⭐'.repeat(result.stars)}</div>
         <h1>{phrases['app.end.' + result.stars]}</h1>
         <p className="sub">{firstTry} מתוך {total} בניסיון הראשון</p>
+        {result.stars === 3 && !result.newlyMastered && !mastered && (
+          <p className="pop" style={{ fontSize: 24, fontWeight: 800, ['--c' as string]: `var(${island.color})` }}>
+            <span style={{ display: 'block', marginBottom: 8 }}><StickerProgress sticker={skill.sticker} good={goodRounds(sp?.rounds)} size={72} /></span>
+            {phrases['app.oneMore']}
+          </p>
+        )}
         {result.newlyMastered && (
           <p className="pop" style={{ fontSize: 26, fontWeight: 800 }}>
             <span style={{ fontSize: 64, display: 'block' }}>{skill.sticker}</span>{phrases['app.mastered']}

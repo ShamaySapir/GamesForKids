@@ -4,7 +4,8 @@ import { shuffle } from '../../core/engine/random'
 import type { GameProps } from '../../core/engine/types'
 import { Clock, type Hand } from './Clock'
 import type { HandQ, MatchQ, ReadQ, SetQ } from './generators'
-import { sameTime, timeKey, timeText, type Time } from './time'
+import { SayButton } from '../../ui/pick/SayButton'
+import { sameTime, timeKey, timePhrase, timeText, type Time } from './time'
 import './clock.css'
 
 // Components keep per-question state; PlayScreen remounts them via `key` on each new question.
@@ -34,11 +35,14 @@ export function ReadGame({ question, aid, onAttempt }: GameProps<ReadQ>) {
           const key = timeKey(t)
           const isRight = right && sameTime(t, question.answer)
           return (
-            <button key={key} className={`opt${isRight ? ' ok' : wrong.includes(key) ? ' bad' : ''}`}
-              disabled={wrong.includes(key)} onClick={() => choose(t)}>
-              <span className="digi">{key}</span>
-              <span className="clock-opt-text">{timeText(t)}</span>
-            </button>
+            <div key={key} className="clock-opt-row">
+              <button className={`opt${isRight ? ' ok' : wrong.includes(key) ? ' bad' : ''}`}
+                disabled={wrong.includes(key)} onClick={() => choose(t)}>
+                <span className="digi">{key}</span>
+                <span className="clock-opt-text">{timeText(t)}</span>
+              </button>
+              <SayButton id={timePhrase(t)} />
+            </div>
           )
         })}
       </div>
@@ -70,7 +74,6 @@ export function SetGame({ question, aid, onAttempt }: GameProps<SetQ>) {
       <Clock time={time} onChange={done ? undefined : setTime} snap={question.level.snap}
         movable={question.hourOnly ? ['hour'] : ['hour', 'minute']}
         aid={aid} ghost={aid && misses > 0 && !done ? question.answer : undefined} size={320} label={timeText(time)} />
-      <p className="clock-hint">{phrases['clock.hint.set']}</p>
       <button className="cta" onClick={check} disabled={done}>✔ {phrases['clock.q.check']}</button>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { phrases, say } from '../../core/audio/audio'
 import type { GameProps, PhraseRef } from '../../core/engine/types'
 import { ArtView } from './art'
@@ -8,8 +8,7 @@ import type { PickOption, PickPrompt, PickQ } from './types'
 import './pick.css'
 
 // Shared by all islands (DECISIONS D14). Remounted by PlayScreen for every question.
-
-const HOVER_SAY_MS = 400
+// Options speak only through their own 🔊 button, never on hover (user's choice: sound only when asked for).
 
 function PromptView({ prompt }: { prompt: PickPrompt }) {
   const { picture, letter, word, sentence, objects, expr, art } = prompt
@@ -87,7 +86,6 @@ function optionLabel(o: PickOption): string {
 export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
   const [wrong, setWrong] = useState<string[]>([])
   const [right, setRight] = useState(false)
-  const hover = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hinted = useRef(false)
 
   useEffect(() => {
@@ -96,7 +94,6 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
       void say(question.hint)
     }
   }, [aid, question.hint])
-  useEffect(() => () => { if (hover.current) clearTimeout(hover.current) }, [])
 
   const choose = (id: string) => {
     if (right || wrong.includes(id)) return
@@ -105,12 +102,6 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
     else setWrong(w => [...w, id])
     onAttempt(ok)
   }
-  const hoverStart = (e: ReactPointerEvent, o: PickOption) => {
-    if (e.pointerType !== 'mouse' || !hasSay(o)) return
-    const ref = o.say
-    hover.current = setTimeout(() => void say(ref), HOVER_SAY_MS)
-  }
-  const hoverEnd = () => { if (hover.current) clearTimeout(hover.current) }
 
   return (
     <div className="pk-stage">
@@ -123,7 +114,7 @@ export function PickGame({ question, aid, onAttempt }: GameProps<PickQ>) {
         {question.options.map(o => {
           const cls = right && o.id === question.answer ? ' ok' : wrong.includes(o.id) ? ' bad' : ''
           return (
-            <div key={o.id} className="pk-opt-wrap" onPointerEnter={e => hoverStart(e, o)} onPointerLeave={hoverEnd}>
+            <div key={o.id} className="pk-opt-wrap">
               <button type="button" className={`opt pk-opt pk-opt-${o.kind}${cls}`} disabled={wrong.includes(o.id)}
                 aria-label={optionLabel(o)} onClick={() => choose(o.id)}>
                 {optionFace(o)}

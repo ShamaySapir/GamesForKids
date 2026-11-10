@@ -74,7 +74,7 @@ Three components, shared by all skills:
 
 | Component | Child does | Correct when | Notes |
 |---|---|---|---|
-| `PickGame` | Hears/sees a prompt (picture, letter, word with a blank, or a sound) and picks one option (picture, letter, or 🔊 sound button) | Picks the right option | Like the clock's read game: wrong option shakes and is disabled. Every picture/sound option can be replayed (hover or a small 🔊) |
+| `PickGame` | Hears/sees a prompt (picture, letter, word with a blank, or a sound) and picks one option (picture, letter, or 🔊 sound button) | Picks the right option | Like the clock's read game: wrong option shakes and is disabled. Every picture/sound option can be replayed with its small 🔊 (no hover sound) |
 | `ClapGame` | Taps a drum once per syllable, sees dots fill, presses Check | Tap count = syllables | Reset button; aid speaks the word syllable by syllable |
 | `SortGame` | Moves 6 cards into 2 baskets | All cards in the right basket | A wrong drop returns the card and counts as a miss; `onAttempt(true)` once the board is done |
 

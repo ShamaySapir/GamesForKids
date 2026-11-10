@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { raw, rawEn, say, sharedRecordingIds, wordAt, wordAtChar, wordStarts } from './audio'
+import { audibleRange, raw, rawEn, say, sharedRecordingIds, wordAt, wordAtChar, wordStarts } from './audio'
 
 describe('narration timing', () => {
   it('weights words by letter count, ignoring nikud', () => {
@@ -65,5 +65,29 @@ describe('shared recordings', () => {
     const ids = sharedRecordingIds(map, new Set(), english)
     expect(ids.get('eng.w.egg')).toBe('eng.w.egg')
     expect(ids.get('eng.x')).toBe('eng.x')
+  })
+})
+
+describe('audible range of a recording', () => {
+  const rate = 8000
+  const take = (parts: [seconds: number, amplitude: number][]) => {
+    const out: number[] = []
+    for (const [sec, amp] of parts) for (let i = 0; i < sec * rate; i++) out.push(amp * Math.sin(i / 3))
+    return new Float32Array(out)
+  }
+
+  it('drops the silence before and after the speech, keeping a short pad', () => {
+    const [from, to] = audibleRange(take([[0.6, 0.002], [0.5, 0.5], [0.8, 0.002]]), rate)
+    expect(from).toBeCloseTo(0.55, 1)
+    expect(to).toBeCloseTo(1.15, 1)
+  })
+
+  it('ignores a click of the record button before the speech', () => {
+    const [from] = audibleRange(take([[0.3, 0.002], [0.01, 0.9], [0.3, 0.002], [0.5, 0.5], [0.2, 0.002]]), rate)
+    expect(from).toBeGreaterThan(0.5)
+  })
+
+  it('keeps the whole take when it is all silence', () => {
+    expect(audibleRange(new Float32Array(rate), rate)).toEqual([0, 1])
   })
 })

@@ -78,7 +78,8 @@ const INSTRUCTIONS: Record<keyof typeof Q, string> = {
   sameSound: 'איזו אות חסרה בתחילת המילה',
   sort: 'שימו כל תמונה בסל הנכון',
   check: 'בְּדִיקָה',
-  reset: 'מֵהַתְחָלָה',
+  // Clears the claps counted so far for this word (not the round), so it says what it does.
+  reset: 'סוֹפְרִים מֵחָדָשׁ',
 }
 
 const blocks: Record<string, string> = {}
