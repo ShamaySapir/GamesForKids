@@ -65,6 +65,11 @@ export interface SkillDef {
   sticker: string
   /** Wrap each entry with `defineGame` so its question type is checked. */
   games: readonly GameDef[]
+  /**
+   * Optional: an adult-readable label for one of this skill's item keys ("רבע לארבע", "ט / ת", "8 + 5"), for the
+   * parents' page "what to practise" list. Plain Hebrew, no nikud (DECISIONS D18). Undefined = show only a count.
+   */
+  describeItem?: (itemKey: string) => string | undefined
 }
 
 /** Type-checks a game against its own question type, then erases it for storage in a skill. */
@@ -82,6 +87,8 @@ export interface IslandDef {
   color: string
   skills: readonly SkillDef[]
   phrases: PhraseMap
+  /** Optional: one plain-Hebrew sentence for parents on practising this island at home (parents' page, D18). */
+  homeTip?: string
   /** Shown on the map but not playable yet. */
   comingSoon?: boolean
 }
