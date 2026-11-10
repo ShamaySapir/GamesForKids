@@ -65,6 +65,8 @@ export interface PickPrompt {
   expr?: string
   /** Drawings in a row (a sample, a pattern with a '?' slot, a drawing with a missing part). */
   art?: readonly ArtRef[]
+  /** Drawing size in px when the default (120, or 72 for long rows) is too small to judge, e.g. one angle to name. */
+  artSize?: number
 }
 
 /** Answer is the correct option's id. */

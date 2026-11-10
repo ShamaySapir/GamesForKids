@@ -1,6 +1,6 @@
 # Spec: Numbers island, 3rd grade (Stage 5a)
 
-- **Status:** Approved by user on 2026-11-10 (numbers to 10,000 recorded as blocks; digital clock moved to the clock island)
+- **Status:** Built 2026-11-10, awaiting user play-test. Approved by user on 2026-11-10 (numbers to 10,000 recorded as blocks; digital clock moved to the clock island)
 - **Stage:** 5a (docs/ROADMAP.md). Continues `docs/specs/math-grade2.md` (skills 11–17, built)
 - **Relies on:** DECISIONS D3, D6, D7, D14, D18, **D23** · docs/RESEARCH.md § "Math, grades 3–6: NEW curriculum" (grade 3, cited `[G3 p.N]`)
 

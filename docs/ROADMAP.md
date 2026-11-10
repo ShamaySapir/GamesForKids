@@ -79,8 +79,10 @@ drawings** suited to the age (SVG illustrations; emoji only where unambiguous). 
 | What's missing? | A familiar drawing with a part missing (a chair with three legs) |
 
 ## Stage 5 – Math: 3rd – 6th grade 🟡 (D23: 5a grade 3 → 5b → 5c → 5d)
-Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
-percent and ratio, area / perimeter / volume, word problems.
+- **5a, grade 3 ✅ built:** spec approved 2026-11-10, `docs/specs/math-grade3.md`. T0 core (sprint rounds, records, numbers to 10,000) ✅ ·
+  T1 generators ✅ · T2 games ✅ · T3 art and extensions ✅ · T4 wiring, E2E, screenshots ✅ · user play-test ⏳.
+- **5b grade 4 → 5c grade 5 → 5d grade 6:** one spec each, from the new curriculum summary in `docs/RESEARCH.md` (fractions start
+  in grade 4; decimals in 5; percent, decimal ×/÷ and the mean in 6; ratio is no longer taught).
 
 ## Stage 6 – English (mainly 3rd grade and up) ✅ built
 Spec approved 2026-11-02: `docs/specs/english.md`. T0 ✅ · T1 content ✅ (full review, 52 findings) · T2 ✅ · T3 wiring + E2E + screenshots ✅ · user play-test ⏳.

@@ -31,7 +31,7 @@
 }
 .g3-terms.aid { padding-top: 34px; }
 .g3-term {
-  position: relative; min-height: var(--tap); display: grid; align-items: stretch; font-size: clamp(22px, 5vw, 34px); font-weight: 800;
+  position: relative; min-height: var(--tap); display: grid; align-items: stretch; font-size: clamp(20px, 5vw, 28px); font-weight: 800;
 }
 .g3-term.fixed, .g3-term.ok {
   place-items: center; background: var(--card); border: 3px solid var(--line); border-radius: 18px; color: var(--ink); min-height: 72px;

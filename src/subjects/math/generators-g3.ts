@@ -848,7 +848,7 @@ export function angleTypeQuestion(ctx: GenContext): PickQ {
     const props = { deg, rot: randInt(ctx.rng, 0, 359), armA: len(lo, hi), armB: len(lo, hi) }
     return {
       itemKey: angleKey({ kind, deg }), answer: kind, say: M3.angleType, instruction: M3.angleType, hint: M3.angleHint,
-      prompt: { art: [{ name: MATH_ART.angle, props }] }, aidArt: [{ name: MATH_ART.angle, props: { ...props, corner: true } }],
+      prompt: { art: [{ name: MATH_ART.angle, props }], artSize: 200 }, aidArt: [{ name: MATH_ART.angle, props: { ...props, corner: true } }],
       options: ANGLE_KINDS.map(k => ({ id: k, kind: 'text' as const, label: phrases[angleName(k)]!, say: angleName(k) })),
     }
   })

@@ -44,6 +44,8 @@
 .pk-obj.faded { opacity: .25; filter: grayscale(1); }
 .pk-expr { font-size: 64px; font-weight: 800; white-space: pre-line; text-align: center; line-height: 1.25; }
 .pk-opt-number { font-size: 56px; font-weight: 800; }
+/* Four digits and more (grade 3: 8400) or a short exercise: smaller, so two options fit side by side on a phone. */
+.pk-opt-number.long { font-size: clamp(30px, 9vw, 48px); }
 .pk-opt-objects { min-height: 150px; }
 .pk-objs-cover { flex-wrap: wrap; justify-content: center; align-items: flex-end; max-width: 520px; }
 .pk-cup {
