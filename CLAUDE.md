@@ -46,7 +46,7 @@ computer-first with touch support.
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
 | Git | ✅ | Stages 0–4b merged to `main` (PR #1–#6). Current work: `stage6/english` |
 
-Current stage: **Stage 6 built** (English); Stages 1–3 await the user's play-test and recordings.
+Current stage: **Stage 8a spec draft** (coding island, `docs/specs/coding.md`, awaiting approval); Stages 1–6 await the user's play-test and recordings.
 
 ## Next steps
 
