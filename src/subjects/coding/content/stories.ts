@@ -1,36 +1,37 @@
 import type { Story, StoryStep } from '../types'
 
 // Everyday algorithms: exactly one sensible order. `wrong` replaces steps[at] with a funny-but-plausible mistake;
-// `notMissing` are two steps that do not belong. Emoji are distinct inside each story.
+// `notMissing` are two steps that do not belong: one near the story's topic, one far from it.
+// Emoji are distinct inside each story; the bug positions are spread over 0..3 and no decoy emoji is used in more than two stories.
 const BIKE: StoryStep = { emoji: '🚲', text: 'רוֹכְבִים עַל אוֹפַנַּיִם' }
-const BALLOON: StoryStep = { emoji: '🎈', text: 'מְנַפְּחִים בַּלּוֹן' }
+const BALLOON: StoryStep = { emoji: '🎈', text: 'מְנַפְּחִים בָּלוֹן' }
 const BALL: StoryStep = { emoji: '⚽', text: 'בּוֹעֲטִים בְּכַדּוּר' }
-const PIZZA: StoryStep = { emoji: '🍕', text: 'אוֹכְלִים פִּיצָה' }
 const VIOLIN: StoryStep = { emoji: '🎻', text: 'מְנַגְּנִים בְּכִנּוֹר' }
-const DRUM: StoryStep = { emoji: '🥁', text: 'מְתַפְּפִים עַל תֹּף' }
+const DRUM: StoryStep = { emoji: '🥁', text: 'מְתוֹפְפִים עַל תֹּף' }
+const KITE: StoryStep = { emoji: '🪁', text: 'מְטַיְּסִים עֲפִיפוֹן' }
 
 export const STORIES: readonly Story[] = [
   {
     id: 'teeth',
     steps: [
-      { emoji: '🧴', text: 'מִשְׁחָה עַל הַמִּבְרֶשֶׁת' },
+      { emoji: '🪥', text: 'שָׂמִים מִשְׁחָה עַל הַמִּבְרֶשֶׁת' },
       { emoji: '🦷', text: 'מְצַחְצְחִים שִׁנַּיִם' },
       { emoji: '💧', text: 'שׁוֹטְפִים אֶת הַפֶּה' },
       { emoji: '😁', text: 'מְחַיְּכִים' },
     ],
-    wrong: { at: 0, step: { emoji: '🍴', text: 'מִשְׁחָה עַל הַמַּזְלֵג' } },
-    notMissing: [BIKE, BALLOON],
+    wrong: { at: 0, step: { emoji: '🍴', text: 'שָׂמִים מִשְׁחָה עַל הַמַּזְלֵג' } },
+    notMissing: [{ emoji: '🍬', text: 'אוֹכְלִים סֻכָּרִיָּה' }, BIKE],
   },
   {
     id: 'hands',
     steps: [
-      { emoji: '🚰', text: 'פּוֹתְחִים אֶת הַבֶּרֶז' },
+      { emoji: '👆', text: 'פּוֹתְחִים אֶת הַבֶּרֶז' },
       { emoji: '🧼', text: 'מְסַבְּנִים אֶת הַיָּדַיִם' },
       { emoji: '💦', text: 'שׁוֹטְפִים אֶת הַסַּבּוֹן' },
-      { emoji: '🧻', text: 'מְנַגְּבִים אֶת הַיָּדַיִם' },
+      { emoji: '🚰', text: 'סוֹגְרִים אֶת הַבֶּרֶז' },
     ],
-    wrong: { at: 3, step: { emoji: '🧦', text: 'מְנַגְּבִים בְּגֶרֶב' } },
-    notMissing: [BALL, { emoji: '🚗', text: 'נוֹסְעִים בִּמְכוֹנִית' }],
+    wrong: { at: 3, step: { emoji: '🌊', text: 'מַשְׁאִירִים אֶת הַבֶּרֶז פָּתוּחַ' } },
+    notMissing: [{ emoji: '🧽', text: 'שׁוֹטְפִים כֵּלִים' }, BALL],
   },
   {
     id: 'sandwich',
@@ -40,8 +41,8 @@ export const STORIES: readonly Story[] = [
       { emoji: '🧀', text: 'שָׂמִים גְּבִינָה' },
       { emoji: '🥪', text: 'סוֹגְרִים אֶת הַכָּרִיךְ' },
     ],
-    wrong: { at: 1, step: { emoji: '🎨', text: 'מוֹרְחִים צֶבַע' } },
-    notMissing: [BALL, VIOLIN],
+    wrong: { at: 2, step: { emoji: '🎨', text: 'מוֹרְחִים צֶבַע' } },
+    notMissing: [{ emoji: '🥛', text: 'שׁוֹתִים חָלָב' }, VIOLIN],
   },
   {
     id: 'seed',
@@ -49,10 +50,10 @@ export const STORIES: readonly Story[] = [
       { emoji: '🫘', text: 'שָׂמִים זֶרַע בָּאֲדָמָה' },
       { emoji: '💧', text: 'מַשְׁקִים בְּמַיִם' },
       { emoji: '⏳', text: 'מְחַכִּים כַּמָּה יָמִים' },
-      { emoji: '🌱', text: 'הַנָּבֶט צוֹמֵחַ' },
+      { emoji: '🌱', text: 'הַנֶּבֶט צוֹמֵחַ' },
     ],
     wrong: { at: 1, step: { emoji: '🥛', text: 'מַשְׁקִים בְּחָלָב' } },
-    notMissing: [{ emoji: '🚌', text: 'נוֹסְעִים בְּאוֹטוֹבּוּס' }, DRUM],
+    notMissing: [{ emoji: '✂️', text: 'גּוֹזְרִים נְיָר' }, DRUM],
   },
   {
     id: 'shoes',
@@ -62,73 +63,73 @@ export const STORIES: readonly Story[] = [
       { emoji: '🎀', text: 'קוֹשְׁרִים שְׂרוֹכִים' },
       { emoji: '🚪', text: 'יוֹצְאִים לַגַּן' },
     ],
-    wrong: { at: 1, step: { emoji: '👒', text: 'נוֹעֲלִים כּוֹבַע' } },
-    notMissing: [{ emoji: '🍦', text: 'אוֹכְלִים גְּלִידָה' }, VIOLIN],
+    wrong: { at: 0, step: { emoji: '🍌', text: 'נוֹעֲלִים בָּנָנָה' } },
+    notMissing: [{ emoji: '🧤', text: 'לוֹבְשִׁים כְּפָפוֹת' }, BALLOON],
   },
   {
     id: 'road',
     steps: [
-      { emoji: '🛑', text: 'עוֹצְרִים לְיַד הַכְּבִישׁ' },
-      { emoji: '👀', text: 'מִסְתַּכְּלִים יָמִינָה וּשְׂמֹאלָה' },
-      { emoji: '🚗', text: 'הַמְּכוֹנִיּוֹת עוֹצְרוֹת' },
-      { emoji: '🚶', text: 'חוֹצִים לְאַט' },
+      { emoji: '🛑', text: 'עוֹצְרִים עַל הַמִּדְרָכָה' },
+      { emoji: '🚦', text: 'מְחַכִּים לָאוֹר הַיָּרֹק' },
+      { emoji: '👀', text: 'מִסְתַּכְּלִים לִשְׁנֵי הַצְּדָדִים' },
+      { emoji: '🚶', text: 'חוֹצִים בַּהֲלִיכָה' },
     ],
-    wrong: { at: 1, step: { emoji: '🙈', text: 'עוֹצְמִים עֵינַיִם' } },
-    notMissing: [{ emoji: '🎂', text: 'אוֹכְלִים עוּגָה' }, BALL],
+    wrong: { at: 2, step: { emoji: '🙈', text: 'עוֹצְמִים עֵינַיִם' } },
+    notMissing: [{ emoji: '🚌', text: 'נוֹסְעִים בְּאוֹטוֹבּוּס' }, BALL],
   },
   {
     id: 'cake',
     steps: [
       { emoji: '🥣', text: 'מְכִינִים בָּצֵק' },
       { emoji: '🔥', text: 'שָׂמִים בַּתַּנּוּר' },
-      { emoji: '❄️', text: 'מְחַכִּים שֶׁיִּתְקַרֵּר' },
-      { emoji: '🍓', text: 'מְקַשְּׁטִים בְּתוּת' },
+      { emoji: '⏳', text: 'מְחַכִּים שֶׁהָעוּגָה תִּתְקָרֵר' },
+      { emoji: '🍓', text: 'מְקַשְּׁטִים בְּתוּתִים' },
     ],
-    wrong: { at: 1, step: { emoji: '🚿', text: 'שָׂמִים בַּמִּקְלַחַת' } },
-    notMissing: [BIKE, BALLOON],
+    wrong: { at: 3, step: { emoji: '🧅', text: 'מְקַשְּׁטִים בַּבָּצָל' } },
+    notMissing: [{ emoji: '🍦', text: 'אוֹכְלִים גְּלִידָה' }, BIKE],
   },
   {
     id: 'pet',
     steps: [
       { emoji: '🐶', text: 'הַכֶּלֶב רָעֵב' },
-      { emoji: '🥣', text: 'מְמַלְּאִים קְעָרָה' },
-      { emoji: '🍽️', text: 'שָׂמִים עַל הָרִצְפָּה' },
+      { emoji: '🥣', text: 'מְמַלְּאִים קְעָרָה בְּאֹכֶל' },
       { emoji: '😋', text: 'הַכֶּלֶב אוֹכֵל' },
+      { emoji: '🧽', text: 'שׁוֹטְפִים אֶת הַקְּעָרָה' },
     ],
     wrong: { at: 1, step: { emoji: '🪨', text: 'מְמַלְּאִים קְעָרָה בַּאֲבָנִים' } },
-    notMissing: [PIZZA, VIOLIN],
+    notMissing: [{ emoji: '🐱', text: 'מְלַטְּפִים חָתוּל' }, VIOLIN],
   },
   {
     id: 'sleep',
     steps: [
       { emoji: '🦷', text: 'מְצַחְצְחִים שִׁנַּיִם' },
-      { emoji: '🛏️', text: 'שׁוֹכְבִים בַּמִּטָּה' },
-      { emoji: '📖', text: 'קוֹרְאִים סִפּוּר' },
+      { emoji: '🛏️', text: 'נִכְנָסִים לַמִּטָּה' },
       { emoji: '😴', text: 'יְשֵׁנִים' },
+      { emoji: '☀️', text: 'מִתְעוֹרְרִים' },
     ],
-    wrong: { at: 1, step: { emoji: '🧊', text: 'שׁוֹכְבִים בַּמְּקָרֵר' } },
-    notMissing: [BALL, BALLOON],
+    wrong: { at: 2, step: { emoji: '🧺', text: 'יְשֵׁנִים בְּסַל הַכְּבִיסָה' } },
+    notMissing: [{ emoji: '🎮', text: 'מְשַׂחֲקִים בַּטַּבְלֶט' }, BALLOON],
   },
   {
-    id: 'tea',
+    id: 'icepop',
     steps: [
-      { emoji: '♨️', text: 'מַרְתִּיחִים מַיִם' },
-      { emoji: '🍵', text: 'שָׂמִים שַׂקִּית בַּכּוֹס' },
-      { emoji: '🫖', text: 'יוֹצְקִים מַיִם' },
-      { emoji: '👵', text: 'נוֹתְנִים לְסַבְתָּא' },
+      { emoji: '🧃', text: 'שׁוֹפְכִים מִיץ לַתַּבְנִית' },
+      { emoji: '🧊', text: 'שָׂמִים בַּמַּקְפִּיא' },
+      { emoji: '⏳', text: 'מְחַכִּים' },
+      { emoji: '😋', text: 'אוֹכְלִים אַרְטִיק' },
     ],
-    wrong: { at: 1, step: { emoji: '🧦', text: 'שָׂמִים גֶּרֶב בַּכּוֹס' } },
-    notMissing: [BIKE, DRUM],
+    wrong: { at: 0, step: { emoji: '🧦', text: 'שָׂמִים גֶּרֶב בַּתַּבְנִית' } },
+    notMissing: [{ emoji: '🍵', text: 'שׁוֹתִים תֵּה' }, DRUM],
   },
   {
     id: 'fruit',
     steps: [
       { emoji: '🍎', text: 'לוֹקְחִים תַּפּוּחַ' },
       { emoji: '💦', text: 'שׁוֹטְפִים אוֹתוֹ' },
-      { emoji: '😋', text: 'נוֹגְסִים' },
-      { emoji: '🗑️', text: 'זוֹרְקִים לַפַּח' },
+      { emoji: '😋', text: 'אוֹכְלִים אֶת הַתַּפּוּחַ' },
+      { emoji: '🗑️', text: 'זוֹרְקִים אֶת הַשְּׁאֵרִית לַפַּח' },
     ],
-    wrong: { at: 1, step: { emoji: '👟', text: 'שָׂמִים בַּנַּעַל' } },
-    notMissing: [BIKE, BALL],
+    wrong: { at: 3, step: { emoji: '🐟', text: 'זוֹרְקִים אֶת הַשְּׁאֵרִית לָאַקְוַרְיוּם' } },
+    notMissing: [{ emoji: '🥕', text: 'קוֹצְצִים גֶּזֶר' }, KITE],
   },
 ]

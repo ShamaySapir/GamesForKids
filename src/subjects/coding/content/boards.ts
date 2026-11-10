@@ -48,7 +48,7 @@ export const LEVELS: readonly Level[] = [
 /** Buggy programs: exactly one fix of the stated kind reaches the goal (turn a card, remove a card, add one at the end). */
 export const DEBUG: readonly DebugItem[] = [
   { id: 'd1', board: board('d1', ['.#...', '..G..', '.....', '.#...', 'S....']), program: moves([R, R, R, U, U]), bug: 'turn' },
-  { id: 'd2', board: board('d2', ['.G...', '.....', '.....', '.....', '.S...']), program: moves([U, U, U, U, U]), bug: 'remove' },
+  { id: 'd2', board: board('d2', ['.....', '.G...', '.....', '.....', '.S...']), program: moves([U, R, U, U]), bug: 'remove' },
   { id: 'd3', board: board('d3', ['....#', '.....', '.....', '..#.G', '.S...']), program: moves([R, R, R]), bug: 'add' },
   { id: 'd4', board: board('d4', ['...S.', '.....', '.....', 'G....', '.....']), program: moves([R, L, D, L, D, D]), bug: 'turn' },
   { id: 'd5', board: board('d5', ['#..#G', '...#.', 'S....', '.....', '.....']), program: moves([R, R, L, R, R, U, U]), bug: 'remove' },
@@ -60,21 +60,21 @@ export const DEBUG: readonly DebugItem[] = [
   { id: 'd11', board: board('d11', ['.....', '..G..', '.....', '....#', '.S.#.']), program: moves([U, U, L, R, U]), bug: 'remove' },
   { id: 'd12', board: board('d12', ['.....', 'G....', '.....', '...S.', '.....']), program: moves([U, L, L, L]), bug: 'add' },
   { id: 'd13', board: board('d13', ['.....', '..S..', '.....', '#....', '.#..G']), program: moves([R, R, D, L, D]), bug: 'turn' },
-  { id: 'd14', board: board('d14', ['.....', 'G....', '..S..', '.....', '.....']), program: moves([L, U, L, R]), bug: 'remove' },
+  { id: 'd14', board: board('d14', ['.....', 'G....', '..S..', '.....', '.....']), program: moves([L, U, U, L]), bug: 'remove' },
   { id: 'd15', board: board('d15', ['..#.S', 'G....', '..#..', '.....', '....#']), program: moves([D, L, L, L]), bug: 'add' },
 ]
 
-/** 6×6 boards with long straight runs: the loop version fits in maxCards, the plain-move version does not. */
+/** 6×6 boards with long straight runs: a loop program fits in maxCards, the plain-move version does not. Four of them are detours around walls. */
 export const REPEAT_LEVELS: readonly Level[] = [
-  { board: board('r1', ['......', '#.....', '....G.', '......', '..#..#', 'S.....']), maxCards: 3 }, // shortest 7, loop 2
+  { board: board('r1', ['G....#', '.###..', '.#S...', '.#....', '.####.', '......']), maxCards: 3 }, // detour: shortest 8, loop 3
   { board: board('r2', ['......', '.G....', '.#...#', '#.....', '....S#', '...#..']), maxCards: 3 }, // shortest 6, loop 2
   { board: board('r3', ['......', '.#..#.', 'S.....', '......', '.#...#', '...G..']), maxCards: 3 }, // shortest 6, loop 2
   { board: board('r4', ['....#.', '.....G', '......', '....#.', 'S....#', '.#....']), maxCards: 3 }, // shortest 8, loop 2
-  { board: board('r5', ['#.....', '...S..', '.#....', '..#...', '......', 'G...#.']), maxCards: 3 }, // shortest 7, loop 2
+  { board: board('r5', ['#.....', '..#..S', '#.#...', 'G#.##.', '......', '...#.#']), maxCards: 3 }, // detour: shortest 9, loop 3, one run of 5
   { board: board('r6', ['G.....', '......', '......', '......', '##.#S.', '.....#']), maxCards: 3 }, // shortest 8, loop 2
   { board: board('r7', ['......', 'G.....', '....#.', '..#...', '.....#', '..#S.#']), maxCards: 3 }, // shortest 7, loop 2
-  { board: board('r8', ['#.....', '#.G..#', '......', '.#....', '#...##', '.....S']), maxCards: 4 }, // shortest 7, loop 3
-  { board: board('r9', ['##..G.', '..#...', 'S.....', '..#...', '......', '......']), maxCards: 3 }, // shortest 6, loop 3
+  { board: board('r8', ['......', '..#G#.', '...#..', '......', '..#...', '#S....']), maxCards: 3 }, // detour: shortest 8, loop 3, one run of 5
+  { board: board('r9', ['S.###G', '......', '.#....', '......', '....#.', '.#..#.']), maxCards: 3 }, // detour: shortest 7, loop 3, one run of 5
   { board: board('r10', ['S#..#.', '......', '..#..#', '...G..', '.#....', '......']), maxCards: 3 }, // shortest 6, loop 2
   { board: board('r11', ['S.....', '.#....', '....##', '...G..', '....#.', '......']), maxCards: 3 }, // shortest 6, loop 2
   { board: board('r12', ['..S...', '...##.', '...#..', '......', '...#..', 'G.....']), maxCards: 3 }, // shortest 7, loop 2

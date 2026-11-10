@@ -1,15 +1,51 @@
 import { describe, expect, it } from 'vitest'
-import { DIRS, compress, find, moves, oneEditApart, run, shortest } from './program'
+import { DIRS, compress, find, moves, oneEditApart, run, sameCell, shortest } from './program'
 import { DEBUG, FOLLOW, LEVELS, REPEAT_LEVELS } from './content/boards'
 import { MOVES, MOVE_NAMES, PATTERNS } from './content/patterns'
 import { STORIES } from './content/stories'
 import { C, movePhrase, otherPhrase, stepPhrase, wrongPhrase } from './ids'
 import { phrases } from './phrases'
-import type { Board, Dir, Program } from './types'
+import type { Board, Cell, Dir, Program } from './types'
 
 const unique = (xs: readonly string[]) => new Set(xs).size === xs.length
 const count = (b: Board, ch: string) => b.rows.join('').split(ch).length - 1
 const reaches = (b: Board, p: Program) => run(b, p).reachedGoal
+
+/** Every shortest route from S to G (the ghost may pick any of them). */
+function allShortest(b: Board): Dir[][] {
+  const start = find(b, 'S')!
+  const goal = find(b, 'G')!
+  const step: Record<Dir, Cell> = { up: [-1, 0], down: [1, 0], left: [0, -1], right: [0, 1] }
+  const free = (r: number, c: number) => b.rows[r]?.[c] !== undefined && b.rows[r]![c] !== '#'
+  const dist = new Map<string, number>([[start.join(), 0]])
+  const queue: Cell[] = [start]
+  for (let q = 0; q < queue.length; q++) {
+    const at = queue[q]!
+    for (const d of DIRS) {
+      const next: Cell = [at[0] + step[d][0], at[1] + step[d][1]]
+      if (free(next[0], next[1]) && !dist.has(next.join())) {
+        dist.set(next.join(), dist.get(at.join())! + 1)
+        queue.push(next)
+      }
+    }
+  }
+  const total = dist.get(goal.join())
+  if (total === undefined) return []
+  const out: Dir[][] = []
+  const walk = (at: Cell, path: Dir[]) => {
+    if (path.length === total) {
+      if (sameCell(at, goal)) out.push(path)
+      return
+    }
+    for (const d of DIRS) {
+      const next: Cell = [at[0] + step[d][0], at[1] + step[d][1]]
+      if (dist.get(next.join()) === path.length + 1) walk(next, [...path, d])
+    }
+  }
+  walk(start, [])
+  return out
+}
+const longestRun = (dirs: readonly Dir[]) => Math.max(...compress(dirs).map(c => (c.kind === 'repeat' ? c.times : 1)))
 
 function checkShape(b: Board, size: number, goal: boolean) {
   expect(b.rows.length, b.id).toBe(size)
@@ -56,6 +92,39 @@ describe('stories', () => {
         expect(x.text.split(' ').length, `${s.id}: ${x.text}`).toBeLessThanOrEqual(5)
       }
     }
+  })
+})
+
+describe('stories: bugs and decoys', () => {
+  it('spreads the bug position over 0..3, no index in more than 40% of the stories', () => {
+    const at = STORIES.map(s => s.wrong.at)
+    for (let i = 0; i < 4; i++) {
+      expect(at.filter(x => x === i).length, `index ${i}`).toBeLessThanOrEqual(Math.floor(STORIES.length * 0.4))
+      expect(at.includes(i), `index ${i} unused`).toBe(true)
+    }
+  })
+  it('uses each decoy emoji in at most two stories, and a decoy is never a step of its own story', () => {
+    const uses = new Map<string, number>()
+    for (const s of STORIES) {
+      for (const d of s.notMissing) {
+        uses.set(d.emoji, (uses.get(d.emoji) ?? 0) + 1)
+        expect(s.steps.some(x => x.emoji === d.emoji || x.text === d.text), `${s.id} decoy ${d.text}`).toBe(false)
+        expect(s.wrong.step.emoji, s.id).not.toBe(d.emoji)
+      }
+      expect(s.notMissing[0].emoji, s.id).not.toBe(s.notMissing[1].emoji)
+    }
+    for (const [emoji, n] of uses) expect(n, `decoy ${emoji}`).toBeLessThanOrEqual(2)
+  })
+  it('gives the same pointed text to the same word everywhere (recordings are shared by identical text)', () => {
+    const forms = new Map<string, Set<string>>()
+    for (const text of Object.values(phrases)) {
+      for (const word of text.split(/[\s.!?,]+/).filter(Boolean)) {
+        const bare = word.replace(/[ְ-ּׁ-ׇ"]/g, '')
+        forms.set(bare, (forms.get(bare) ?? new Set()).add(word.replace(/"/g, '')))
+      }
+    }
+    const homographs = new Set(['למטה']) // לְמַטָּה (down) and לַמִּטָּה (to the bed)
+    for (const [bare, set] of forms) if (!homographs.has(bare)) expect([...set], bare).toHaveLength(1)
   })
 })
 
@@ -131,6 +200,13 @@ describe('debug', () => {
   })
 })
 
+describe('debug paths', () => {
+  it('the buggy run never passes over or stops on the goal', () => {
+    const touching = DEBUG.filter(d => run(d.board, d.program).path.some(c => sameCell(c, find(d.board, 'G')!))).map(d => d.id)
+    expect(touching).toEqual([])
+  })
+})
+
 describe('repeat levels', () => {
   it('6x6, loops fit the card limit and plain moves do not', () => {
     for (const l of REPEAT_LEVELS) {
@@ -144,6 +220,27 @@ describe('repeat levels', () => {
       expect(sp!.length, l.board.id).toBeGreaterThan(l.maxCards!)
       expect(reaches(l.board, loop), l.board.id).toBe(true)
     }
+  })
+})
+
+describe('repeat levels: routes', () => {
+  it('some shortest route fits in maxCards with loops', () => {
+    for (const l of REPEAT_LEVELS) {
+      const best = Math.min(...allShortest(l.board).map(p => compress(p).length))
+      expect(best, l.board.id).toBeLessThanOrEqual(l.maxCards!)
+    }
+  })
+  it('walls matter: at least 4 boards need a detour, so the route is longer than the distance', () => {
+    const detours = REPEAT_LEVELS.filter(l => {
+      const [sr, sc] = find(l.board, 'S')!
+      const [gr, gc] = find(l.board, 'G')!
+      return shortest(l.board)!.length > Math.abs(sr - gr) + Math.abs(sc - gc)
+    })
+    expect(detours.length).toBeGreaterThanOrEqual(4)
+  })
+  it('at least 3 boards need a repeat of 5 or more', () => {
+    const fives = REPEAT_LEVELS.filter(l => allShortest(l.board).some(p => longestRun(p) >= 5 && compress(p).length <= l.maxCards!))
+    expect(fives.length).toBeGreaterThanOrEqual(3)
   })
 })
 
@@ -184,6 +281,7 @@ describe('phrases', () => {
       expect(/[א-ת]/.test(text), id).toBe(true)
       expect(/[ְ-ּ]/.test(text), `${id} has nikud`).toBe(true)
       expect(/[A-Za-z]/.test(text), id).toBe(false)
+      expect(/[״“”׳‘’]/.test(text), `${id} uses a non-ASCII quote`).toBe(false)
     }
   })
 })
