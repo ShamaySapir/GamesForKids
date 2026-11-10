@@ -54,13 +54,12 @@ Current stage: **Stage 8a built** (coding island, K–2); Stages 1–6 await the
 Details for every open item are in **`docs/BACKLOG.md`**. In order:
 
 1. **Stage 7, parents' page** (user said it is a must). Spec `docs/specs/parents.md`, then approval, then building, on branch `stage7/parents`.
-2. **Nikud audit:** keep searching the `NOT SEARCHED` lemmas in `docs/audit/nikud/`, then apply the findings (BACKLOG).
-3. **User:**
+2. **User:**
    - push and merge `stage8/coding`;
    - play-test all islands;
    - record the phrases listed in BACKLOG;
    - after the clock is approved, delete `legacy/`.
-4. **Later, the user picks:** Stage 8b (coding, grades 3–6), Stage 5 (math, grades 3–6), Stage 2b (letter tracing, print first, D13), or GitHub Pages deployment (needs the user's approval).
+3. **Later, the user picks:** Stage 8b (coding, grades 3–6), Stage 5 (math, grades 3–6), Stage 2b (letter tracing, print first, D13), or GitHub Pages deployment (needs the user's approval).
 
 ## Commands
 
