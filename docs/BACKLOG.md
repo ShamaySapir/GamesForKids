@@ -8,7 +8,7 @@ Open work that is not a roadmap stage, so any agent (or the user, another day) c
 - **Push and merge** these branches in order: `stage8/coding` (coding island, spoken island names, the "אב" icon), then `stage7/parents` when it is built.
 - **Play-test and approve** the clock, letters, reading, numbers, thinking, English and coding islands. After the clock is approved, delete `legacy/`.
 - **Record in the studio** (`npm run dev` → `#/studio`):
-  - Re-record these: `hebrew.word.afroax` (אֶפְרוֹחַ), `hebrew.word.anav` (עֵנָב) and `hebrew.word.axavish` (עַכָּבִישׁ, said "akavish"). Their old takes were removed. Also `hebrew.word.nora` (now נוּרָה), `hebrew.word.sear` (שֵׂעָר, not שַׂעַר), the letter ק if it was said "kof" (now קוּף), the kangaroo syllables (קֶנְ־גּוּ־רוּ), and דְּלַעַת if it was said "dal'at".
+  - Re-record these: `hebrew.word.afroax` (אֶפְרוֹחַ), `hebrew.word.anav` (עֵנָב) and `hebrew.word.axavish` (עַכָּבִישׁ, said "akavish"). Their old takes were removed. Also the winter book's page 3 and its first question (`reading.book.winter.2` and `.q0`: "חָבַשׁ כּוֹבַע וְכָרַךְ צָעִיף"). Also `hebrew.word.nora` (now נוּרָה), `hebrew.word.sear` (שֵׂעָר, not שַׂעַר), the letter ק if it was said "kof" (now קוּף), the kangaroo syllables (קֶנְ־גּוּ־רוּ), and דְּלַעַת if it was said "dal'at".
   - New phrases: `app.locked`, `app.oneMore`, `hebrew.ui.reset` ("סוֹפְרִים מֵחָדָשׁ"), the 7 island names (`app.island.*`), and the coding island (about 90).
   - English sounds and blends are optional. They are in their own studio tab.
 - **Question for the user:** the coding island's hand-washing story opens with 👆 for "open the tap". Check it is clear to a child.
@@ -19,7 +19,6 @@ All 738 lemmas in the four groups (letters, reading and English, numbers and clo
 
 Words left as they are by choice, flagged for the user:
 - **אַרְנָב:** the Academy prefers אַרְנָבוֹן for a rabbit.
-- **לָבַשׁ צָעִיף:** the Academy suggests כָּרַךְ for a scarf.
 - **בָּאג:** the Academy's word is תֶּקֶל.
 
 When content changes, check new words the same way: WebSearch with `allowed_domains: ["hebrew-academy.org.il"]`. The page title shows the pointed form.
