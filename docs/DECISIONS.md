@@ -71,3 +71,10 @@ Why: native-quality English TTS exists on every device and saves ~250 recordings
 - **Easier step:** after a one-star round, the results screen offers the easier prerequisite.
 - **Parents' "already knows this":** a parent can mark a skill mastered from the parents' page. The skill is flagged `byParent`, gives no sticker, and can be undone.
 
+**D20 · 2026-11-10 · user** — Hosting: GitHub Pages, free, at `https://shamaysapir.github.io/GamesForKids/`. A custom domain can be added later without code changes.
+- **Config as code:**
+  - `.github/workflows/ci-cd.yml` runs lint, types, unit tests and E2E on every PR and push. On `main` it also deploys `dist/`, and only after every check has passed.
+  - `scripts/setup-pages.sh` enables Pages for the workflow and sets the repo homepage. It is idempotent, and `CUSTOM_DOMAIN=…` adds a domain.
+- **Deploying is merging:** the user merges to `main`, and the merge deploys. This replaces "no deploy without the user's approval" with "no merge to main without the user's approval".
+- **The site is public, and so are the studio recordings in `src/audio/he/`.** The studio itself is never built (D10).
+

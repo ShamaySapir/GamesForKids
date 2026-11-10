@@ -46,6 +46,7 @@ computer-first with touch support.
 | Coding island (K–2) | ✅ built, ⏳ awaiting user play-test | 7 skills (story algorithms, follow, arrow programs, debug, loops), `ProgramGame` + `program.ts` simulator; spec `docs/specs/coding.md`; ~90 phrases to record |
 | English island | ✅ built, ⏳ awaiting user play-test | 13 skills (Pre-A1 → early A1), English by browser voice (D17), Andika font, LTR; 16 Hebrew instructions to record | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
+| Hosting & CI/CD | ✅ set up | GitHub Pages at https://shamaysapir.github.io/GamesForKids/ (D20). `.github/workflows/ci-cd.yml`: check + E2E on every PR, deploy on merge to `main`. One-time repo setup: `scripts/setup-pages.sh` |
 | Git | ✅ | Stages 0–4b merged to `main` (PR #1–#6). Current work: `stage6/english` |
 
 Current stage: **Stage 7 built** (parents' page) after Stage 8a (coding island, K–2); Stages 1–6 await the user's play-test and recordings.
@@ -60,7 +61,7 @@ Details for every open item are in **`docs/BACKLOG.md`**. In order:
    - play-test all islands;
    - record the phrases listed in BACKLOG;
    - after the clock is approved, delete `legacy/`.
-3. **Later, the user picks:** Stage 8b (coding, grades 3–6), Stage 5 (math, grades 3–6), Stage 2b (letter tracing, print first, D13), or GitHub Pages deployment (needs the user's approval).
+3. **Later, the user picks:** Stage 8b (coding, grades 3–6), Stage 5 (math, grades 3–6), Stage 2b (letter tracing, print first, D13),.
 
 ## Commands
 
@@ -140,7 +141,7 @@ See D8 in `docs/DECISIONS.md`.
 
 ### Git
 - ✅ One branch per task: `island/<name>/<task>` (planner: `stage<N>/<topic>`). Small commits, English messages.
-- ⛔ No direct pushes to `main`, no `--force`, no deploy without the user's approval.
+- ⛔ No direct pushes to `main`, no `--force`. A merge to `main` deploys the site (D20), so only the user merges.
 
 ## Definition of Done (a game or skill)
 
