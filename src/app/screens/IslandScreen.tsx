@@ -28,7 +28,7 @@ export function IslandScreen() {
     <>
       <TopBar />
       <h1>{island.icon} {island.title}</h1>
-      <Mascot line={rec ? 'app.startHere' : 'app.pickSkill'} size={84} />
+      <Mascot line={rec ? 'app.pickSkillStar' : 'app.pickSkill'} size={84} />
       <ol style={{ listStyle: 'none', padding: 0, display: 'grid', gap: 16, marginTop: 20 }}>
         {island.skills.map(skill => {
           const sp = progress.skills[skill.id]
