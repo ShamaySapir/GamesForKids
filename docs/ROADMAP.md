@@ -78,7 +78,7 @@ drawings** suited to the age (SVG illustrations; emoji only where unambiguous). 
 | Memory pairs | Classic turn-two-cards memory game |
 | What's missing? | A familiar drawing with a part missing (a chair with three legs) |
 
-## Stage 5 – Math: 3rd – 6th grade ⬜
+## Stage 5 – Math: 3rd – 6th grade 🟡 (D23: 5a grade 3 → 5b → 5c → 5d)
 Re-plan against the new curriculum (grade 3 from 2026‑27; see `docs/RESEARCH.md`). Draft: multiplication table arena + Leitner, division with remainder, order of operations, fractions, decimals,
 percent and ratio, area / perimeter / volume, word problems.
 
