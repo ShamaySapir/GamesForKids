@@ -68,8 +68,8 @@ export const island: IslandDef = {
     { id: 'clock.hours', title: 'שָׁעוֹת עֲגֻלּוֹת', grade: 1, requires: ['clock.hands'], sticker: '🕐', games: [read(LEVELS.hours), set(LEVELS.hours)] },
     { id: 'clock.half', title: 'וָחֵצִי', grade: 1, requires: ['clock.hours'], sticker: '🌗', games: [read(LEVELS.half), set(LEVELS.half)] },
     {
-      id: 'clock.day', title: 'הַיּוֹם שֶׁל שׁוּפִי', grade: 1, requires: ['clock.half'], sticker: '🌞',
-      games: [defineGame({ id: 'day', title: 'הַיּוֹם שֶׁל שׁוּפִי', icon: '🌅', component: SetGame, generate: ctx => dayQuestion(ctx, LEVELS.half) })],
+      id: 'clock.day', title: 'הַיּוֹם שֶׁל אוֹלִי', grade: 1, requires: ['clock.half'], sticker: '🌞',
+      games: [defineGame({ id: 'day', title: 'הַיּוֹם שֶׁל אוֹלִי', icon: '🌅', component: SetGame, generate: ctx => dayQuestion(ctx, LEVELS.half) })],
     },
     { id: 'clock.quarter', title: 'רֶבַע וְרֶבַע לְ…', grade: 2, requires: ['clock.half'], sticker: '🍕', games: [read(LEVELS.quarter), set(LEVELS.quarter), match(LEVELS.quarter)] },
     { id: 'clock.five', title: 'כָּל חָמֵשׁ דַּקּוֹת', grade: 2, requires: ['clock.quarter'], sticker: '🚀', games: [read(LEVELS.five), set(LEVELS.five), match(LEVELS.five)] },

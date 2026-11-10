@@ -286,10 +286,10 @@ describe('stories', () => {
 })
 
 // Names and words with no a-sound alternative; they do not count against a book's stage.
-const FUNCTION_WORDS = new Set(['שׁוּפִי', 'הוּא', 'הִיא', 'הֵם', 'אֲנִי', 'אֶת', 'אֶל', 'עִם', 'לוֹ', 'אַחַר', 'כָּל', 'בָּא', 'מִי', 'מָה', 'מַה', 'וְ'])
+const FUNCTION_WORDS = new Set(['אוֹלִי', 'הוּא', 'הִיא', 'הֵם', 'אֲנִי', 'אֶת', 'אֶל', 'עִם', 'לוֹ', 'אַחַר', 'כָּל', 'בָּא', 'מִי', 'מָה', 'מַה', 'וְ'])
 
 describe('books', () => {
-  it('has exactly 5 books, one per stage 1..5, with Shufi in each', () => {
+  it('has exactly 5 books, one per stage 1..5, with Oli in each', () => {
     expect(BOOKS).toHaveLength(5)
     expect(BOOKS.map(b => b.stage).sort()).toEqual([1, 2, 3, 4, 5])
     expect(new Set(BOOKS.map(b => b.id)).size).toBe(5)
@@ -297,7 +297,7 @@ describe('books', () => {
     for (const b of BOOKS) {
       expect(b.id).toMatch(/^[a-z-]+$/)
       expect(emojiCount(b.cover), b.id).toBeGreaterThanOrEqual(1)
-      expect(b.pages.map(p => p.text).join(' '), b.id).toContain('שׁוּפִי')
+      expect(b.pages.map(p => p.text).join(' '), b.id).toContain('אוֹלִי')
     }
   })
 

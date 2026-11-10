@@ -1,6 +1,6 @@
 ---
 name: builder
-description: Implements one task from an approved island spec in the Lomdim Vemsachakim kids' learning app, inside src/subjects/<island>/ only. Give it the spec path, task number and the files it owns.
+description: Implements one task from an approved island spec in the Oli's Islands kids' learning app, inside src/subjects/<island>/ only. Give it the spec path, task number and the files it owns.
 model: sonnet
 ---
 

@@ -10,7 +10,7 @@ export function recommendedSkill(p: Progress, island: IslandDef, grade: Grade): 
   return open.find(s => s.grade >= grade - 1) ?? open[0]
 }
 
-/** Above the child's grade with prerequisites not mastered: playable, but Shufi says it is harder. */
+/** Above the child's grade with prerequisites not mastered: playable, but Oli says it is harder. */
 export const isChallenge = (p: Progress, skill: SkillDef, grade: Grade) =>
   skill.grade > grade && !p.skills[skill.id]?.mastered && !isUnlocked(p, skill.requires)
 

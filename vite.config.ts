@@ -14,8 +14,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'audio/**/*'],
       manifest: {
-        name: 'לומדים ומשחקים',
-        short_name: 'לומדים',
+        name: "האיים של אולי · Oli's Islands",
+        short_name: 'האיים של אולי',
         lang: 'he',
         dir: 'rtl',
         start_url: './',

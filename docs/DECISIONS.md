@@ -78,3 +78,8 @@ Why: native-quality English TTS exists on every device and saves ~250 recordings
 - **Deploying is merging:** the user merges to `main`, and the merge deploys. This replaces "no deploy without the user's approval" with "no merge to main without the user's approval".
 - **The site is public, and so are the studio recordings in `src/audio/he/`.** The studio itself is never built (D10).
 
+**D21 · 2026-11-10 · user** — The app is named **הָאִיִּים שֶׁל אוֹלִי / Oli's Islands**, and the owl mascot is **אוֹלִי (Oli)**. This replaces the mascot name in D5 and the working title "Lomdim Vemsachakim".
+- **Nikud:** child-facing text always writes the name with nikud, אוֹלִי, because unpointed אולי reads as "perhaps". The browser tab and the installed-app name use plain letters.
+- **Recordings:** the 25 takes that said the old name were removed; they are in git history.
+- **What keeps the old name:** the backup file's internal `app` id and the npm package name, so existing backups still restore.
+

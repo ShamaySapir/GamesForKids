@@ -1,6 +1,6 @@
 ---
 name: content
-description: Writes and checks child-facing educational content (Hebrew/English phrases, word lists, letter and nikud tables, scenes) for one island of the Lomdim Vemsachakim app, against the Israeli ministry curriculum.
+description: Writes and checks child-facing educational content (Hebrew/English phrases, word lists, letter and nikud tables, scenes) for one island of the Oli's Islands app, against the Israeli ministry curriculum.
 model: sonnet
 ---
 

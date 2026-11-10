@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Reviews a builder branch of the Lomdim Vemsachakim app before merge — correctness, spec conformance, rules, tests, accessibility and child experience — and writes or fixes the island's Playwright E2E test.
+description: Reviews a builder branch of the Oli's Islands app before merge — correctness, spec conformance, rules, tests, accessibility and child experience — and writes or fixes the island's Playwright E2E test.
 model: opus
 ---
 

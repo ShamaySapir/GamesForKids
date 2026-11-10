@@ -62,7 +62,7 @@ Bugs found this way in Stage 0–1 that compiled and passed unit tests:
 | Option pictures that say their word let a child solve "hear and pick" by matching sounds | Content review | In listening games the options must be silent |
 | The same word ("זֶרַע", "בֵּיצָה") had one phrase ID per use, so the studio asked for it up to 4 times (132 extra recordings) | User noticed while recording | Recordings are shared by text; a repeated word must use the same nikud everywhere |
 | 9 of 11 "find the bug" stories had the bug in the 2nd step | Content review | Vary the answer's position; test that no position dominates — a child learns positions, not skills |
-| A debug board let Shufi walk onto the apple and then bump the edge: a visible win scored as a miss | Content review + a path test | What the child *sees* must match the verdict; test whole paths, not only end states |
+| A debug board let Oli walk onto the apple and then bump the edge: a visible win scored as a miss | Content review + a path test | What the child *sees* must match the verdict; test whole paths, not only end states |
 | A wrong loop option was the same dance started one move later (👏🦶 vs 🦶👏) | Screenshot | Wrong options must be wrong under every reasonable reading, not just unequal as data |
 | "Funny" wrong steps included a child lying in a fridge and "the cars stop for you" | Content review | Child content never models unsafe behavior, even as the wrong answer |
 | Parallel builders' worktrees started from `main`, not the feature branch with the contract files | Builders noticed missing `types.ts` | First command in a worktree: `git log -1` and compare with the commit in your brief; reset onto it if different |

@@ -59,17 +59,17 @@ The child plans a path and builds a program from arrow cards. The child runs it,
    - a missing step, shown as an empty frame with "?".
 
    The child picks the bad step, or picks the missing card from 3. This is debugging without a screen. Item key: `bug:<story>`.
-3. **Where will it get to?** A small board, 4×4 with no walls. Shufi sits on a square, and above the board is a program of 2–4 arrow cards. The child picks the square where Shufi ends up, out of 3 highlighted squares.
+3. **Where will it get to?** A small board, 4×4 with no walls. Oli sits on a square, and above the board is a program of 2–4 arrow cards. The child picks the square where Oli ends up, out of 3 highlighted squares.
    - The wrong squares are typical mistakes:
      - one arrow left out;
      - one arrow taken the wrong way round;
      - the arrows read right to left.
    - Item key: the board and program.
-   - Aid: Shufi's path is drawn step by step.
-4. **Programming step by step.** A board with Shufi, a goal (🍎), and walls from 5×5 boards on. The child builds a program from ↑ ↓ ← → cards in a strip, then presses ▶.
-   - Shufi walks one step per card.
+   - Aid: Oli's path is drawn step by step.
+4. **Programming step by step.** A board with Oli, a goal (🍎), and walls from 5×5 boards on. The child builds a program from ↑ ↓ ← → cards in a strip, then presses ▶.
+   - Oli walks one step per card.
    - Reaching the goal is correct.
-   - Stopping elsewhere or bumping a wall is a miss (`onAttempt(false)`). Shufi goes back to the start, the card where things went wrong is highlighted, and the program stays so the child can edit it. Only the first run of each board counts toward first-try accuracy.
+   - Stopping elsewhere or bumping a wall is a miss (`onAttempt(false)`). Oli goes back to the start, the card where things went wrong is highlighted, and the program stays so the child can edit it. Only the first run of each board counts toward first-try accuracy.
    - Any program that reaches the goal is accepted, not only the shortest one.
    - Levels: 4×4 open boards with paths of 2–4 steps, then 5×5 with walls and paths of 4–7.
    - Aid: a ghost path (the shortest one).
@@ -88,7 +88,7 @@ The child plans a path and builds a program from arrow cards. The child runs it,
 | Game | Component | Notes |
 |---|---|---|
 | order | `OrderGame` (reading island) | Picture tiles with a spoken one-word caption on 🔊; RTL order, first step on the right |
-| pick-bug, follow, pick-loop | `PickGame` | Board pictures are a registered art kit (`registerArt`): board, arrows, Shufi, goal. Options are silent unless they have a 🔊 |
+| pick-bug, follow, pick-loop | `PickGame` | Board pictures are a registered art kit (`registerArt`): board, arrows, Oli, goal. Options are silent unless they have a 🔊 |
 | program, fix, program-repeat | **`ProgramGame`** (new, island-only) | See below |
 
 **ProgramGame:**
@@ -107,7 +107,7 @@ The child plans a path and builds a program from arrow cards. The child runs it,
     - Tab reaches every card.
   - Drag is optional and not required.
 - **Run:**
-  - Shufi moves one cell every 400 ms. With `prefers-reduced-motion`, Shufi jumps.
+  - Oli moves one cell every 400 ms. With `prefers-reduced-motion`, Oli jumps.
   - The strip card that is running is highlighted.
   - A wall bump stops the run with a soft "bonk" (`sfx`) and shows no negative text.
   - The result follows the rules in Details 4.
@@ -121,14 +121,14 @@ The child plans a path and builds a program from arrow cards. The child runs it,
 Instructions (about 12), for example:
 - "סַדְּרוּ אֶת הַשְּׁלַבִּים לְפִי הַסֵּדֶר"
 - "מָה לֹא בְּסֵדֶר?"
-- "לְאָן שׁוּפִי יַגִּיעַ?"
-- "בְּנוּ תָּכְנִית שֶׁתָּבִיא אֶת שׁוּפִי לַתַּפּוּחַ"
+- "לְאָן אוֹלִי יַגִּיעַ?"
+- "בְּנוּ תָּכְנִית שֶׁתָּבִיא אֶת אוֹלִי לַתַּפּוּחַ"
 - "מִצְאוּ אֶת הַבָּאג וְתַקְּנוּ"
 - "אֵיזוֹ לוּלָאָה מַתְאִימָה?"
 - "נַסּוּ לְהִשְׁתַּמֵּשׁ בְּ'חֲזֹר'"
 
 Feedback:
-- "שׁוּפִי נִתְקַע בַּקִּיר, נְתַקֵּן?"
+- "אוֹלִי נִתְקַע בַּקִּיר, נְתַקֵּן?"
 - "כִּמְעַט! בּוֹאוּ נְתַקֵּן אֶת הַצַּעַד הַזֶּה"
 
 Story step captions: about 8 stories × 4 steps, reusing words already recorded where the text matches (shared recordings). Total: **about 60–80 new phrases to record**. No English.
@@ -201,5 +201,5 @@ Also out of scope: text code and any online sharing.
 ## User decisions (2026-11-10)
 
 1. **Name and icon:** "אִי הַתִּכְנוּת" 🤖. Approved.
-2. **Character on the board:** Shufi, dressed as a "programmer". He wears a small robot helmet with an antenna, drawn as an SVG variant of the owl in the island's art kit. We picked the helmet over glasses because it stays readable at board-cell size (about 56px). Glasses remain a fallback.
+2. **Character on the board:** Oli, dressed as a "programmer". He wears a small robot helmet with an antenna, drawn as an SVG variant of the owl in the island's art kit. We picked the helmet over glasses because it stays readable at board-cell size (about 56px). Glasses remain a fallback.
 3. **"מָה קֹדֶם?"** starts at pre-kindergarten (Grade −1), like the thinking island.

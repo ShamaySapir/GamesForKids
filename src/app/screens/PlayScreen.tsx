@@ -34,7 +34,7 @@ function Round({ island, skill, game }: { island: IslandDef; skill: SkillDef; ga
   const [review] = useState(() =>
     dueItems(skillLeitner(useStore.getState().progress, skill.id), Date.now(), k => game.accepts?.(k) ?? false))
   const [s, setS] = useState<SessionState>(() => startSession(game, Math.random, review))
-  // A stretch skill (D19) opens with Shufi saying it is harder but fine to try, once per round screen.
+  // A stretch skill (D19) opens with Oli saying it is harder but fine to try, once per round screen.
   const [stretch] = useState(() => { const st = useStore.getState(); return isChallenge(st.progress, skill, st.current?.grade ?? 0) })
   const introduced = useRef(false)
   const [feedback, setFeedback] = useState<{ id: string; mood: Mood } | null>(null)

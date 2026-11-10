@@ -12,10 +12,10 @@ the "Current state" and "Next steps" sections must be updated in the same change
 
 ## Project in one paragraph
 
-**Lomdim Vemsachakim** ("Learn & Play") is a free, playful learning web app for Israeli kids from
+**Oli's Islands** ("Learn & Play") is a free, playful learning web app for Israeli kids from
 kindergarten (gan chova) to 6th grade. Subjects: telling time (clock), Hebrew (letters, sounds, nikud,
 reading, writing), math (counting to percent), and English (ABC, phonics, vocabulary). Content follows
-the Israeli Ministry of Education curriculum. The UI is Hebrew and RTL; Shufi the owl guides the child
+the Israeli Ministry of Education curriculum. The UI is Hebrew and RTL; Oli the owl guides the child
 across a world map of subject "islands". Runs fully client-side (no server), installable as a PWA,
 computer-first with touch support.
 

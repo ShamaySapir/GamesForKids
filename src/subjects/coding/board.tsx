@@ -5,8 +5,8 @@ import './board.css'
 // The board drawing shared by ProgramGame (T3) and the art kit for pick questions (T2). A board is a map, so it
 // stays left-to-right inside the RTL page, like the maze.
 
-/** Shufi dressed as a programmer: the app's owl in a small robot helmet with an antenna (user's choice). */
-export function RoboShufi({ x, y, size }: { x: number; y: number; size: number }) {
+/** Oli dressed as a programmer: the app's owl in a small robot helmet with an antenna (user's choice). */
+export function RoboOli({ x, y, size }: { x: number; y: number; size: number }) {
   const s = size / 120
   return (
     <g transform={`translate(${x - size / 2} ${y - size / 2}) scale(${s})`} aria-hidden="true">
@@ -29,13 +29,13 @@ interface Props {
   board: Board
   /** Width in px; cells are square. */
   size: number
-  /** Where Shufi stands (default: the 'S' cell). */
+  /** Where Oli stands (default: the 'S' cell). */
   hero?: Cell
-  /** Cells Shufi has walked, drawn as a trail. */
+  /** Cells Oli has walked, drawn as a trail. */
   trail?: readonly Cell[]
   /** The aid's suggested route, drawn faint and dashed. */
   ghost?: readonly Cell[]
-  /** Highlighted squares (pick options: "Shufi ends here?"). */
+  /** Highlighted squares (pick options: "Oli ends here?"). */
   marks?: readonly Cell[]
   /** Hide the start marker and goal (a follow board has no goal). */
   plain?: boolean
@@ -64,7 +64,7 @@ export function BoardView({ board, size, hero, trail, ghost, marks, plain = fals
       {ghost && ghost.length > 1 && <polyline points={line(ghost)} className="cd-ghost" />}
       {trail && trail.length > 1 && <polyline points={line(trail)} className="cd-trail" />}
       {goal && <text x={center(goal)[0]} y={center(goal)[1]} fontSize={cell * 0.62} textAnchor="middle" dominantBaseline="central" aria-hidden="true">🍎</text>}
-      <RoboShufi x={center(at)[0]} y={center(at)[1]} size={cell * 0.9} />
+      <RoboOli x={center(at)[0]} y={center(at)[1]} size={cell * 0.9} />
     </svg>
   )
 }

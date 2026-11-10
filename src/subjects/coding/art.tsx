@@ -21,7 +21,7 @@ function CodeBoard(p: ArtProps) {
   const mark = str(p.mark).split(',').map(Number)
   const marks: Cell[] = mark.length === 2 && mark.every(Number.isFinite) ? [[mark[0]!, mark[1]!]] : []
   const program = [...str(p.program)]
-  // Numbered arrows after Shufi (first on the left, like the board): "he walks these, one step each".
+  // Numbered arrows after Oli (first on the left, like the board): "he walks these, one step each".
   return (
     <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
       {/* Bigger than other art: a child has to count squares (the prompt board most of all). */}

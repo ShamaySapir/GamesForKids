@@ -54,8 +54,8 @@ The parent can also move all progress to another computer. Nothing leaves the de
 
 - **Island path:**
   - No skill is locked any more.
-  - Shufi's line marks one skill per island with "⭐ כַּדַּאי לְהַתְחִיל מִכָּאן". It is picked from the child's grade, as described in D19.
-  - A skill above the child's grade whose prerequisites aren't mastered shows "אֶתְגָּר 💪". When the child starts it, Shufi says "זֶה קָצָת קָשֶׁה יוֹתֵר — אֶפְשָׁר לְנַסּוֹת!".
+  - Oli's line marks one skill per island with "⭐ כַּדַּאי לְהַתְחִיל מִכָּאן". It is picked from the child's grade, as described in D19.
+  - A skill above the child's grade whose prerequisites aren't mastered shows "אֶתְגָּר 💪". When the child starts it, Oli says "זֶה קָצָת קָשֶׁה יוֹתֵר — אֶפְשָׁר לְנַסּוֹת!".
 - **Results:** after a one-star round of a skill whose prerequisite isn't mastered, the results screen offers "בּוֹאוּ נְנַסֶּה קֹדֶם מַשֶּׁהוּ קַל יוֹתֵר" with a link to that prerequisite.
 - **Parents' page:**
   - Each skill that isn't mastered gets a "כבר יודע ✓" button. It marks the skill mastered with `byParent`, gives no sticker, and pushes "start here" past it.

@@ -25,7 +25,7 @@ export function MapScreen() {
 
   return (
     <>
-      <TopBar title="לומדים ומשחקים" back={null} />
+      <TopBar title="הָאִיִּים שֶׁל אוֹלִי" back={null} />
       <Mascot line="app.pickIsland" size={96} />
       <div className="map">
         {rowsOf(islands).map((row, r) => (

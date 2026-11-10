@@ -24,7 +24,7 @@ Durations and digital↔spoken conversion are out of scope for the MVP (DECISION
 | `clock.hands` | מכירים את המחוגים | Gan | — | 🦉 | hands, set (hour hand only) |
 | `clock.hours` | שעות עגולות | 1 | hands | 🕐 | read, set |
 | `clock.half` | וחצי | 1 | hours | 🌗 | read, set |
-| `clock.day` | היום של שופי | 1 | half | 🌞 | day |
+| `clock.day` | היום של אולי | 1 | half | 🌞 | day |
 | `clock.quarter` | רבע ורבע ל… | 2 | half | 🍕 | read, set, match |
 | `clock.five` | כל חמש דקות | 2 | quarter | 🚀 | read, set, match |
 | `clock.minute` | כל דקה | 3 | five | 🏆 | read, set |
@@ -45,7 +45,7 @@ Distractors target typical mistakes: hands swapped (3:30 → 6:15), right hour/w
 | read | A clock and 4 options (digital + spoken text) | Picks the matching time | `3:30` | yes |
 | set | "Set the clock to half past three"; drags hands (or Tab + arrows), presses Check | Hands show the time (12-hour) | `3:30` | yes |
 | match | 4 clocks and 4 digital cards; pick a clock then a card | All 4 pairs matched (round = 3 boards) | sorted keys | no |
-| day | A scene (🌅 "Shufi wakes up at seven") and a clock to set | As in set | `day.wake` | no |
+| day | A scene (🌅 "Oli wakes up at seven") and a clock to set | As in set | `day.wake` | no |
 
 Set games start at 9:00 (3:00 if the answer is 9:00) so the hands never overlap at the start.
 

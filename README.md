@@ -1,4 +1,4 @@
-# Lomdim Vemsachakim (Learn & Play)
+# Oli's Islands (Learn & Play)
 
 Playful learning games for Israeli kids from kindergarten to 6th grade: telling time, Hebrew,
 math and English. Hebrew RTL UI, an owl guide, and a world map of subject islands.

@@ -23,7 +23,7 @@ src/
     audio/audio.ts          say(phraseId), sfx; the ONLY module that plays sound
   ui/                       shared visual pieces — planner-owned
     theme.css               all design tokens (colors, radius, tap size) + base classes
-    Mascot.tsx              Shufi the owl: moods, speech bubble, click to replay
+    Mascot.tsx              Oli the owl: moods, speech bubble, click to replay
   subjects/<island>/        one folder per island — builder-owned
   tools/studio/             dev-only recording studio
   audio/he/                 recordings, named <phraseId>.<ext>

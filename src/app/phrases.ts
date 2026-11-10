@@ -2,14 +2,15 @@ import type { PhraseMap } from '../core/engine/types'
 
 /** Child-facing phrases shared by all islands. */
 export const phrases: PhraseMap = {
-  'app.hello': 'שלום! אני שופי הינשוף. בואו נלמד ונשחק!',
+  // "אוֹלִי" always carries nikud: unpointed it reads as "perhaps".
+  'app.hello': 'שָׁלוֹם! אֲנִי אוֹלִי הַיַּנְשׁוּף. בּוֹאוּ נִלְמַד וּנְשַׂחֵק!',
   'app.who': 'מי משחק היום?',
   'app.replay': 'לחצו עליי כדי לשמוע שוב',
   'app.pickIsland': 'לאן נפליג היום? בחרו אי.',
   'app.pickSkill': 'בחרו משחק.',
   'app.soon': 'האי הזה עוד בבנייה. נגיע אליו בקרוב!',
   'app.startHere': 'כַּדַּאי לְהַתְחִיל מִכָּאן',
-  // Shufi's line on an island with a recommendation: it points at the ⭐ badge rather than saying "here" with nothing there.
+  // Oli's line on an island with a recommendation: it points at the ⭐ badge rather than saying "here" with nothing there.
   'app.pickSkillStar': 'בַּחֲרוּ מִשְׂחָק. הַכּוֹכָב מַרְאֶה מֵאֵיפֹה כַּדַּאי לְהַתְחִיל.',
   'app.challengeTag': 'אֶתְגָּר',
   'app.challenge': 'זֶה קָצָת קָשֶׁה יוֹתֵר, אֶפְשָׁר לְנַסּוֹת!',
