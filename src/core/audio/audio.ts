@@ -70,6 +70,8 @@ export function stop() {
   token++
   current?.pause()
   current = null
+  try { source?.stop() } catch { /* already ended */ }
+  source = null
   try { speechSynthesis.cancel() } catch { /* no speech support */ }
 }
 
@@ -105,11 +107,80 @@ function playUrl(url: string): Promise<void> {
   })
 }
 
+/* ---------- recordings played through Web Audio, without the silence the studio captured ---------- */
+
+let ctx: AudioContext | null = null
+const audioCtx = () => (ctx ??= new AudioContext())
+
+const BLOCK_S = 0.01
+/** Blocks in a row that must be loud: a single click of the record button is not speech. */
+const SUSTAIN = 3
+
+/**
+ * Start and end (seconds) of the audible part. A take runs from pressing record to pressing stop, so it opens and
+ * closes with silence — joined parts ("חָמֵשׁ" + "וָחֵצִי") would have a pause between them.
+ */
+export function audibleRange(samples: Float32Array, rate: number, pad = 0.05): [number, number] {
+  const block = Math.max(1, Math.round(rate * BLOCK_S))
+  const rms: number[] = []
+  for (let i = 0; i < samples.length; i += block) {
+    const end = Math.min(samples.length, i + block)
+    let sum = 0
+    for (let j = i; j < end; j++) sum += samples[j]! ** 2
+    rms.push(Math.sqrt(sum / (end - i)))
+  }
+  const duration = samples.length / rate
+  const floor = rms.reduce((m, v) => Math.max(m, v), 0) * 0.1
+  const loud = (i: number) => rms.slice(i, i + SUSTAIN).every(v => v > floor) && i + SUSTAIN <= rms.length
+  let first = 0
+  while (first < rms.length && !loud(first)) first++
+  if (floor === 0 || first === rms.length) return [0, duration]
+  let last = rms.length - SUSTAIN
+  while (last > first && !loud(last)) last--
+  const blockS = block / rate
+  return [Math.max(0, first * blockS - pad), Math.min(duration, (last + SUSTAIN) * blockS + pad)]
+}
+
+interface Clip { buffer: AudioBuffer; from: number; to: number }
+const clips = new Map<string, Promise<Clip | null>>()
+
+/** Decoded once per URL; null when this browser can't decode it (then the plain <audio> path plays it). */
+function loadClip(url: string): Promise<Clip | null> {
+  let clip = clips.get(url)
+  if (!clip) {
+    clip = fetch(url).then(r => r.arrayBuffer()).then(data => audioCtx().decodeAudioData(data)).then(buffer => {
+      const [from, to] = audibleRange(buffer.getChannelData(0), buffer.sampleRate)
+      return { buffer, from, to }
+    }).catch(() => null)
+    clips.set(url, clip)
+  }
+  return clip
+}
+
+let source: AudioBufferSourceNode | null = null
+
+async function playRecording(url: string): Promise<void> {
+  const clip = await loadClip(url)
+  const c = clip && audioCtx()
+  if (c && c.state !== 'running') await c.resume().catch(() => {})
+  if (!clip || !c || c.state !== 'running') return playUrl(url)
+  return new Promise(resolve => {
+    const s = c.createBufferSource()
+    s.buffer = clip.buffer
+    s.connect(c.destination)
+    s.onended = () => resolve()
+    source = s
+    s.start(0, clip.from, clip.to - clip.from)
+  })
+}
+
 /** Speak a phrase or a sequence. Interrupts anything already playing. */
 export async function say(ref: PhraseRef): Promise<void> {
   stop()
   const mine = token
   const ids = typeof ref === 'string' ? [ref] : ref
+  // Decode every recorded part up front, so parts follow each other without a loading gap.
+  for (const id of ids) { const url = recordingOf(id); if (url) void loadClip(url) }
   // Consecutive unrecorded parts in the same language are read as one utterance so TTS keeps natural intonation.
   let pending: string[] = []
   let pendingLang: Lang = 'he-IL'
@@ -123,7 +194,7 @@ export async function say(ref: PhraseRef): Promise<void> {
     if (url) {
       await flush()
       if (mine !== token) return
-      await playUrl(url)
+      await playRecording(url)
     } else {
       const lang = langOf(id)
       if (lang !== pendingLang) { await flush(); if (mine !== token) return; pendingLang = lang }
@@ -207,11 +278,9 @@ export async function narrate(id: string, onWord: (index: number) => void, rate 
 
 /* ---------- sound effects (synthesized, ported from the prototype) ---------- */
 
-let ctx: AudioContext | null = null
-
 function tone(freq: number, duration = 0.15, delay = 0) {
   try {
-    ctx ??= new AudioContext()
+    const ctx = audioCtx()
     const o = ctx.createOscillator()
     const g = ctx.createGain()
     o.frequency.value = freq
