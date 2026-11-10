@@ -8,7 +8,7 @@ import type { PlaceValueQ } from './types'
 vi.mock('../../core/audio/audio', () => ({
   phrases: {
     'math.q.build': 'build', 'math.ui.check': 'check', 'math.ui.reset': 'reset',
-    'math.ui.hundreds': 'H', 'math.ui.tens': 'T', 'math.ui.ones': 'O',
+    'math.ui.thousands': 'K', 'math.ui.hundreds': 'H', 'math.ui.tens': 'T', 'math.ui.ones': 'O',
   },
   say: vi.fn(() => Promise.resolve()),
 }))
@@ -96,5 +96,26 @@ describe('PlaceValueGame', () => {
     await build(1, 1, 1)
     await userEvent.click(screen.getByRole('button', { name: 'reset' }))
     expect(pieces('one') + pieces('ten') + pieces('hundred')).toBe(0)
+  })
+
+  it('offers a thousands column first when asked for four columns', async () => {
+    const onAttempt = vi.fn()
+    render(<PlaceValueGame question={q({ columns: 4, answer: 3407, show: '3,407' })} aid={true} onAttempt={onAttempt} />)
+    expect(screen.getAllByRole('group').map(g => g.getAttribute('aria-label'))).toEqual(['K', 'H', 'T', 'O'])
+    for (let i = 0; i < 3; i++) await userEvent.click(btn('+', 'K'))
+    for (let i = 0; i < 4; i++) await userEvent.click(btn('+', 'H'))
+    for (let i = 0; i < 7; i++) await userEvent.click(btn('+', 'O'))
+    expect(pieces('thousand')).toBe(3)
+    expect(Array.from(document.querySelectorAll('.pv-count')).map(e => e.textContent)).toEqual(['3 × 1000', '4 × 100', '0 × 10', '7 × 1'])
+    await userEvent.click(screen.getByRole('button', { name: 'check' }))
+    expect(onAttempt).toHaveBeenCalledWith(true)
+  })
+
+  it('counts thousands in the value, so 3 hundreds is not 3 thousands', async () => {
+    const onAttempt = vi.fn()
+    render(<PlaceValueGame question={q({ columns: 4, answer: 3000, show: '3000' })} aid={false} onAttempt={onAttempt} />)
+    await build(3, 0, 0)
+    await userEvent.click(screen.getByRole('button', { name: 'check' }))
+    expect(onAttempt).toHaveBeenCalledWith(false)
   })
 })
