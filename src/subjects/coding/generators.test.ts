@@ -7,12 +7,13 @@ import { ArtView } from '../../ui/pick/art'
 import type { ArtRef, PickOption, PickQ } from '../../ui/pick/types'
 import { registerCodingArt } from './art'
 import {
-  bugAccepts, bugQuestion, debugAccepts, debugQuestion, followAccepts, followQuestion, loopAccepts, loopQuestion, programAccepts,
+  bugAccepts, bugQuestion, debugAccepts, debugQuestion, fewestTurnsRoute, followAccepts, followQuestion, loopAccepts, loopQuestion, programAccepts,
   programQuestion, repeatAccepts, repeatQuestion, stepsAccepts, stepsQuestion,
 } from './generators'
 import { C, movePhrase, otherPhrase, stepPhrase, wrongPhrase } from './ids'
+import { FOLLOW as REAL_FOLLOW, LEVELS as REAL_LEVELS, REPEAT_LEVELS as REAL_REPEAT } from './content/boards'
 import { compress, find, moves, run, sameCell, shortest } from './program'
-import type { Board, Cell, DebugItem, FollowItem, Level, MovePattern, ProgramQ, Story } from './types'
+import type { Board, Cell, DebugItem, Dir, FollowItem, Level, MovePattern, ProgramQ, Story } from './types'
 
 /* ---------- fixtures ---------- */
 
@@ -80,7 +81,8 @@ function expectPick(q: PickQ, options: number) {
 }
 
 function expectBuild(q: ProgramQ, board: Board) {
-  const dirs = shortest(board)!
+  const dirs = fewestTurnsRoute(board)!
+  expect(dirs).toHaveLength(shortest(board)!.length)
   const result = run(board, moves(dirs))
   expect(result.reachedGoal).toBe(true)
   expect(q.ghost).toEqual(result.path)
@@ -206,6 +208,18 @@ describe('follow', () => {
     })
     expect(followAccepts('follow:f1')).toBe(true)
   })
+  it('every real item yields two plausible wrong ends from runs that did not stop', () => {
+    for (const item of REAL_FOLLOW) {
+      for (const seed of SEEDS.slice(0, 20)) {
+        const q = followQuestion(ctx(seed, [], `follow:${item.id}`), REAL_FOLLOW)
+        expect(q.itemKey).toBe(`follow:${item.id}`)
+        const ends = q.options.map(o => String(artOf(o).props!.mark))
+        expect(new Set(ends).size).toBe(3)
+        const answer = run(item.board, moves(item.program)).end
+        expect(ends[q.options.findIndex(o => o.id === q.answer)]).toBe(`${answer[0]},${answer[1]}`)
+      }
+    }
+  })
   it('honors avoid and review', () => {
     expectAvoidAndReview(c => followQuestion(c, FOLLOW), FOLLOW.map(f => `follow:${f.id}`))
   })
@@ -237,6 +251,7 @@ describe('debug', () => {
       expect(q.start).toEqual(item.program)
       expect(run(q.board, q.start!).reachedGoal).toBe(false)
       expect(q.instruction).toBe(C.debug)
+      expect(q.hint).toBe(C.hintDebug)
       expect(q.palette.includes('repeat')).toBe(item.program.some(c => c.kind === 'repeat'))
       expectBuild(q, q.board)
     })
@@ -290,10 +305,10 @@ describe('repeat', () => {
       expectBuild(q, q.board)
       const level = REPEAT_LEVELS.find(l => l.board.id === q.board.id)!
       expect(q.maxCards).toBe(level.maxCards)
-      const compact = compress(shortest(q.board)!)
+      const compact = compress(fewestTurnsRoute(q.board)!)
       expect(compact.length).toBeLessThanOrEqual(q.maxCards!)
       expect(run(q.board, compact).reachedGoal).toBe(true)
-      expect(shortest(q.board)!.length).toBeGreaterThan(q.maxCards!)
+      expect(fewestTurnsRoute(q.board)!.length).toBeGreaterThan(q.maxCards!)
     })
     expect(repeatAccepts('repeat:r1')).toBe(true)
   })
@@ -318,5 +333,36 @@ describe('art', () => {
     const html = renderToStaticMarkup(createElement(ArtView, { art: a, size: 140 }))
     expect(html.length).toBeGreaterThan(20)
     expect(html).not.toContain('pk-art-missing')
+  })
+})
+
+describe('fewestTurnsRoute', () => {
+  /** Every shortest route of a board, by depth-first search. */
+  function allShortest(board: Board): Dir[][] {
+    const len = shortest(board)!.length
+    const goal = find(board, 'G')!
+    const out: Dir[][] = []
+    const step = { up: [-1, 0], down: [1, 0], left: [0, -1], right: [0, 1] } as const
+    const walk = (at: Cell, dirs: Dir[]) => {
+      if (dirs.length === len) {
+        if (sameCell(at, goal)) out.push([...dirs])
+        return
+      }
+      for (const d of ['up', 'down', 'left', 'right'] as const) {
+        const n: Cell = [at[0] + step[d][0], at[1] + step[d][1]]
+        if (run(board, moves([...dirs, d])).stoppedAt === undefined) walk(n, [...dirs, d])
+      }
+    }
+    walk(find(board, 'S')!, [])
+    return out
+  }
+  it('is a shortest route with no more straight runs than any other shortest route', () => {
+    for (const l of [...REAL_LEVELS, ...REAL_REPEAT, ...LEVELS]) {
+      const route = fewestTurnsRoute(l.board)
+      if (!route) continue
+      expect(run(l.board, moves(route)).reachedGoal, l.board.id).toBe(true)
+      const fewest = Math.min(...allShortest(l.board).map(r => compress(r).length))
+      expect(compress(route).length, l.board.id).toBe(fewest)
+    }
   })
 })
