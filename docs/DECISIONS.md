@@ -83,3 +83,7 @@ Why: native-quality English TTS exists on every device and saves ~250 recordings
 - **Recordings:** the 25 takes that said the old name were removed; they are in git history.
 - **What keeps the old name:** the backup file's internal `app` id and the npm package name, so existing backups still restore.
 
+**D22 · 2026-11-10 · user** — The site moved to **https://olis-islands.github.io/**, free and at the root. This replaces D20's address.
+- **Where it lives:** the repository was transferred to the GitHub organization `olis-islands` and renamed `olis-islands.github.io`, so Pages serves it at the domain root. The old address `shamaysapir.github.io/GamesForKids` no longer works, because GitHub doesn't redirect Pages sites.
+- **What didn't change:** the workflow, the setup script and the relative build. A custom domain can still be added with `CUSTOM_DOMAIN`.
+
