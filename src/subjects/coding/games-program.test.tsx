@@ -20,7 +20,9 @@ const mv = (dir: 'up' | 'down' | 'left' | 'right'): Card => ({ kind: 'move', dir
 
 const hero = (c: HTMLElement) => c.querySelector('svg g[transform]')?.getAttribute('transform')
 const strip = () => within(screen.getByRole('list'))
-const within = (el: HTMLElement) => ({ cards: () => Array.from(el.querySelectorAll('.cd-card')).map(n => n.textContent) })
+// A card shows its order number and its arrow; tests read the arrow (the number is the card's position).
+const arrowOf = (n: Element | null | undefined) => n?.textContent?.replace(/^\d+/, '')
+const within = (el: HTMLElement) => ({ cards: () => Array.from(el.querySelectorAll('.cd-card')).map(arrowOf) })
 const palette = (name: string) => screen.getAllByRole('button', { name }).find(b => b.classList.contains('cd-pal'))!
 const runBtn = () => screen.getByRole('button', { name: '▶' })
 // Small steps so React re-renders (and re-arms the effect's timer) between timers.
@@ -37,7 +39,7 @@ describe('ProgramGame editing', () => {
     fireEvent.click(palette('↓'))
     fireEvent.click(palette('→'))
     expect(strip().cards()).toEqual(['→', '↓', '→'])
-    fireEvent.click(screen.getAllByRole('listitem').filter(n => n.textContent === '↓')[0]!)
+    fireEvent.click(screen.getAllByRole('listitem').filter(n => arrowOf(n) === '↓')[0]!)
     expect(strip().cards()).toEqual(['→', '→'])
     fireEvent.click(screen.getByRole('button', { name: '⌫' }))
     expect(strip().cards()).toEqual(['→'])
@@ -104,7 +106,7 @@ describe('ProgramGame run', () => {
     expect(onAttempt.mock.calls).toEqual([[false]])
     expect(strip().cards()).toEqual(['→', '↓', '↓'])
     expect(container.querySelectorAll('.cd-card.stop')).toHaveLength(1)
-    expect(container.querySelector('.cd-card.stop')?.textContent).toBe('↓')
+    expect(arrowOf(container.querySelector('.cd-card.stop'))).toBe('↓')
     expect(runBtn()).toBeDisabled()
     tick(900)
     expect(hero(container)).toBe(home)
@@ -182,6 +184,11 @@ describe('ProgramGame repeat card', () => {
     const onAttempt = vi.fn()
     render(<ProgramGame question={q({ board: wide, palette: ['right', 'repeat'], maxCards: 1, ghost: [] })} aid={false} onAttempt={onAttempt} />)
     fireEvent.click(palette('🔁'))
+    // The new repeat card waits for its arrow: the next arrow goes inside it, even when the strip is full.
+    expect(document.querySelector('.cd-ask')).not.toBeNull()
+    expect(document.querySelector('.cd-run')).toBeDisabled()
+    fireEvent.click(palette('→'))
+    expect(document.querySelector('.cd-ask')).toBeNull()
     const times = () => document.querySelector('.cd-times')!
     expect(times().textContent).toBe('×2')
     expect(times().getAttribute('aria-label')).toBe('פַּעֲמַיִם')

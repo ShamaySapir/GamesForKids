@@ -85,6 +85,8 @@ export interface OrderQ extends Question<readonly string[]> {
   layout: 'units' | 'sentences'
   /** 'ltr' for English: slots fill left to right, text in the English font (default: Hebrew, right to left). */
   direction?: 'ltr'
+  /** Number the slots 1, 2, 3… so a child sees where to start (story steps). */
+  numbered?: boolean
   tiles: Tile[]
 }
 

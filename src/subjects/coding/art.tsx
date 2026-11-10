@@ -21,17 +21,28 @@ function CodeBoard(p: ArtProps) {
   const mark = str(p.mark).split(',').map(Number)
   const marks: Cell[] = mark.length === 2 && mark.every(Number.isFinite) ? [[mark[0]!, mark[1]!]] : []
   const program = [...str(p.program)]
+  // Numbered arrows after Shufi (first on the left, like the board): "he walks these, one step each".
   return (
     <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
       {/* Bigger than other art: a child has to count squares (the prompt board most of all). */}
       <BoardView board={{ id: 'art', rows }} size={program.length > 0 ? 220 : Math.max(p.size, 150)} marks={marks} plain={p.plain === true} />
       {program.length > 0 && (
         <div style={{ ...row, direction: 'ltr' }} aria-hidden="true">
-          {program.map((a, i) => <span key={i} style={chip}>{a}</span>)}
+          <span style={{ fontSize: 26 }}>🦉</span>
+          {program.map((a, i) => (
+            <span key={i} style={{ ...chip, position: 'relative' }}>
+              <span style={num}>{i + 1}</span>{a}
+            </span>
+          ))}
         </div>
       )}
     </div>
   )
+}
+
+const num: CSSProperties = {
+  position: 'absolute', insetBlockStart: -9, insetInlineStart: -7, minWidth: 18, height: 18, borderRadius: 9, padding: '0 3px',
+  background: 'var(--code)', color: 'var(--on-accent)', fontSize: 11, fontWeight: 800, display: 'grid', placeItems: 'center',
 }
 
 const emojiSize = (size: number) => Math.max(28, Math.min(52, size / 2))
@@ -50,15 +61,23 @@ function CodeSteps(p: ArtProps) {
   )
 }
 
-const repeated = (unit: string[], times: number) => Array.from({ length: times }, () => unit).flat()
+/** "חֲזֹר 3 פְּעָמִים" in words a child hears, not "×3" (2 is פַּעֲמַיִם). */
+const timesText = (n: number) => (n === 2 ? 'חֲזֹר פַּעֲמַיִם' : `חֲזֹר ${n} פְּעָמִים`)
 
-/** A dance: the unit's moves written out `times` times in a row (first move on the right). */
+/**
+ * A dance: the unit's moves written out `times` times (first move on the right), each repetition in its own frame,
+ * so a child sees "the same steps again" — what a loop is — before choosing the card that does it.
+ */
 function CodeDance(p: ArtProps) {
-  const moves = repeated(list(p.unit), typeof p.times === 'number' ? p.times : 1)
+  const unit = list(p.unit)
+  const times = typeof p.times === 'number' ? p.times : 1
   const fs = emojiSize(p.size)
+  const frame: CSSProperties = { ...row, gap: 2, padding: '4px 8px', borderRadius: 14, border: '2px dashed var(--code)' }
   return (
-    <div style={{ ...row, direction: 'rtl', gap: 4, maxWidth: '100%' }} aria-hidden="true">
-      {moves.map((e, i) => <span key={i} style={{ fontSize: fs * 0.8, lineHeight: 1.2 }}>{e}</span>)}
+    <div style={{ ...row, direction: 'rtl', gap: 8, maxWidth: '100%' }} aria-hidden="true">
+      {Array.from({ length: times }, (_, k) => (
+        <span key={k} style={frame}>{unit.map((e, i) => <span key={i} style={{ fontSize: fs * 0.7, lineHeight: 1.2 }}>{e}</span>)}</span>
+      ))}
     </div>
   )
 }
@@ -72,7 +91,7 @@ function CodeLoop(p: ArtProps) {
     background: 'var(--card)', border: '3px solid var(--code)',
   }
   const head: ReactNode = (
-    <span style={{ color: 'var(--code)', fontWeight: 800, fontSize: 22, direction: 'ltr' }}>🔁 ×{typeof p.times === 'number' ? p.times : '?'}</span>
+    <span style={{ color: 'var(--code)', fontWeight: 800, fontSize: 20 }}>🔁 {timesText(typeof p.times === 'number' ? p.times : 0)}</span>
   )
   return (
     <div style={frame} aria-hidden="true">

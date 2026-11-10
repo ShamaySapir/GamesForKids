@@ -54,7 +54,9 @@ const hasSay = (o: PickOption): o is Speaking & { say: PhraseRef } =>
 
 function optionFace(o: PickOption) {
   switch (o.kind) {
-    case 'picture': return <span className="pk-emoji" aria-hidden="true">{o.emoji}</span>
+    case 'picture': return o.caption
+      ? <><span className="pk-emoji" aria-hidden="true">{o.emoji}</span><span className="he-text pk-caption">{o.caption}</span></>
+      : <span className="pk-emoji" aria-hidden="true">{o.emoji}</span>
     case 'sound': return o.label === undefined
       ? <span className="he-text pk-opt-name">{phrases[o.say]}</span>
       : <span className="he-letter pk-opt-letter">{o.label}</span>
@@ -70,7 +72,7 @@ function optionFace(o: PickOption) {
 
 function optionLabel(o: PickOption): string {
   switch (o.kind) {
-    case 'picture': return o.emoji
+    case 'picture': return o.caption ?? o.emoji
     case 'sound': return o.label ?? phrases[o.say] ?? ''
     case 'objects': return `${o.group.count}`
     case 'art': {

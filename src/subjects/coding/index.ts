@@ -18,7 +18,7 @@ registerCodingArt()
 // Labels for the parents' page (D18): plain Hebrew. Boards and patterns are numbered; stories are named.
 const STORY_NAMES: Record<string, string> = {
   teeth: 'צחצוח שיניים', hands: 'רחיצת ידיים', sandwich: 'הכנת כריך', seed: 'שתילת זרע', shoes: 'נעילת נעליים', road: 'חציית כביש',
-  cake: 'הכנת עוגה', pet: 'האכלת חיית מחמד', sleep: 'ללכת לישון', icepop: 'הכנת ארטיק', fruit: 'אכילת תפוח',
+  cake: 'הכנת עוגה', pet: 'האכלת חיית מחמד', sleep: 'ללכת לישון', popcorn: 'הכנת פופקורן', fruit: 'אכילת תפוח',
 }
 const storyLabel = (key: string) => {
   const m = /^(?:(bug|missing):)?([a-z]+)$/.exec(key)

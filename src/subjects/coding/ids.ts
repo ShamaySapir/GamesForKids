@@ -9,6 +9,8 @@
 //   content/patterns.ts  MOVES: Readonly<Record<string, string>>  emoji → its phrase key ('👏' → 'clap')
 //                        PATTERNS: readonly MovePattern[]   ≥ 10 (unit of 2–3 moves, times 2–4)
 
+/** A story's question title ("אֵיךְ מְצַחְצְחִים שִׁנַּיִם?"). */
+export const storyPhrase = (story: string) => `code.story.${story}`
 /** A story step's caption ("מְשַׁפְשְׁפִים"); n = the step's index in `steps`. */
 export const stepPhrase = (story: string, n: number) => `code.step.${story}.${n}`
 /** The caption of a story's wrong step. */

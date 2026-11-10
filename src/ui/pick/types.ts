@@ -35,7 +35,8 @@ export interface ObjectGroup {
  * `label` (a letter), or without a label the text of its single `say` phrase (e.g. a letter's name, "בֵּית").
  */
 export type PickOption =
-  | { id: string; kind: 'picture'; emoji: string; say: PhraseRef }
+  /** `caption`: a short line under the picture (a story step: what the picture shows), read aloud by its 🔊. */
+  | { id: string; kind: 'picture'; emoji: string; say: PhraseRef; caption?: string }
   | { id: string; kind: 'letter'; label: string; lang?: 'en' }
   | { id: string; kind: 'sound'; label?: string; say: string }
   /** Readable text with nikud (a unit, word or short phrase); optional 🔊 reads it. */

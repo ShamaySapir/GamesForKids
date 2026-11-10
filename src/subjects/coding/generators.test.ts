@@ -10,18 +10,18 @@ import {
   bugAccepts, bugQuestion, debugAccepts, debugQuestion, fewestTurnsRoute, followAccepts, followQuestion, loopAccepts, loopQuestion, programAccepts,
   programQuestion, repeatAccepts, repeatQuestion, stepsAccepts, stepsQuestion,
 } from './generators'
-import { C, movePhrase, otherPhrase, stepPhrase, wrongPhrase } from './ids'
+import { C, movePhrase, otherPhrase, stepPhrase, storyPhrase, wrongPhrase } from './ids'
 import { FOLLOW as REAL_FOLLOW, LEVELS as REAL_LEVELS, REPEAT_LEVELS as REAL_REPEAT } from './content/boards'
 import { compress, find, moves, run, sameCell, shortest } from './program'
 import type { Board, Cell, DebugItem, Dir, FollowItem, Level, MovePattern, ProgramQ, Story } from './types'
 
 /* ---------- fixtures ---------- */
 
-const st = (emoji: string) => ({ emoji, text: '' })
+const st = (emoji: string) => ({ emoji, text: `שָׁלָב ${emoji}` })
 const STORIES: Story[] = [
-  { id: 'teeth', steps: [st('🪥'), st('🧴'), st('🦷'), st('🚰')], wrong: { at: 2, step: st('🍬') }, notMissing: [st('🚗'), st('🎈')] },
-  { id: 'plant', steps: [st('🌰'), st('💧'), st('🌱')], wrong: { at: 1, step: st('🔥') }, notMissing: [st('📚'), st('🧸')] },
-  { id: 'sandwich', steps: [st('🍞'), st('🧀'), st('🥪')], wrong: { at: 0, step: st('🍕') }, notMissing: [st('🏀'), st('🎵')] },
+  { id: 'teeth', title: 'א', steps: [st('🪥'), st('🧴'), st('🦷'), st('🚰')], wrong: { at: 2, step: st('🍬') }, notMissing: [st('🚗'), st('🎈')] },
+  { id: 'plant', title: 'ב', steps: [st('🌰'), st('💧'), st('🌱')], wrong: { at: 1, step: st('🔥') }, notMissing: [st('📚'), st('🧸')] },
+  { id: 'sandwich', title: 'ג', steps: [st('🍞'), st('🧀'), st('🥪')], wrong: { at: 0, step: st('🍕') }, notMissing: [st('🏀'), st('🎵')] },
 ]
 const FOLLOW: FollowItem[] = [
   { id: 'f1', board: { id: 'f1', rows: ['S...', '....', '....', '....'] }, program: ['right', 'right', 'down'] },
@@ -54,7 +54,7 @@ const PATTERNS: MovePattern[] = [
 const KNOWN = new Set<string>([
   ...Object.values(C),
   ...STORIES.flatMap(s => [
-    ...s.steps.map((_, n) => stepPhrase(s.id, n)), wrongPhrase(s.id), otherPhrase(s.id, 0), otherPhrase(s.id, 1),
+    storyPhrase(s.id), ...s.steps.map((_, n) => stepPhrase(s.id, n)), wrongPhrase(s.id), otherPhrase(s.id, 0), otherPhrase(s.id, 1),
   ]),
   ...['clap', 'jump'].map(movePhrase),
 ])
@@ -118,7 +118,10 @@ describe('steps', () => {
         expect(t.say).toBe(stepPhrase(s.id, n))
       }
       expectKnown([q.say, q.instruction, ...q.tiles.map(t => t.say)])
-      expect(q.instruction).toBe(C.steps)
+      // The story's question is shown; it is spoken before what to do, and the slots are numbered.
+      expect(q.instruction).toBe(storyPhrase(s.id))
+      expect(q.say).toEqual([storyPhrase(s.id), C.steps])
+      expect(q.numbered).toBe(true)
     })
     expect(stepsAccepts('teeth')).toBe(true)
     expect(stepsAccepts('bug:teeth')).toBe(false)
@@ -139,6 +142,9 @@ describe('bug', () => {
       if (kind === 'bug') {
         expectPick(q, s.steps.length)
         expect(q.instruction).toBe(C.bug)
+        expect(q.prompt.sentence?.text).toBe(s.title)
+        expect(q.say).toEqual([storyPhrase(s.id), C.bug])
+        expect(q.options.every(o => o.kind === 'picture' && !!o.caption)).toBe(true)
         expect(q.answer).toBe(`s${s.wrong.at}`)
         const emojis = q.options.map(o => (o as { emoji: string }).emoji)
         expect(emojis[s.wrong.at]).toBe(s.wrong.step.emoji)
@@ -148,6 +154,8 @@ describe('bug', () => {
       } else {
         expectPick(q, 3)
         expect(q.instruction).toBe(C.missing)
+        expect(q.prompt.sentence?.text).toBe(s.title)
+        expect(q.say).toEqual([storyPhrase(s.id), C.missing])
         const strip = q.prompt.art![0]!
         expect(strip.name).toBe('code-steps')
         const gap = strip.props!.gap as number

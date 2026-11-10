@@ -76,13 +76,18 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
   const change = (next: Program) => { setProgram(next); setStopCard(null) }
   const full = maxCards !== undefined && program.length >= maxCards
 
+  // A new "repeat" card starts empty and the next arrow goes inside it (like wrapping in ScratchJr), so a child
+  // picks what to repeat instead of getting whatever arrow happened to come last.
+  const filling = program.findIndex(c => c.kind === 'repeat' && c.body.length === 0)
   const append = (c: PaletteCard) => {
     if (!editing) return
+    if (filling >= 0 && c !== 'repeat') {
+      change(program.map((x, k) => (k === filling && x.kind === 'repeat' ? { ...x, body: [c] } : x)))
+      return
+    }
+    if (filling >= 0) return
     if (full) { void say(C.full); return }
-    const last = program[program.length - 1]
-    const card: Card = c === 'repeat'
-      ? { kind: 'repeat', times: MIN_TIMES, body: [last?.kind === 'move' ? last.dir : 'right'] }
-      : { kind: 'move', dir: c }
+    const card: Card = c === 'repeat' ? { kind: 'repeat', times: MIN_TIMES, body: [] } : { kind: 'move', dir: c }
     change([...program, card])
     setSelected(null)
   }
@@ -107,7 +112,7 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
   }
 
   const go = () => {
-    if (!editing || !program.length) return
+    if (!editing || !program.length || filling >= 0) return
     const r = run(board, program)
     reported.current = false
     setSelected(null)
@@ -142,31 +147,39 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
       <div className="cd-play" role="group" tabIndex={0} aria-label={phrases[question.instruction] ?? ''}>
         <BoardView board={board} size={BOARD_PX} hero={hero ?? start} trail={trail} ghost={aid ? question.ghost : undefined} />
       </div>
+      {/* Cards to add look like buttons (solid, with +); the program below looks like a numbered track, so a child
+          can tell "choose" from "what Shufi will do". */}
+      <p className="cd-label">{phrases['code.ui.add']}</p>
       <div className="cd-palette" role="group" aria-label="קְלָפִים">
         {palette.map(p => (
           <button key={p} type="button" className="cd-pal" disabled={!editing} onClick={() => append(p)}
             aria-label={p === 'repeat' ? (phrases[C.repeatCard] ?? '🔁') : dirName(p)}>
+            <span className="cd-plus" aria-hidden="true">+</span>
             <span aria-hidden="true">{p === 'repeat' ? '🔁' : ARROW[p]}</span>
             {p === 'repeat' && <span className="cd-pal-text">{phrases[C.repeatCard]}</span>}
           </button>
         ))}
       </div>
+      <p className="cd-label">{phrases['code.ui.program']}</p>
       <div className="cd-strip" dir="ltr" role="list" aria-label="הַתָּכְנִית">
+        <span className="cd-start" aria-hidden="true">🦉</span>
         {Array.from({ length: slots }, (_, i) => {
           const c = program[i]
           if (!c) return <span key={i} className="cd-slot" aria-hidden="true" />
           if (c.kind === 'move') {
             return (
               <button key={i} type="button" role="listitem" className={cardCls(i)} disabled={!editing}
-                aria-label={dirName(c.dir)} onClick={() => tapCard(i)}>{ARROW[c.dir]}</button>
+                aria-label={dirName(c.dir)} onClick={() => tapCard(i)}><span className="cd-n" aria-hidden="true">{i + 1}</span>{ARROW[c.dir]}</button>
             )
           }
           return (
             <span key={i} role="listitem" className={`${cardCls(i)} cd-rep`}>
+              <span className="cd-n" aria-hidden="true">{i + 1}</span>
               <span aria-hidden="true">🔁</span>
               <button type="button" className="cd-sub cd-times" disabled={!editing}
                 aria-label={c.times === 2 ? 'פַּעֲמַיִם' : `${c.times} ${phrases[C.times] ?? '×'}`}
                 onClick={() => edit(i, r => ({ ...r, times: r.times >= MAX_TIMES ? MIN_TIMES : r.times + 1 }))}>×{c.times}</button>
+              {c.body.length === 0 && <span className="cd-ask" aria-live="polite">? {phrases['code.ui.pickArrow']}</span>}
               {c.body.map((d, j) => (
                 <button key={j} type="button" className="cd-sub" disabled={!editing} aria-label={dirName(d)}
                   onClick={() => edit(i, r => ({ ...r, body: r.body.map((x, k) => k === j ? nextDir(x) : x) }))}>{ARROW[d]}</button>
@@ -178,7 +191,7 @@ export function ProgramGame({ question, aid, onAttempt }: GameProps<ProgramQ>) {
         })}
       </div>
       <div className="cd-actions">
-        <button type="button" className="cta cd-run" disabled={!editing || !program.length} onClick={go}
+        <button type="button" className="cta cd-run" disabled={!editing || !program.length || filling >= 0} onClick={go}
           aria-label={phrases[C.run] ?? '▶'}>
           <span aria-hidden="true">▶</span> {phrases[C.run]}
         </button>
