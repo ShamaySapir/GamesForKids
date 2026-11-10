@@ -75,4 +75,9 @@ export interface PickQ extends Question<string> {
   options: PickOption[]
   /** Spoken again when the adaptive aid turns on. */
   hint?: PhraseRef
+  /**
+   * Sound options show a big speaker and play when the mouse rests on them (the option *is* a sound). Everywhere else
+   * options speak only from their 🔊 (user's choice); here touch devices keep that 🔊, mouse devices hide it.
+   */
+  hoverSays?: boolean
 }
