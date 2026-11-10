@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test'
+import { numberWords } from '../src/app/parents/gate'
 
 /** Create a profile named נועה and wait for the world map. */
 export async function createProfile(page: Page) {
@@ -31,3 +32,14 @@ export async function master(page: Page, skillIds: readonly string[]) {
 
 /** Wait until the round has reached question `i` (fixed sleeps were flaky under load). */
 export const atQuestion = (page: Page, i: number) => expect(page.locator('.dot.done')).toHaveCount(i)
+
+/** Reads the number written in words and types it, as a parent would. */
+export async function passGate(page: Page) {
+  await page.goto('/#/parents')
+  const words = await page.locator('.pr-gate-words').innerText()
+  const n = Array.from({ length: 79 }, (_, i) => 21 + i).find(k => numberWords(k) === words.trim())
+  expect(n, words).toBeDefined()
+  await page.getByLabel('המספר').fill(String(n))
+  await page.getByRole('button', { name: 'כניסה' }).click()
+  await expect(page.getByRole('heading', { name: 'דף הורים' })).toBeVisible()
+}

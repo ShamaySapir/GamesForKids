@@ -144,7 +144,7 @@ export function ShareGame({ question, aid, onAttempt }: GameProps<ShareQ>) {
       {done
         ? (
           <div className="sh-eq digi" dir="ltr" role="status">
-            {total} ÷ {plates} = {answer}{leftover ? `, ${phrases[M3.leftover]} ${rest}` : ''}
+            {total} : {plates} = {answer}{leftover ? `, ${phrases[M3.leftover]} ${rest}` : ''}
           </div>
         )
         : (

@@ -83,7 +83,7 @@ describe('ShareGame', () => {
     await check()
     expect(onAttempt).toHaveBeenCalledTimes(1)
     expect(onAttempt).toHaveBeenCalledWith(true)
-    expect(screen.getByRole('status')).toHaveTextContent('6 ÷ 3 = 2')
+    expect(screen.getByRole('status')).toHaveTextContent('6 : 3 = 2')
     expect(screen.getByRole('status')).toHaveAttribute('dir', 'ltr')
   })
 
@@ -159,7 +159,7 @@ describe('ShareGame', () => {
       await fill([1, 1, 2, 2, 3, 3], 1)
       await check()
       expect(onAttempt).toHaveBeenCalledWith(true)
-      expect(screen.getByRole('status')).toHaveTextContent('7 ÷ 3 = 2, left 1')
+      expect(screen.getByRole('status')).toHaveTextContent('7 : 3 = 2, left 1')
     })
 
     it('rejects a bowl that holds a whole share or more', async () => {
