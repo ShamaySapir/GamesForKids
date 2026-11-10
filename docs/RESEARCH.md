@@ -145,6 +145,24 @@ can-dos (2019), Building Blocks overview (pp.2–4), Lexical Bands (Excel, 2020)
 Sources: `https://meyda.education.gov.il/files/Mazkirut_Pedagogit/English/curriculum2020Elementary.pdf`;
 `https://pop.education.gov.il/learning-plans/english/elementary/`
 
+## Computer science, K–2 (Stage 8a, coding island)
+
+- **Ministry, kindergarten "חשיבה מחשובית" (computational thinking):**
+  - Skills: sequences of actions, pattern recognition, planning, spatial orientation, problem solving.
+  - Method: physical games in the gan plus screen environments such as ScratchJr.
+  - Sources: pop.education.gov.il/kindergarten/topics/computational-thinking; the guide "הייטק בגנים" (meyda.education.gov.il/files/PreSchool/hitech/ogdan_ganim.pdf).
+- **Ministry, elementary "חשיבה מחשובית ורובוטיקה":** grades 3–6, the basis for Stage 8b (pop.education.gov.il → computer-science-software-engineering-cyber/elementary).
+- **CSTA K–12 standards, level 1A (K–2):**
+  - model daily processes as algorithms (AP-08);
+  - decompose a problem into a precise sequence (AP-11);
+  - debug sequences and simple loops;
+  - create programs with visual instructions, without text.
+- **Level 1B (3–5)** adds conditionals, operators and comparing algorithms (for 8b).
+- **Prior art, patterns only:**
+  - picture books (*Hello Ruby*; *First Steps in Coding: What's an Algorithm?*): an algorithm is a recipe, and a bug is a step you fix;
+  - Bee-Bot, Cubetto and CodeMonkey Jr: absolute arrow cards on a grid → run → watch → fix → repeat.
+  - Research on Bee-Bot with 5–6 year olds reports gains in computational thinking.
+
 ## Products we learn from (patterns only, never assets — CLAUDE.md)
 
 | Product | Pattern we take |

@@ -89,4 +89,11 @@ Pre-Foundation: listening, ABC, phonics, CVC words; then vocabulary from the min
 ## Stage 7 – Parents' page ⬜
 Local progress summary per profile, mastered vs. needs-practice skills, settings.
 
+## Stage 8a – Coding island: algorithms, kindergarten – 2nd grade ✅ built
+Spec approved 2026-11-10: `docs/specs/coding.md`. T0 ✅ · T1 content ✅ (full review, 33 findings) · T2 ✅ · T3 ProgramGame ✅ · T4 wiring + E2E + screenshots ✅ · user play-test ⏳. Story algorithms and finding the bug (unplugged style, kindergarten);
+arrow-card programs on a board, debugging and repeat loops (grades 1–2).
+
+## Stage 8b – Coding island: grades 3 – 6 ⬜
+After the user plays 8a: turns and facing, conditions, functions, variables, binary numbers, sorting and searching algorithms.
+
 From Stage 2 onward the planner writes the spec, the user approves it, and up to three builders work in parallel.

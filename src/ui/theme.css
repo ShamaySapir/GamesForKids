@@ -12,6 +12,7 @@
   --eng: #ff9f1c;
   --read: #2d9cdb;
   --think: #e0559b;
+  --code: #4f6bed;
   /* Coins look like metal in both themes, so these have no dark-mode override. */
   --coin-silver-rim: #b9c0cc; --coin-silver-face: #dfe4ec; --coin-silver-edge: #7d8696;
   --coin-steel-rim: #a7b0c0; --coin-steel-face: #cdd5e2; --coin-steel-edge: #6e7a8f;

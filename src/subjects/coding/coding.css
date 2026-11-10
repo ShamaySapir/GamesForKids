@@ -1,0 +1,42 @@
+/* Coding island games. The board and the card strip read left-to-right on the RTL page. */
+.cd-stage { display: grid; justify-items: center; gap: 16px; width: 100%; }
+.cd-play { display: grid; justify-items: center; width: min(100%, 320px); border-radius: 20px; outline-offset: 6px; }
+.cd-palette, .cd-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; direction: ltr; }
+.cd-pal {
+  min-width: var(--tap); min-height: var(--tap); padding: 0 14px; border-radius: 18px; cursor: pointer;
+  border: 3px solid var(--code); background: var(--card); color: var(--ink);
+  font-size: 34px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 5px 0 var(--code);
+}
+.cd-pal:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--code); }
+.cd-pal:disabled { opacity: .5; cursor: default; }
+.cd-pal-text { font-size: 20px; }
+.cd-strip {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; width: 100%;
+  min-height: calc(var(--tap) + 16px); padding: 8px; border-radius: 20px; background: var(--bg-sea); box-sizing: border-box;
+}
+.cd-slot { width: var(--tap); height: var(--tap); border-radius: 16px; border: 3px dashed var(--line); box-sizing: border-box; }
+.cd-card {
+  min-width: var(--tap); height: var(--tap); padding: 0 8px; border-radius: 16px; cursor: pointer; box-sizing: border-box;
+  border: 3px solid var(--code); background: var(--card); color: var(--ink); font-size: 32px; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+}
+.cd-card:disabled { cursor: default; color: var(--ink); }
+.cd-card.run { background: var(--sun); border-color: var(--sun); color: var(--sun-ink); }
+.cd-card.stop { background: var(--sand); border-color: var(--sun); box-shadow: 0 0 0 4px var(--sun); }
+.cd-card.sel { box-shadow: 0 0 0 4px var(--code); }
+.cd-rep { cursor: default; border-style: dashed; }
+.cd-sub {
+  min-width: var(--tap); min-height: var(--tap); padding: 0 4px; border: 0; border-radius: 12px; background: transparent;
+  font-size: 28px; font-weight: 800; cursor: pointer; color: var(--ink);
+}
+.cd-sub:hover:not(:disabled) { background: var(--bg-sea); }
+.cd-sub:disabled { cursor: default; }
+.cd-times { font-size: 22px; }
+.cd-x { font-size: 18px; color: var(--mute); }
+.cd-actions .cta, .cd-actions .pill { min-height: var(--tap); }
+.cd-actions button:disabled { opacity: .5; cursor: default; }
+@media (max-width: 600px) {
+  .cd-card { font-size: 28px; }
+  .cd-pal { font-size: 30px; }
+}

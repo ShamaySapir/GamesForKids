@@ -36,7 +36,8 @@ export const island: IslandDef = {
   id: 'hebrew',
   order: 2,
   title: 'אִי הָאוֹתִיּוֹת',
-  icon: '🔤',
+  // Real Hebrew letters: no emoji shows Hebrew, and 🔤 is Latin (the map styles letter icons in the island color).
+  icon: 'אב',
   color: '--abc',
   phrases,
   skills: [

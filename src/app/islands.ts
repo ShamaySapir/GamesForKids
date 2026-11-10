@@ -9,3 +9,6 @@ export const findIsland = (id: string | undefined) => islands.find(i => i.id ===
 
 export const findSkill = (island: IslandDef | undefined, id: string | undefined): SkillDef | undefined =>
   island?.skills.find(s => s.id === id)
+
+/** The island's spoken name (app/phrases.ts), said when the mouse rests on it on the map. */
+export const islandPhrase = (id: string) => `app.island.${id}`

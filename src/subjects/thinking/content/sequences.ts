@@ -20,9 +20,9 @@ export const SEQUENCES: readonly SequenceSet[] = [
 /** What the owl says for each step, in order (index = step index, so SEQUENCE_TEXT[id][n] is sequencePhrase(id, n)). */
 export const SEQUENCE_TEXT: Readonly<Record<string, readonly string[]>> = {
   chick: ['בֵּיצָה', 'הָאֶפְרוֹחַ בּוֹקֵעַ', 'אֶפְרוֹחַ קָטָן'],
-  tree: ['זֶרַע', 'נֵבֶט קָטָן', 'עֵץ גָּדוֹל'],
+  tree: ['זֶרַע', 'נֶבֶט קָטָן', 'עֵץ גָּדוֹל'],
   rain: ['עָנָן', 'יוֹרֵד גֶּשֶׁם', 'קֶשֶׁת בַּשָּׁמַיִם'],
-  sunflower: ['זֶרַע', 'נֵבֶט קָטָן', 'חַמָּנִית גְּדוֹלָה'],
+  sunflower: ['זֶרַע', 'נֶבֶט קָטָן', 'חַמָּנִית גְּדוֹלָה'],
   'fried-egg': ['בֵּיצָה', 'מְטַגְּנִים אֶת הַבֵּיצָה', 'אוֹכְלִים'],
   bedtime: ['מִתְרַחֲצִים', 'מִתְלַבְּשִׁים', 'הוֹלְכִים לִישֹׁן'],
   ages: ['תִּינוֹק', 'יֶלֶד', 'אַבָּא', 'סַבָּא'],
