@@ -1,6 +1,6 @@
 # Spec: Parents' page (דַּף הוֹרִים)
 
-- **Status:** Draft, awaiting user approval
+- **Status:** Approved by user on 2026-11-10
 - **Stage:** 7 (docs/ROADMAP.md)
 - **Relies on:** DECISIONS D2 (local only, no server), D7 (mastery), D3 (audio)
 
@@ -17,10 +17,11 @@ The parent can also move all progress to another computer. Nothing leaves the de
 
 - The page is for adults. It uses plain Hebrew without nikud. Nothing on it is spoken and it needs no recordings.
 - **Entry:** a small "לַהוֹרִים" button (👪) on the profile picker screen. There is no entry in the top bar, so children don't wander in.
-- **Parent gate:** before the page opens, the parent answers a two-digit addition question by typing the number, for example "כמה זה 14 + 27?". Children under 7 can't solve it, and reading the question is not enough.
-  - It is a gate, not security, the same pattern as Apple's "parental gate" in kids' apps.
+- **Parent gate (user's choice: a captcha-like check):** the page shows a number written in Hebrew words without nikud, for example "שלושים ושמונה". The parent types it in digits (38).
+  - The number is random, between 21 and 99, and changes after every wrong answer, with no message.
   - It is asked once per visit.
-  - A wrong answer shows a new question with no message.
+  - Why it works: a child in kindergarten to grade 2 can't read unpointed Hebrew *and* turn number words into digits; an adult needs a second.
+  - It is a gate, not security, the same pattern as Apple's "parental gate". Deleting and resetting a child also ask for the child's name.
 
 ## Sections
 
@@ -95,7 +96,9 @@ T2 and T3 only add a property to each island's `index.ts`, so they don't touch t
 - Choosing the order of the nikud vowels. The reading island follows the ministry order. Changing it would change the reading content and its tests, so it stays a later option.
 - Time limits and screen-time controls.
 
-## Open questions for the user
+## User decisions (2026-11-10)
 
-1. Is a two-digit addition question a good enough gate, or would you prefer a different one (for example, hold a button for 3 seconds)?
-2. Should "What to practise" appear for every island, or only clock, letters and math in the first version?
+1. **Gate:** a captcha-like number in words. The two-digit addition was replaced (see above).
+2. **"What to practise":** covers every island in the first version.
+   - Clock, letters and math get detailed labels ("רבע לארבע", "ט / ת", "8 + 5").
+   - The other islands show the skill and a count until they add `describeItem`.

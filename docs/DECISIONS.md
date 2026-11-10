@@ -61,3 +61,5 @@ that emoji cannot give, and other islands may reuse the drawings.
 `englishPhrases`; `say()` switches voice per part). Isolated English sounds and blends may optionally be recorded in the studio.
 English text is shown left to right in Andika (school-print a/g). Instructions on the English island stay in Hebrew.
 Why: native-quality English TTS exists on every device and saves ~250 recordings; Hebrew instructions match the other islands.
+
+**D18 · 2026-11-10 · user** — The parents' page (`#/parents`) is for adults: plain Hebrew without nikud, never spoken, no phrase IDs or recordings, so its labels live in `src/app/parents/`. It is entered from the profile picker through a captcha-like gate (a random number in Hebrew words, typed as digits). Backups are local JSON files the parent saves and loads; nothing is sent anywhere (D2).

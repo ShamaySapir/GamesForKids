@@ -86,8 +86,8 @@ percent and ratio, area / perimeter / volume, word problems.
 Spec approved 2026-11-02: `docs/specs/english.md`. T0 ✅ · T1 content ✅ (full review, 52 findings) · T2 ✅ · T3 wiring + E2E + screenshots ✅ · user play-test ⏳.
 Pre-Foundation: listening, ABC, phonics, CVC words; then vocabulary from the ministry's Lexical Bands list.
 
-## Stage 7 – Parents' page 🟡 spec draft
-Spec draft `docs/specs/parents.md`, awaiting user approval. Behind a parent gate: per-child summary, island and skill status, what to practise
+## Stage 7 – Parents' page 🟡
+Spec approved 2026-11-10: `docs/specs/parents.md`. T0 ⬜ · T1 ⬜ · T2 ⬜ · T3 ⬜ · T4 ⬜. Behind a parent gate: per-child summary, island and skill status, what to practise
 (from the Leitner queue), settings, deleting or resetting a child, and a backup file for moving to another computer.
 
 ## Stage 8a – Coding island: algorithms, kindergarten – 2nd grade ✅ built
