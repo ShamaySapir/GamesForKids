@@ -1,17 +1,20 @@
-# CI on every pull request and push; CD to GitHub Pages on every push to main once all checks pass.
-# The site is static (Vite build in dist/, hash routing, relative base), so it works at
-# https://shamaysapir.github.io/GamesForKids/ or under a custom domain without code changes (DECISIONS D20).
+# CI on every pull request and push; CD to GitHub Pages on every push to main once all checks pass (DECISIONS D20).
+# Speed: node_modules and the Playwright browser are cached, the E2E job builds the site once and that same build is
+# deployed, and docs-only changes skip the pipeline.
 name: CI/CD
 
 on:
   pull_request:
+    paths-ignore: ['docs/**', '**/*.md']
   push:
     branches: [main]
+    paths-ignore: ['docs/**', '**/*.md']
   workflow_dispatch:
 
 concurrency:
   group: ci-cd-${{ github.ref }}
-  cancel-in-progress: true
+  # Superseded PR runs are cancelled; a deploy from main always finishes.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -22,44 +25,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
+      - uses: ./.github/actions/deps
       - run: npm run check
 
   e2e:
-    name: E2E (Playwright)
+    name: E2E (Playwright) and site build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/deps
+      - id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      - id: browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - if: steps.browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+      - if: steps.browsers.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+      # Builds dist/ (playwright.config webServer) and tests that exact build.
       - run: npm run e2e
       - name: Keep the report when a test fails
         if: failure()
         uses: actions/upload-artifact@v4
         with: { name: playwright-report, path: playwright-report/, retention-days: 7 }
-
-  build:
-    name: Build the site
-    needs: [check, e2e]
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - name: Hand the tested build to the deploy job
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
         with: { path: dist }
 
   deploy:
     name: Deploy to GitHub Pages
-    needs: build
+    needs: [check, e2e]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       pages: write

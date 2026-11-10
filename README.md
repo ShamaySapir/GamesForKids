@@ -84,6 +84,12 @@ The site is live at **https://shamaysapir.github.io/GamesForKids/** (GitHub Page
 
 - **Every pull request** runs lint, types, unit tests and the Playwright E2E tests (`.github/workflows/ci-cd.yml`). If a test fails, its report is attached to the run.
 - **Every merge to `main`** runs the same checks again and, only if all of them pass, builds and deploys the site. There is no separate deploy step: merging is deploying.
+- **Speed:**
+  - `node_modules` is cached by the lockfile (`.github/actions/deps`), so `npm ci` runs only when dependencies change.
+  - The Playwright browser is cached by its version.
+  - E2E runs on 4 workers.
+  - The build the E2E tests ran against is the one that gets deployed.
+  - Changes that touch only docs or `*.md` files skip the pipeline.
 - **One-time setup** for a new copy of the repo, or after a settings mistake: run `scripts/setup-pages.sh`. You need the GitHub CLI logged in as a repo admin. The script enables Pages for the workflow and sets the repo's homepage link.
 - **Custom domain, later:**
   1. Buy the domain.
