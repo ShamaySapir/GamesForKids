@@ -6,9 +6,10 @@ import { islands } from '../islands'
 import { TopBar } from '../TopBar'
 import './map.css'
 
-// Spots on the sea in map order (percent of the map box): two rows of three, gently staggered so they read as
-// islands, with room between them. From the reading side (right) in RTL. Add a row when there are more than six.
-const SPOTS = [[17, 26], [50, 21], [83, 26], [17, 74], [50, 79], [83, 74]] as const
+// Spots on the sea in map order (percent of the map box), gently staggered so they read as islands, with room
+// between them. From the reading side (right) in RTL: two rows of three, or four over three for seven islands.
+const SPOTS_6 = [[17, 26], [50, 21], [83, 26], [17, 74], [50, 79], [83, 74]] as const
+const SPOTS_7 = [[12, 25], [37, 20], [63, 25], [88, 20], [25, 76], [50, 81], [75, 76]] as const
 
 export function MapScreen() {
   const navigate = useNavigate()
@@ -20,7 +21,8 @@ export function MapScreen() {
       <Mascot line="app.pickIsland" size={96} />
       <div className="map">
         {islands.map((island, i) => {
-          const [x, y] = SPOTS[i % SPOTS.length]!
+          const spots = islands.length > 6 ? SPOTS_7 : SPOTS_6
+          const [x, y] = spots[i % spots.length]!
           const mastered = island.skills.filter(s => progress.skills[s.id]?.mastered).length
           return (
             <button key={island.id} className={`island${island.comingSoon ? ' soon' : ''}`}

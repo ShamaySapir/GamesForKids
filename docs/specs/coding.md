@@ -1,6 +1,6 @@
 # Spec: Coding island (אִי הַתִּכְנוּת)
 
-- **Status:** Draft, awaiting user approval
+- **Status:** Approved by user on 2026-11-10
 - **Stage:** 8a (docs/ROADMAP.md). Stage 8b, for grades 3–6, follows after the user plays 8a.
 - **Relies on:** DECISIONS D3, D6, D7, D11, D14 · docs/RESEARCH.md § "Computer science, K–2" (added with this spec)
 
@@ -178,10 +178,10 @@ Story step captions: about 8 stories × 4 steps, reusing words already recorded 
 
 | # | Task | Owner | Files | Depends on |
 |---|---|---|---|---|
-| T0 | Types, IDs, a `comingSoon` skeleton, the `--code` color token, the island on the map, a RESEARCH section | planner | `src/subjects/coding/{types,ids,index}.ts`, `src/ui/theme.css`, `docs/RESEARCH.md` | spec approved |
+| T0 | Types, IDs, the `program.ts` simulator (+ tests) and the `board.tsx` drawing (shared by T2 and T3), a `comingSoon` skeleton, the `--code` token, the seven-island map, a RESEARCH section | planner | `src/subjects/coding/{types,ids,index,program,board}.*`, `src/ui/theme.css`, `src/app/screens/MapScreen.tsx`, `docs/RESEARCH.md` | spec approved |
 | T1 | Stories, boards, patterns, phrases + content test | content | `content/**`, `phrases.ts`, `content.test.ts` | T0 |
-| T2 | `program.ts` simulator + `shortest`, generators for the 7 skills + tests; the art kit | builder | `program.ts`, `generators.ts`, `art/**`, tests | T0 |
-| T3 | `ProgramGame` + tests | builder | `games-program.tsx`, `coding.css`, test | T0 (uses `program.ts` from T2 through its contract in `types.ts`) |
+| T2 | Generators for the 7 skills + tests; the art kit (board, program row, story strip) for pick questions | builder | `generators.ts`, `generators.test.ts`, `art.tsx` | T0 |
+| T3 | `ProgramGame` + tests | builder | `games-program.tsx`, `games-program.test.tsx`, `coding.css` | T0 (`program.ts`, `board.tsx`) |
 | T4 | Wire `index.ts`, E2E, screenshots, full content review | planner + reviewer | `index.ts`, `e2e/coding.spec.ts` | T1–T3 |
 
 ## Out of scope (Stage 8b, grades 3–6)

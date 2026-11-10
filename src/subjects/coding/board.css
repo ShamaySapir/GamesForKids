@@ -1,0 +1,6 @@
+.cd-board { display: block; direction: ltr; max-width: 100%; height: auto; }
+.cd-free { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.cd-wall { fill: var(--mute); opacity: .55; }
+.cd-mark { fill: none; stroke: var(--code); stroke-width: 5; }
+.cd-ghost { fill: none; stroke: var(--code); stroke-width: 6; stroke-dasharray: 2 12; stroke-linecap: round; opacity: .55; }
+.cd-trail { fill: none; stroke: var(--code); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: .8; }
