@@ -10,5 +10,3 @@
 .sticker-progress .sp-fill { transition: clip-path .6s ease; }
 .sticker-progress.full .sp-face { background: transparent; }
 .sticker-progress.full { background: none; }
-.sticker-progress.pulse { animation: sp-pulse .5s ease 2; }
-@keyframes sp-pulse { 50% { transform: scale(1.3) rotate(-8deg); } }

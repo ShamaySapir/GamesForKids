@@ -62,4 +62,13 @@ describe('store actions for the parents page', () => {
     expect(useStore.getState().current?.id).toBe(id)
     expect(useStore.getState().progress.totalStars).toBe(backup.progress[id]!.totalStars)
   })
+
+  it('marks a skill known for a child who is not the current one, without a sticker', async () => {
+    await useStore.getState().createProfile(child('נועה'))
+    const noa = useStore.getState().current!.id
+    await useStore.getState().createProfile(child('כרמל'))
+    await useStore.getState().markKnown(noa, 'clock.hours', true)
+    expect(db.get(`progress:${noa}`)).toMatchObject({ skills: { 'clock.hours': { mastered: true, byParent: true } }, stickers: [] })
+    expect(useStore.getState().progress.skills['clock.hours']).toBeUndefined()
+  })
 })

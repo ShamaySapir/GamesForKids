@@ -77,3 +77,20 @@ test('a backup restores a deleted child', async ({ page }) => {
   await page.getByRole('alertdialog').getByRole('button', { name: 'שחזר' }).click()
   await expect(page.getByRole('tab', { name: /נועה/ })).toBeVisible()
 })
+
+test('soft locks: any skill is playable, and "already knows this" moves "start here" on', async ({ page }) => {
+  await createProfile(page)
+  await page.goto('/#/island/clock')
+  await expect(page.locator('.start-here')).toContainText('מַכִּירִים אֶת הַמְּחוֹגִים')
+  // A skill far above a 1st grader is open (a challenge), not locked.
+  await page.getByRole('link', { name: /מָה הַשָּׁעָה/ }).last().click()
+  await expect(page.locator('.clock-stage')).toBeVisible()
+
+  await passGate(page)
+  await page.locator('.pr-island').first().evaluate(d => { (d as HTMLDetailsElement).open = true })
+  await page.getByRole('row', { name: /מַכִּירִים אֶת הַמְּחוֹגִים/ }).getByRole('button', { name: 'כבר יודע ✓' }).click()
+  await expect(page.getByRole('row', { name: /מַכִּירִים אֶת הַמְּחוֹגִים/ })).toContainText('סומן ע״י הורה')
+  await page.goto('/#/island/clock')
+  await expect(page.locator('.start-here')).toContainText('שָׁעוֹת עֲגֻלּוֹת')
+})
+

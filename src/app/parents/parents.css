@@ -31,6 +31,7 @@
 .pr-skills th, .pr-skills td { text-align: start; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 .pr-skills th { color: var(--mute); font-weight: 600; }
 .pr-locked td { color: var(--mute); }
+.pr-small { font-size: 14px; padding: 6px 12px; min-height: 44px; white-space: nowrap; }
 
 .pr-avatars { display: flex; flex-wrap: wrap; gap: 8px; }
 .pr-avatars .icon-btn { width: 52px; height: 52px; font-size: 28px; }

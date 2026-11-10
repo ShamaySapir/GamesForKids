@@ -50,6 +50,17 @@ The parent can also move all progress to another computer. Nothing leaves the de
    - "שחזר מגיבוי" reads such a file. Before it replaces anything, it shows what it found ("2 ילדים: נועה, כרמל") and asks the parent to confirm.
    - A malformed file is rejected with a plain message, and nothing is changed.
 
+## Addendum (2026-11-10, user): soft locks and "already knows this" (DECISIONS D19)
+
+- **Island path:**
+  - No skill is locked any more.
+  - Shufi's line marks one skill per island with "⭐ כַּדַּאי לְהַתְחִיל מִכָּאן". It is picked from the child's grade, as described in D19.
+  - A skill above the child's grade whose prerequisites aren't mastered shows "אֶתְגָּר 💪". When the child starts it, Shufi says "זֶה קָצָת קָשֶׁה יוֹתֵר — אֶפְשָׁר לְנַסּוֹת!".
+- **Results:** after a one-star round of a skill whose prerequisite isn't mastered, the results screen offers "בּוֹאוּ נְנַסֶּה קֹדֶם מַשֶּׁהוּ קַל יוֹתֵר" with a link to that prerequisite.
+- **Parents' page:**
+  - Each skill that isn't mastered gets a "כבר יודע ✓" button. It marks the skill mastered with `byParent`, gives no sticker, and pushes "start here" past it.
+  - A parent-marked skill shows "סומן ע״י הורה" and a "בטל" button.
+
 ## Contract changes (T0, planner)
 
 - **Store actions** (`src/core/storage/store.ts`): `updateProfile(id, patch)`, `deleteProfile(id)`, `resetProgress(id)`, `exportAll()` → a backup object, and `importAll(backup)`.

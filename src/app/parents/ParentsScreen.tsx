@@ -15,7 +15,8 @@ import './parents.css'
 
 const date = (t?: number) => (t ? new Intl.DateTimeFormat('he-IL', { day: 'numeric', month: 'numeric', year: '2-digit' }).format(t) : '—')
 
-const STATE: Record<SkillState, string> = { mastered: 'נשלט ✅', practising: 'בתרגול', new: 'עוד לא התחיל', locked: 'נעול 🔒' }
+// Soft locks (D19): 'locked' only means earlier skills aren't mastered yet; the child can still play it.
+const STATE: Record<SkillState, string> = { mastered: 'נשלט ✅', practising: 'בתרגול', new: 'עוד לא התחיל', locked: 'עוד לא התחיל (אחרי שלבים קודמים)' }
 
 function Gate({ onPass }: { onPass: () => void }) {
   const [n, setN] = useState(() => gateNumber(Math.random))
@@ -146,7 +147,7 @@ function BackupBox() {
 }
 
 function Report({ child }: { child: Profile }) {
-  const { exportAll } = useStore()
+  const { exportAll, markKnown } = useStore()
   const current = useStore(s => s.current)
   const live = useStore(s => s.progress)
   const [stored, setStored] = useState<Progress | null>(null)
@@ -157,6 +158,8 @@ function Report({ child }: { child: Profile }) {
     void exportAll().then(b => { if (alive) setStored(b.progress[child.id] ?? emptyProgress()) })
     return () => { alive = false }
   }, [child.id, exportAll])
+  const know = (skillId: string, known: boolean) =>
+    void markKnown(child.id, skillId, known).then(() => exportAll()).then(b => setStored(b.progress[child.id] ?? emptyProgress()))
   const progress = current?.id === child.id ? live : stored
   if (!progress) return null
   const sum = summary(progress, islands, now)
@@ -206,14 +209,18 @@ function Report({ child }: { child: Profile }) {
                 <small>{done}/{island.skills.length}</small>
               </summary>
               <table className="pr-skills">
-                <thead><tr><th>מיומנות</th><th>כיתה</th><th>מצב</th><th>אחרון</th></tr></thead>
+                <thead><tr><th>מיומנות</th><th>כיתה</th><th>מצב</th><th>אחרון</th><th /></tr></thead>
                 <tbody>
                   {island.skills.map(skill => {
                     const r = skillStatus(progress, skill)
-                    const note = r.state === 'practising' ? ` (${r.good}/2 סבבים טובים, ${'⭐'.repeat(r.bestStars)})` : ''
+                    const note = r.byParent ? ' (סומן ע״י הורה)' : r.state === 'practising' ? ` (${r.good}/2 סבבים טובים, ${'⭐'.repeat(r.bestStars)})` : ''
                     return (
                       <tr key={skill.id} className={`pr-${r.state}`}>
                         <td>{skill.title}</td><td>{gradeShort(skill.grade)}</td><td>{STATE[r.state]}{note}</td><td>{date(r.lastPlayed)}</td>
+                        <td>
+                          {r.state !== 'mastered' && <button type="button" className="pill pr-small" onClick={() => know(skill.id, true)}>כבר יודע ✓</button>}
+                          {r.byParent && <button type="button" className="pill pr-small" onClick={() => know(skill.id, false)}>בטל</button>}
+                        </td>
                       </tr>
                     )
                   })}

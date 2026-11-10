@@ -14,6 +14,8 @@ export interface SkillReport {
   good: number
   bestStars: number
   lastPlayed?: number
+  /** Mastered by a parent's "already knows this" (D19), not by playing. */
+  byParent: boolean
 }
 
 export function skillStatus(p: Progress, skill: SkillDef): SkillReport {
@@ -22,7 +24,7 @@ export function skillStatus(p: Progress, skill: SkillDef): SkillReport {
   const good = Math.min(MASTERY_ROUNDS, rounds.filter(r => r.total > 0 && r.firstTry / r.total >= MASTERY_ACCURACY).length)
   const lastPlayed = rounds.length ? Math.max(...rounds.map(r => r.at)) : undefined
   const state: SkillState = sp?.mastered ? 'mastered' : rounds.length ? 'practising' : isUnlocked(p, skill.requires) ? 'new' : 'locked'
-  return { state, good: sp?.mastered ? MASTERY_ROUNDS : good, bestStars: sp?.bestStars ?? 0, lastPlayed }
+  return { state, good: sp?.mastered ? MASTERY_ROUNDS : good, bestStars: sp?.bestStars ?? 0, lastPlayed, byParent: !!sp?.byParent }
 }
 
 export interface PracticeGroup {

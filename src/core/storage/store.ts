@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { del, get, set } from 'idb-keyval'
 import type { Grade } from '../engine/types'
-import { applyRound, emptyProgress, type Progress, type RoundOutcome, type RoundSummary } from '../progress/progress'
+import { applyRound, emptyProgress, markKnown, type Progress, type RoundOutcome, type RoundSummary } from '../progress/progress'
 import { makeBackup, type Backup } from './backup'
 
 // The only module that touches persistent storage (docs/DECISIONS.md D2: local only).
@@ -27,6 +27,8 @@ interface State {
   updateProfile: (id: string, patch: Partial<Omit<Profile, 'id'>>) => Promise<void>
   deleteProfile: (id: string) => Promise<void>
   resetProgress: (id: string) => Promise<void>
+  /** A parent's "already knows this" for one child's skill, or undoing it (D19). */
+  markKnown: (childId: string, skillId: string, known: boolean) => Promise<void>
   /** Every profile and its progress, for the parent's backup file. */
   exportAll: () => Promise<Backup>
   /** Replaces all profiles and progress with a validated backup (see parseBackup). */
@@ -105,6 +107,14 @@ export const useStore = create<State>((setState, getState) => ({
   async resetProgress(id) {
     await safeSet(progressKey(id), emptyProgress())
     if (getState().current?.id === id) setState({ progress: emptyProgress() })
+  },
+
+  async markKnown(childId, skillId, known) {
+    const isCurrent = getState().current?.id === childId
+    const before = isCurrent ? getState().progress : ((await safeGet<Progress>(progressKey(childId))) ?? emptyProgress())
+    const after = markKnown(before, skillId, known)
+    if (isCurrent) setState({ progress: after })
+    await safeSet(progressKey(childId), after)
   },
 
   async exportAll() {
