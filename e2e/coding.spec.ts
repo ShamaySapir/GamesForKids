@@ -67,7 +67,7 @@ function shortest(b: Read): Dir[] {
 }
 
 test('what comes first: a story-ordering round completes', async ({ page }) => {
-  await open(page, [], /מָה קוֹדֵם/)
+  await open(page, [], /מָה קֹדֶם/)
   for (let i = 0; i < 6; i++) {
     await atQuestion(page, i)
     await expect(page.locator('.rb-tile').first()).toBeVisible()

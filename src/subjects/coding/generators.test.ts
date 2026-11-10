@@ -279,6 +279,9 @@ describe('loop', () => {
         return { text: Array.from({ length: Number(a.props!.times) }, () => unit).flat().join(''), times: Number(a.props!.times), unit: unit.join('|') }
       })
       const right = expanded[q.options.findIndex(o => o.id === q.answer)]!
+      // No wrong card is the same dance started later (a rotation of the unit with the same count).
+      const rotations = p.unit.map((_, k) => [...p.unit.slice(k), ...p.unit.slice(0, k)].join('|'))
+      for (const e of expanded) if (e !== right && e.times === p.times) expect(rotations, e.unit).not.toContain(e.unit)
       expect(right).toMatchObject({ text: truth, times: p.times, unit: p.unit.join('|') })
       const wrong = expanded.filter(e => e !== right)
       for (const w of wrong) {

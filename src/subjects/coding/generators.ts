@@ -229,7 +229,9 @@ export function loopQuestion(ctx: GenContext, patterns: readonly MovePattern[]):
     const swapIn = foreign.length ? [[...unit.slice(0, -1), shuffle(ctx.rng, foreign)[0]!]] : []
     const unitSlips = [[...unit].reverse(), unit.slice(0, -1), [...unit, unit[0]!], ...swapIn]
     const wrongCount = shuffle(ctx.rng, [times + 1, times - 1].filter(n => n >= 2)).find(n => dance(unit, n) !== truth)
-    const wrongUnit = shuffle(ctx.rng, unitSlips).find(u => dance(u, times) !== truth)
+    // A rotation of the unit (👏🦶 → 🦶👏) is the same dance started one move later: a child could rightly pick it.
+    const rotation = (u: readonly string[]) => u.length === unit.length && unit.some((_, k) => [...unit.slice(k), ...unit.slice(0, k)].join('|') === u.join('|'))
+    const wrongUnit = shuffle(ctx.rng, unitSlips).find(u => dance(u, times) !== truth && !rotation(u))
     if (wrongCount === undefined || !wrongUnit) return null
     const right = loopCard(unit, times)
     const wrong = [loopCard(unit, wrongCount), loopCard(wrongUnit, times)]

@@ -1,6 +1,6 @@
 # Spec: Coding island (אִי הַתִּכְנוּת)
 
-- **Status:** Approved by user on 2026-11-10
+- **Status:** Built, awaiting user play-test. Approved by user on 2026-11-10
 - **Stage:** 8a (docs/ROADMAP.md). Stage 8b, for grades 3–6, follows after the user plays 8a.
 - **Relies on:** DECISIONS D3, D6, D7, D11, D14 · docs/RESEARCH.md § "Computer science, K–2" (added with this spec)
 
