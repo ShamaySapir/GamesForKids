@@ -39,5 +39,5 @@ export const Q = {
   sameSound: 'hebrew.q.sameSound', //   "איזו אות חסרה בתחילת המילה…" + word
   sort: 'hebrew.q.sort', //             "שימו כל תמונה בסל הנכון"
   check: 'hebrew.ui.check', //          "בדיקה"
-  reset: 'hebrew.ui.reset', //          "מהתחלה"
+  reset: 'hebrew.ui.reset', //          "סוֹפְרִים מֵחָדָשׁ" (clears the claps)
 } as const
