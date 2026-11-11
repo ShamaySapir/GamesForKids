@@ -1,0 +1,4 @@
+# Request from T1 (grade 4 generators): two small contract gaps
+
+1. **`PadQ.aidArt`** (`src/subjects/math/types.ts`). Spec skill 38 says the diagonals game shows a polygon with its diagonals as the aid, but `PadQ` has only `aidLine`. Workaround: `diagonalsQuestion` returns `DiagonalsQ = PadQ & { aidArt?: readonly ArtRef[] }` (exported from `generators-g4.ts`). Please add `aidArt?: readonly ArtRef[]` to `PadQ`, and let `NumberPadGame` draw it while the aid is on.
+2. **A `variant` prop for `math.quad`** (art kit). For "parallelogram" the only shape that may stand beside it without inclusion is the trapezoid, so `quadPropertyQuestion` offers one parallelogram and three trapezoids at different rotations (option ids are `kind:index`). A `variant` prop (different proportions) would make the three trapezoids look different.
