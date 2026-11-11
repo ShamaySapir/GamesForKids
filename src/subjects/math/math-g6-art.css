@@ -1,0 +1,31 @@
+/* Grade 6 drawings (number machine, circle parts, cube box, percent grid) and perimeter step numbers. Tokens only. */
+.g6a-art { display: block; overflow: visible; direction: ltr; }
+.g6a-label { font-weight: 800; fill: var(--ink); font-size: 12px; text-anchor: middle; dominant-baseline: central; direction: ltr; }
+.g6a-box { fill: var(--num); fill-opacity: .25; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+.g6a-funnel { fill: var(--card); stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+.g6a-pipe { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.g6a-ball { fill: var(--card); stroke: var(--ink); stroke-width: 3; }
+.g6a-num { font-weight: 800; fill: var(--ink); font-size: 16px; text-anchor: middle; dominant-baseline: central; direction: ltr; }
+.g6a-rule { font-weight: 800; fill: var(--ink); font-size: 14px; text-anchor: middle; dominant-baseline: central; direction: ltr; }
+.g6a-eye { fill: var(--ink); }
+.g6a-circle { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
+.g6a-centre { fill: var(--ink); }
+.g6a-part { fill: none; stroke-width: 4.5; stroke-linecap: round; }
+.g6a-part[data-part="radius"] { stroke: var(--num); }
+.g6a-part[data-part="diameter"] { stroke: var(--eng); }
+.g6a-part[data-part="chord"] { stroke: var(--abc); }
+.g6a-part[data-part="arc"] { stroke: var(--mute); stroke-width: 7; }
+.g6a-hit { fill: none; stroke: transparent; stroke-width: 18; stroke-linecap: round; }
+.g6a-face-top { fill: var(--num); fill-opacity: .15; }
+.g6a-face-left { fill: var(--num); fill-opacity: .35; }
+.g6a-face-right { fill: var(--num); fill-opacity: .55; }
+.g6a-face { stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+.g6a-cell { fill: var(--card); stroke: var(--ink); stroke-width: 1.2; }
+.g6a-cell.on { fill: var(--num); fill-opacity: .8; }
+
+/* perimeter aid on the grid: numbered unit sides around the outline */
+.g3a-tick { stroke: var(--num); stroke-width: 2.5; stroke-linecap: round; }
+.g3a-stepnum { font-weight: 800; fill: var(--num); font-size: 11px; }
+@media (prefers-reduced-motion: no-preference) {
+  .g3a-step { animation: g3a-fade .3s ease-out; }
+}

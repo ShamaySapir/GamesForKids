@@ -124,4 +124,25 @@ describe('GridAreaGame box nets', () => {
     render(<GridAreaGame question={ell()} aid onAttempt={vi.fn()} />)
     expect(document.querySelector('.g3a-shape.face')).toBeNull()
   })
+
+  it('perimeter: unit cm, numbered sides around the outline with the aid, no inner squares', () => {
+    const q = ell({ ask: 'perimeter', answer: 16, mode: 'sides' })
+    const { rerender } = render(<GridAreaGame question={q} aid={false} onAttempt={vi.fn()} />)
+    expect(screen.getByText('ס״מ')).toBeInTheDocument()
+    expect(document.querySelectorAll('.g3a-stepnum')).toHaveLength(0)
+    rerender(<GridAreaGame question={q} aid={true} onAttempt={vi.fn()} />)
+    const nums = Array.from(document.querySelectorAll('.g3a-stepnum')).map(t => Number(t.textContent))
+    expect(nums).toEqual(Array.from({ length: 16 }, (_, i) => i + 1))
+    expect(cells()).toBe(0)
+    expect(rowCounts()).toEqual([])
+  })
+
+  it('perimeter: the typed number is compared to the answer', async () => {
+    const onAttempt = vi.fn()
+    render(<GridAreaGame question={ell({ ask: 'perimeter', answer: 16 })} aid={false} onAttempt={onAttempt} />)
+    await userEvent.click(key('1'))
+    await userEvent.click(key('6'))
+    await userEvent.click(key('✓'))
+    expect(onAttempt).toHaveBeenCalledWith(true)
+  })
 })
