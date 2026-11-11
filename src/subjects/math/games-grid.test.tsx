@@ -108,3 +108,20 @@ describe('GridAreaGame', () => {
     expect(answer()).toHaveTextContent('123')
   })
 })
+
+describe('GridAreaGame box nets', () => {
+  const net = rect({ itemKey: 'net:x', cols: 14, rows: 12, rects: [[0, 0, 4, 3], [4, 0, 4, 3], [8, 0, 4, 3]], faces: [0, 1, 0], mode: 'count', answer: 36 })
+  const tints = () => Array.from(document.querySelectorAll('.g3a-shape')).map(r => (/face-(\d)/.exec(r.getAttribute('class') ?? '') ?? [])[1])
+
+  it('tints the faces by group only with the aid', () => {
+    const { rerender } = render(<GridAreaGame question={net} aid={false} onAttempt={vi.fn()} />)
+    expect(tints()).toEqual([undefined, undefined, undefined])
+    rerender(<GridAreaGame question={net} aid onAttempt={vi.fn()} />)
+    expect(tints()).toEqual(['0', '1', '0'])
+  })
+
+  it('does not tint a question without faces', () => {
+    render(<GridAreaGame question={ell()} aid onAttempt={vi.fn()} />)
+    expect(document.querySelector('.g3a-shape.face')).toBeNull()
+  })
+})

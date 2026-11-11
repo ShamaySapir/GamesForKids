@@ -4,6 +4,7 @@ import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake } from './games-pad'
 import type { ColumnQ } from './types'
 import './math-g3.css'
+import './math-g4-art.css'
 
 // Per-question state; PlayScreen remounts this component for every question.
 
@@ -91,8 +92,8 @@ export function ColumnGame({ question, aid, onAttempt }: GameProps<ColumnQ>) {
     <div className="pk-stage g3-stage">
       <p className="pk-q">{phrases[question.instruction]}</p>
       <HintButton aid={aid} hint={question.hint} />
-      <div className={`g3-col digi${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="group" aria-label={`${a} ${op} ${b}`}
-        style={{ gridTemplateColumns: `auto repeat(${n}, var(--g3-cell))` }}>
+      <div className={`g3-col digi${n >= 6 ? ' wide' : ''}${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="group" aria-label={`${a} ${op} ${b}`}
+        style={{ gridTemplateColumns: n >= 6 ? `auto repeat(${n}, minmax(0, min(var(--g3-cell), calc((100vw - 150px) / ${n}))))` : `auto repeat(${n}, var(--g3-cell))` }}>
         <span />
         {cols.map(k => (
           <span key={k} className={`g3-cell g3-carry${hl(k)}`}>

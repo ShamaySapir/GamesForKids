@@ -79,3 +79,21 @@ describe('ColumnGame', () => {
     expect(screen.getByRole('status')).toHaveTextContent('9 + 5 = 14')
   })
 })
+
+describe('ColumnGame with seven digits', () => {
+  it('lays out seven columns without commas and solves a million', async () => {
+    const q: ColumnQ = { itemKey: 'col:big', answer: 1000000, say: 'x', instruction: M3.column, a: 999999, b: 1, op: '+' }
+    const onAttempt = setup(q)
+    expect(document.querySelector('.g3-col')).toHaveClass('wide')
+    expect([...document.querySelectorAll('.g3-num')].map(c => c.textContent).join('')).toBe('9999991')
+    expect(document.querySelectorAll('.g3-res')).toHaveLength(7)
+    expect(document.querySelector('.g3-col')?.textContent).not.toContain(',')
+    await userEvent.keyboard('0000001{Enter}')
+    expect(onAttempt).toHaveBeenCalledWith(true)
+  })
+
+  it('keeps the four-digit layout unchanged', () => {
+    setup()
+    expect(document.querySelector('.g3-col')).not.toHaveClass('wide')
+  })
+})
