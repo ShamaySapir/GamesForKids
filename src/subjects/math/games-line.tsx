@@ -4,8 +4,10 @@ import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake, useWidth } from './games-pad'
 import { M } from './ids'
 import { PickGame } from '../../ui/pick/PickGame'
+import { MathText } from '../../ui/pick/MathText'
 import type { Line, MisplacedQ, PlaceQ, WhichNumberQ } from './types'
 import './math.css'
+import './math-g4-art.css'
 
 // Lines are laid out in pixels (not a scaled viewBox) so numbers stay readable on a phone.
 const PAD_START = 40
@@ -19,6 +21,21 @@ export function snap(v: number, { min, max, step, snap: unit = step }: Line) {
 
 const valueAt = (px: number, w: number, line: Line) =>
   snap(line.min + ((px - PAD_START) / (w - PAD_START - PAD_END)) * (line.max - line.min), line)
+
+/** A value in units of 1/den drawn in SVG: 0 and whole numbers as integers, the rest stacked (numerator, bar, denominator) centred on x. */
+function FracLabel({ v, den, x, y, size, className }: { v: number; den: number; x: number; y: number; size: number; className?: string }) {
+  if (v % den === 0) return <text x={x} y={y + size * 0.4} fontSize={size} className={`ml-fnum ml-num ${className ?? ''}`}>{v / den}</text>
+  const half = Math.max(String(v).length, String(den).length) * size * 0.32 + 3
+  return (
+    <g className={`ml-num ml-frac ${className ?? ''}`} aria-hidden="true">
+      <text x={x} y={y - 2} fontSize={size} className="ml-fnum">{v}</text>
+      <line className="ml-fbar" x1={x - half} y1={y + 2} x2={x + half} y2={y + 2} />
+      <text x={x} y={y + size + 2} fontSize={size} className="ml-fnum">{den}</text>
+    </g>
+  )
+}
+
+const unitText = (v: number, den: number) => (v % den === 0 ? `${v / den}` : `${v} חלקי ${den}`)
 
 function Axis({ line, w, y, numbers }: { line: Line; w: number; y: number; numbers: boolean }) {
   const { min, max, step, labelEvery } = line
@@ -37,7 +54,9 @@ function Axis({ line, w, y, numbers }: { line: Line; w: number; y: number; numbe
           <g key={v}>
             <line x1={x(v)} y1={y - (major ? 11 : 6)} x2={x(v)} y2={y + (major ? 11 : 6)} stroke="var(--ink)" strokeWidth={major ? 3 : 1.5} />
             {numbers && major && ((v - min) / labelEvery) % skip === 0 && (
-              <text x={x(v)} y={y + 38} textAnchor="middle" fontSize={22} fontWeight={700} fill="var(--ink)" className="ml-num">{v}</text>
+              line.den
+                ? <FracLabel v={v} den={line.den} x={x(v)} y={y + 34} size={19} />
+                : <text x={x(v)} y={y + 38} textAnchor="middle" fontSize={22} fontWeight={700} fill="var(--ink)" className="ml-num">{v}</text>
             )}
           </g>
         )
@@ -95,21 +114,23 @@ export function PlaceGame({ question, aid, onAttempt }: GameProps<PlaceQ>) {
   return (
     <div className="pk-stage ml-stage">
       <p className="pk-q">{phrases[question.instruction]}</p>
-      <div className="pk-expr digi" dir="ltr">{question.target}</div>
+      <div className="pk-expr digi" dir="ltr">{line.den && target !== 0 ? <MathText text={`${target}/${line.den}`} /> : target}</div>
       <HintButton aid={aid} hint={hint} />
       <div className="ml-wrap" ref={wrap}>
-        <svg ref={svg} width={w} height={150} className="ml-svg" style={{ direction: 'ltr', touchAction: 'none' }}
+        <svg ref={svg} width={w} height={line.den ? 176 : 150} className="ml-svg" style={{ direction: 'ltr', touchAction: 'none' }}
           onPointerDown={down} onPointerMove={move} onPointerUp={() => setDragging(false)} onPointerCancel={() => setDragging(false)}>
           <Axis line={line} w={w} y={Y} numbers />
           <g ref={marker} className={`ml-marker${dragging ? ' drag' : ''}${locked ? ' ok' : ''}${shaking ? ' bad' : ''}`}
             tabIndex={locked ? -1 : 0} role="slider" aria-label={phrases[question.instruction]}
-            aria-valuemin={line.min} aria-valuemax={line.max} aria-valuenow={value} aria-valuetext={aid || locked ? `${value}` : undefined}
+            aria-valuemin={line.min} aria-valuemax={line.max} aria-valuenow={value} aria-valuetext={aid || locked ? (line.den ? unitText(value, line.den) : `${value}`) : undefined}
             transform={`translate(${x} 0)`} onKeyDown={key}>
             <rect x={-32} y={8} width={64} height={Y} fill="transparent" />
             {/* The marker's value would let a child match digits instead of reading the line: shown only as an aid. */}
             {(aid || locked) && <>
               <rect className="ml-bubble" x={-30} y={10} width={60} height={36} rx={12} />
-              <text className="ml-value" x={0} y={36} textAnchor="middle" fontSize={24} fontWeight={800}>{value}</text>
+              {line.den
+                ? <FracLabel v={value} den={line.den} x={0} y={value % line.den === 0 ? 28 : 24} size={value % line.den === 0 ? 24 : 15} className="ml-value" />
+                : <text className="ml-value" x={0} y={36} textAnchor="middle" fontSize={24} fontWeight={800}>{value}</text>}
             </>}
             <polygon className="ml-tri" points={`-18,52 18,52 0,${Y - 6}`} />
           </g>

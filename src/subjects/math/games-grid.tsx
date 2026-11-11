@@ -4,6 +4,7 @@ import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake } from './games-pad'
 import type { CellRect, GridAreaQ } from './types'
 import './math-g3-art.css'
+import './math-g4-art.css'
 
 // GridAreaGame (grade 3, skill 28): a shape on a square-centimetre grid; type its area in סמ״ר on a pad.
 // count mode draws every square; sides mode draws only the outline and the side lengths, and the inner
@@ -45,6 +46,8 @@ function Board({ q, aid }: { q: GridAreaQ; aid: boolean }) {
   const filled = useMemo(() => filledCells(rects), [rects])
   const outline = useMemo(() => outlinePath(filled), [filled])
   const showCells = mode === 'count' || aid
+  // Box nets with the aid: the faces that are opposite each other share a tint.
+  const tint = (i: number) => (aid && q.faces?.[i] !== undefined ? `g3a-shape face face-${Math.abs(Math.round(q.faces[i]!)) % 3}` : 'g3a-shape')
   const w = cols * U + PAD_L + PAD_R
   const h = rows * U + PAD_T + PAD_B
   const rowCounts = Array.from({ length: rows }, (_, r) => Array.from({ length: cols }, (_, c) => (filled.has(cellKey(c, r)) ? 1 : 0)).reduce<number>((s, n) => s + n, 0))
@@ -52,7 +55,7 @@ function Board({ q, aid }: { q: GridAreaQ; aid: boolean }) {
     <div className="g3a-board">
       <svg className="g3a-svg" viewBox={`0 0 ${w} ${h}`} role="img" aria-label={phrases[q.instruction]}>
         <g transform={`translate(${PAD_L} ${PAD_T})`}>
-          {rects.map(([c, r, rw, rh], i) => <rect key={i} className="g3a-shape" x={c * U} y={r * U} width={rw * U} height={rh * U} />)}
+          {rects.map(([c, r, rw, rh], i) => <rect key={i} className={tint(i)} x={c * U} y={r * U} width={rw * U} height={rh * U} />)}
           {showCells && Array.from(filled, key => {
             const [c, r] = key.split(',').map(Number) as [number, number]
             return <rect key={key} className="g3a-cell" x={c * U} y={r * U} width={U} height={U} />
