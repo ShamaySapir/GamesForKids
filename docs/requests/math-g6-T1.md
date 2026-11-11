@@ -1,0 +1,8 @@
+# Request from T1 (grade 6 generators): phrases and art notes
+
+1. **Scale effect is always "x4".** `scaleEffectQuestion` only has the doubled-sides version (M6.scaleEffect says "the sides grew x2"), so the answer is always `times4`. To vary it ("only the length doubled" -> x2, "the sides tripled" -> x9) we need new instruction phrases. Please add them (and a `M6.times3`/`times9`-style option set if wanted).
+2. **Reverse direction of roman and gematria.** When a number is shown and the child picks the numeral, `M6.roman` / `M6.gematria` ("which number is written in ...?") reads slightly wrong. Suggest `M6.romanWrite` / `M6.gematriaWrite`: "how is this number written in Roman numerals / in letters?".
+3. **Instruction for mean-truths.** The yes/no statements use `M6.findMean` ("what is the mean?") as the instruction and speak the whole statement via `raw()`. A neutral "true or not?" phrase would fit better.
+4. **Hints.** `decimalMental` reuses `M6.wherePointHint` (estimate first) and `divideUnit`/`howManyFit` reuse `M6.divideFractionHint`; a dedicated hint ("2.4 : 0.4 is the same as 24 : 4") would help decimalMental.
+5. **Art props I rely on.** `math.machine` rule strings use `:` for division (for example `:2+1`, like the rest of the app), not the division sign. `math.strips` is given `{ a: '1/1', b: '1/d' }` as the aid for how-many-fit. `math.cubes` gets `{ l, w, h }`. `math.circle` gets `{ parts: 'radius,diameter,chord,arc' }` or `{ parts: 'radius', r }`.
+6. **Arena keys.** `percentArenaQuestion` uses the same keys (`po:P:N`) as `percentOf`, wholes up to 200; `percentOfAccepts` accepts arena keys, `percentArenaAccepts` only the smaller set.

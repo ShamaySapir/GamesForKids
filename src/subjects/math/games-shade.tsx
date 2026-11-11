@@ -6,6 +6,7 @@ import { HintButton, useHintOnAid, useShake } from './games-pad'
 import { M } from './ids'
 import type { ShadeQ } from './types'
 import './math-g4.css'
+import './math-g6.css'
 
 // Per-question state; PlayScreen remounts this component for every question.
 
@@ -44,7 +45,9 @@ export function ShadeGame({ question, aid, onAttempt }: GameProps<ShadeQ>) {
   }
 
   const label = (i: number) => `${i + 1} / ${parts}`
-  const [rows, cols] = gridShape(parts)
+  const two = shape === 'rect' && !!question.rows && !!question.cols
+  const [rows, cols] = two ? [question.rows!, question.cols!] : gridShape(parts)
+  const bands = two ? question.bands : undefined
   const common = (i: number) => ({
     'aria-pressed': on.has(i),
     'aria-label': label(i),
@@ -55,7 +58,7 @@ export function ShadeGame({ question, aid, onAttempt }: GameProps<ShadeQ>) {
       <p className="pk-q">{phrases[question.instruction]}</p>
       <div className="g4-show digi" dir="ltr"><MathText text={question.show} /></div>
       <HintButton aid={aid} hint={question.hint} />
-      <div className={`g4-shape ${shape}${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="group"
+      <div className={`g4-shape ${shape}${two ? ' g6-rect' : ''}${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="group"
         style={shape === 'rect' ? { gridTemplateColumns: `repeat(${cols}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` } : undefined}>
         {shape === 'circle' ? (
           <svg viewBox="0 0 240 240" className="g4-pie">
@@ -69,7 +72,7 @@ export function ShadeGame({ question, aid, onAttempt }: GameProps<ShadeQ>) {
         ) : (
           Array.from({ length: parts }, (_, i) => (
             <button key={i} type="button" {...common(i)} disabled={locked}
-              className={`g4-part-btn${on.has(i) ? ' on' : ''}`} onClick={() => toggle(i)} />
+              className={`g4-part-btn${on.has(i) ? ' on' : ''}${bands && Math.floor(i / cols) < bands[0] ? ' br' : ''}${bands && i % cols < bands[1] ? ' bc' : ''}`} onClick={() => toggle(i)} />
           ))
         )}
       </div>

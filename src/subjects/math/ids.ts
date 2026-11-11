@@ -229,3 +229,62 @@ export const M5 = {
 
 /** "Which do most children like?" — the question for each survey (content/surveys.ts). */
 export const surveyPhrase = (id: string) => `math.q.survey.${id}`
+
+/**
+ * 6th grade (Stage 5d, docs/specs/math-grade6.md). Reused: M.solve, M4.yes/no, M5.* decimal helpers. Percent and numbers
+ * in stories are read by the browser voice (D23).
+ */
+export const M6 = {
+  machineOut: 'math.q.machineOut', // "מָה יוֹצֵא מֵהַמְּכוֹנָה?"
+  machineRule: 'math.q.machineRule', // "מָה הַכְּלָל שֶׁל הַמְּכוֹנָה?"
+  machineHint: 'math.hint.machine', // "עֲשׂוּ אֶת הַפְּעֻלּוֹת לְפִי הַסֵּדֶר, מִשְּׂמֹאל לְיָמִין"
+  roman: 'math.q.roman', // "אֵיזֶה מִסְפָּר כָּתוּב בְּסִפְרוֹת רוֹמִיּוֹת?"
+  romanHint: 'math.hint.roman', // "סִפְרָה קְטַנָּה לִפְנֵי גְּדוֹלָה – מְחַסְּרִים אוֹתָהּ"
+  gematria: 'math.q.gematria', // "אֵיזֶה מִסְפָּר כָּתוּב בָּאוֹתִיּוֹת?"
+  gematriaHint: 'math.hint.gematria', // "כָּל אוֹת שָׁוָה מִסְפָּר: אָלֶף אֶחָד, יוֹד עֶשֶׂר, קוּף מֵאָה"
+  fractionOf: 'math.q.fractionOf', // "כַּמָּה זֶה הַחֵלֶק מִן הַמִּסְפָּר?"
+  fractionGrid: 'math.q.fractionGrid', // "צִבְעוּ אֶת הַחֵלֶק שֶׁבּוֹ שְׁנֵי הַשְּׁבָרִים נִפְגָּשִׁים"
+  fractionGridHint: 'math.hint.fractionGrid', // "הַמִּשְׁבָּצוֹת שֶׁצְּבוּעוֹת פַּעֲמַיִם הֵן הַתְּשׁוּבָה"
+  biggerSmaller: 'math.q.biggerSmaller', // "הַתּוֹצָאָה גְּדוֹלָה אוֹ קְטַנָּה מֵהַמִּסְפָּר?"
+  bigger: 'math.ui.bigger', // "גְּדוֹלָה"
+  smaller: 'math.ui.smaller', // "קְטַנָּה"
+  biggerHint: 'math.hint.bigger', // "כֶּפֶל בְּשֶׁבֶר קָטָן מֵאֶחָד מַקְטִין"
+  howManyFit: 'math.q.howManyFit', // "כַּמָּה פְּעָמִים הַשֶּׁבֶר נִכְנָס?"
+  divideFractionHint: 'math.hint.divideFraction', // "לְחַלֵּק בְּשֶׁבֶר זֶה כְּמוֹ לִכְפֹּל בַּהֲפוּכִי שֶׁלּוֹ"
+  wherePoint: 'math.q.wherePoint', // "אֵיפֹה הַנְּקֻדָּה? בַּחֲרוּ אֶת הַתּוֹצָאָה"
+  wherePointHint: 'math.hint.wherePoint', // "הַעֲרִיכוּ קֹדֶם: בְּעֵרֶךְ כַּמָּה צָרִיךְ לָצֵאת?"
+  percentHint: 'math.hint.percent', // "עֶשֶׂר אֲחוּזִים הֵם עֲשִׂירִית, וַחֲמִשִּׁים אֲחוּזִים הֵם חֵצִי"
+  percentMatch: 'math.q.percentMatch', // "מָה שָׁוֶה לָאֲחוּזִים הָאֵלֶּה?"
+  percentStory: 'math.q.percentStory', // "כַּמָּה זֶה?"
+  wholeHint: 'math.hint.whole', // "מְחַשְּׁבִים קֹדֶם כַּמָּה זֶה אָחוּז אֶחָד, אוֹ עֲשָׂרָה אֲחוּזִים"
+  compositeArea: 'math.q.compositeArea', // "מָה הַשֶּׁטַח שֶׁל הַצּוּרָה?"
+  compositePerimeter: 'math.q.compositePerimeter', // "מָה הַהֶקֵּף שֶׁל הַצּוּרָה? כַּמָּה סֶנְטִימֶטְרִים?"
+  compositeHint: 'math.hint.composite', // "חַלְּקוּ אֶת הַצּוּרָה לְמַלְבֵּנִים"
+  perimeterHint: 'math.hint.perimeter', // "לְכוּ מִסָּבִיב לַצּוּרָה וְסִפְרוּ אֶת כָּל הַצְּלָעוֹת"
+  scaleEffect: 'math.q.scaleEffect', // "הַצְּלָעוֹת גָּדְלוּ פִּי שְׁנַיִם. מָה קָרָה לַשֶּׁטַח?"
+  times2: 'math.ui.times2', // "גָּדַל פִּי שְׁנַיִם"
+  times4: 'math.ui.times4', // "גָּדַל פִּי אַרְבָּעָה"
+  same: 'math.ui.same', // "לֹא הִשְׁתַּנָּה"
+  scaleHint: 'math.hint.scale', // "גַּם הָאֹרֶךְ וְגַם הָרֹחַב גָּדְלוּ"
+  circleHint: 'math.hint.circle', // "קֹטֶר עוֹבֵר דֶּרֶךְ הַמֶּרְכָּז, וְרַדְיוּס הוּא חֲצִי מִמֶּנּוּ"
+  circumference: 'math.q.circumference', // "מָה הַהֶקֵּף שֶׁל הַמַּעְגָּל, בְּעֵרֶךְ?"
+  circleArea: 'math.q.circleArea', // "מָה הַשֶּׁטַח שֶׁל הָעִגּוּל, בְּעֵרֶךְ?"
+  piHint: 'math.hint.pi', // "פַּאי הוּא בְּעֵרֶךְ שְׁלוֹשָׁה שְׁלֵמִים וְאַרְבַּע־עֶשְׂרֵה מֵאִיּוֹת"
+  countCubes: 'math.q.countCubes', // "מִכַּמָּה קֻבִּיּוֹת בְּנוּיָה הַתֵּבָה?"
+  boxVolume: 'math.q.boxVolume', // "מָה הַנֶּפַח שֶׁל הַתֵּבָה?"
+  volumeHint: 'math.hint.volume', // "כַּמָּה קֻבִּיּוֹת בַּשִּׁכְבָה הַתַּחְתּוֹנָה, וְכַמָּה שְׁכָבוֹת יֵשׁ?"
+  levelBars: 'math.q.levelBars', // "הַעֲבִירוּ קֻבִּיּוֹת עַד שֶׁכָּל הָעַמּוּדוֹת שָׁווֹת"
+  levelHint: 'math.hint.level', // "קְחוּ מֵהָעַמּוּד הַגָּבוֹהַּ, וּתְנוּ לַנָּמוּךְ"
+  findMean: 'math.q.findMean', // "מָה הַמְּמֻצָּע?"
+  scaleLength: 'math.q.scaleLength', // "רַק הָאֹרֶךְ גָּדַל פִּי שְׁנַיִם. מָה קָרָה לַשֶּׁטַח?"
+  romanWrite: 'math.q.romanWrite', // "אֵיךְ כּוֹתְבִים אֶת הַמִּסְפָּר בְּסִפְרוֹת רוֹמִיּוֹת?"
+  gematriaWrite: 'math.q.gematriaWrite', // "אֵיךְ כּוֹתְבִים אֶת הַמִּסְפָּר בְּאוֹתִיּוֹת?"
+  trueOrNot: 'math.q.trueOrNot', // "הַאִם זֶה נָכוֹן?"
+  meanHint: 'math.hint.mean', // "מְחַבְּרִים אֶת כָּל הַמִּסְפָּרִים, וּמְחַלְּקִים בְּמִסְפַּר הַמִּסְפָּרִים"
+} as const
+
+/** "Tap the radius" and the like; the part names are circlePartName(k). */
+export const findCirclePart = (k: 'radius' | 'diameter' | 'chord' | 'arc') => `math.q.circle.${k}`
+export const circlePartName = (k: 'radius' | 'diameter' | 'chord' | 'arc') => `math.circle.${k}`
+/** "What is the volume of a pool?" (content/volumes.ts). */
+export const sensibleVolume = (id: string) => `math.q.volume.${id}`
