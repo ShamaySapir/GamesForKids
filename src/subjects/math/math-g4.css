@@ -47,7 +47,8 @@
 .g4-wedge { fill: var(--card); stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; cursor: pointer; }
 .g4-wedge.on { fill: var(--sun); }
 .g4-shape.ok .g4-wedge.on { fill: var(--ok); }
-.g4-wedge:focus-visible { outline: none; stroke: var(--abc); stroke-width: 7; }
+.g4-wedge:focus { outline: none; }
+.g4-wedge:focus-visible { stroke: var(--abc); stroke-width: 7; }
 .g4-count { margin: 0; min-height: 32px; font-size: 24px; font-weight: 700; color: var(--mute); }
 
 /* ---- fraction pad ---- */
@@ -58,7 +59,7 @@
 .g4-bar { height: 5px; border-radius: 3px; background: var(--ink); }
 .g4-strips { display: grid; gap: 8px; width: min(100%, 420px); }
 .g4-strip-row { display: flex; align-items: center; gap: 10px; }
-.g4-strip-label { flex: none; min-width: 48px; text-align: center; font-size: 22px; font-weight: 800; color: var(--ink); }
+.g4-strip-label { flex: none; min-width: 56px; text-align: center; font-size: 36px; font-weight: 800; color: var(--ink); }
 .g4-strip { flex: 1; display: flex; gap: 2px; min-width: 0; }
 .g4-strip span { flex: 1; height: 32px; background: var(--card); border: 2px solid var(--ink); border-radius: 4px; }
 .g4-strip span.on { background: var(--sun); }
