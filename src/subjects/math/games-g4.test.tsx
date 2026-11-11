@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { say } from '../../core/audio/audio'
 import { AreaModelGame, placeParts } from './games-area-model'
-import { FractionPadGame, sameFraction } from './games-fraction'
+import { FractionPadGame, sameFraction, strictlyBetween } from './games-fraction'
 import { gridShape, ShadeGame } from './games-shade'
 import { M4 } from './ids'
 import type { AreaModelQ, FractionPadQ, ShadeQ } from './types'
@@ -217,5 +217,41 @@ describe('FractionPadGame', () => {
     cleanup()
     setup(mk())
     expect(document.querySelectorAll('.g4-strip')).toHaveLength(0)
+  })
+})
+
+describe('FractionPadGame between', () => {
+  const q: FractionPadQ = {
+    itemKey: 'btw', answer: { num: 3, den: 8 }, say: 'x', instruction: M4.areaModel, mixed: false,
+    prompt: { expr: '1/4 < ? < 1/2' }, between: [{ num: 1, den: 4 }, { num: 1, den: 2 }],
+  }
+  const run = async (keys: string) => {
+    const onAttempt = vi.fn()
+    render(<FractionPadGame question={q} aid={false} onAttempt={onAttempt} />)
+    await userEvent.keyboard(keys)
+    return onAttempt
+  }
+
+  it('accepts any fraction strictly between, not just the example', async () => {
+    expect(await run('2{ArrowDown}5{Enter}')).toHaveBeenLastCalledWith(true)
+    cleanup()
+    expect(await run('3{ArrowDown}8{Enter}')).toHaveBeenLastCalledWith(true)
+    cleanup()
+    expect(await run('5{ArrowDown}16{Enter}')).toHaveBeenLastCalledWith(true)
+  })
+
+  it('rejects the ends and anything outside; a zero denominator is not an attempt', async () => {
+    expect(await run('1{ArrowDown}4{Enter}')).toHaveBeenLastCalledWith(false)
+    cleanup()
+    expect(await run('2{ArrowDown}4{Enter}')).toHaveBeenLastCalledWith(false)
+    cleanup()
+    expect(await run('3{ArrowDown}4{Enter}')).toHaveBeenLastCalledWith(false)
+    cleanup()
+    expect(await run('1{ArrowDown}0{Enter}')).not.toHaveBeenCalled()
+  })
+
+  it('strictlyBetween works with either order of the ends and with wholes', () => {
+    expect(strictlyBetween({ whole: 0, num: 3, den: 8 }, [{ num: 1, den: 2 }, { num: 1, den: 4 }])).toBe(true)
+    expect(strictlyBetween({ whole: 1, num: 1, den: 4 }, [{ whole: 1, num: 0, den: 1 }, { num: 3, den: 2 }])).toBe(true)
   })
 })

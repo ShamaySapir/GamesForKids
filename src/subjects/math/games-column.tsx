@@ -2,8 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { phrases } from '../../core/audio/audio'
 import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake } from './games-pad'
+import { fmtDec } from './numbers'
 import type { ColumnQ } from './types'
 import './math-g3.css'
+import './math-g5.css'
 import './math-g4-art.css'
 
 // Per-question state; PlayScreen remounts this component for every question.
@@ -53,10 +55,21 @@ function work({ a, b, op }: Pick<ColumnQ, 'a' | 'b' | 'op'>, n: number) {
   return { carry, sums }
 }
 
+/** Decimal places a number is written with (3.5 → 1). */
+const ownPlaces = (x: number) => (fmtDec(x).split('.')[1] ?? '').length
+
 export function ColumnGame({ question, aid, onAttempt }: GameProps<ColumnQ>) {
-  const { a, b, op, answer } = question
-  const n = Math.max(String(a).length, String(b).length, String(answer).length)
-  const { carry, sums } = work(question, n)
+  const { op } = question
+  const places = question.places ?? 0
+  // Decimals are worked as whole numbers (3.5 and 2.25 → 350 and 225); only the point column is added to the drawing.
+  const scale = 10 ** places
+  const a = Math.round(question.a * scale)
+  const b = Math.round(question.b * scale)
+  const answer = Math.round(question.answer * scale)
+  const aPlaces = ownPlaces(question.a)
+  const bPlaces = ownPlaces(question.b)
+  const n = Math.max(String(a).length, String(b).length, String(answer).length, places + 1)
+  const { carry, sums } = work({ a, b, op }, n)
   // Digits in the order typed: the ones column first.
   const [typed, setTyped] = useState('')
   const [locked, setLocked] = useState(false)
@@ -87,30 +100,45 @@ export function ColumnGame({ question, aid, onAttempt }: GameProps<ColumnQ>) {
   const cur = typed.length
   const cols = Array.from({ length: n }, (_, p) => n - 1 - p) // left to right; k counts from the ones column
   const hl = (k: number) => (aid && !locked && k === cur ? ' hl' : '')
+  const showDigit = (x: number, k: number) => k < String(x).length || k <= places
+  const faded = (k: number, own: number) => (k < places - own ? ' faded' : '')
+  /** The fixed point sits between the ones column (k = places) and the tenths column. */
+  const pt = (k: number, text = '') => (places > 0 && k === places ? <span key={`pt${k}`} className="g5-pt">{text}</span> : null)
+  const cols1 = n + (places > 0 ? 1 : 0)
+  const cell = n >= 6 || places > 0 ? `minmax(0, min(var(--g3-cell), calc((100vw - 150px) / ${cols1})))` : 'var(--g3-cell)'
+  const template = `auto ${cols.flatMap(k => (places > 0 && k === places ? [cell, 'var(--g5-pt)'] : [cell])).join(' ')}`
 
   return (
     <div className="pk-stage g3-stage">
       <p className="pk-q">{phrases[question.instruction]}</p>
       <HintButton aid={aid} hint={question.hint} />
-      <div className={`g3-col digi${n >= 6 ? ' wide' : ''}${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="group" aria-label={`${a} ${op} ${b}`}
-        style={{ gridTemplateColumns: n >= 6 ? `auto repeat(${n}, minmax(0, min(var(--g3-cell), calc((100vw - 150px) / ${n}))))` : `auto repeat(${n}, var(--g3-cell))` }}>
+      <div className={`g3-col digi${n >= 6 || places > 0 ? ' wide' : ''}${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="group" aria-label={`${fmtDec(question.a)} ${op} ${fmtDec(question.b)}`}
+        style={{ gridTemplateColumns: template }}>
         <span />
-        {cols.map(k => (
+        {cols.flatMap(k => [
           <span key={k} className={`g3-cell g3-carry${hl(k)}`}>
             {k > 0 && cur >= k && carry[k] ? <small>{op === '+' ? '1' : '−1'}</small> : null}
-          </span>
-        ))}
+          </span>,
+          pt(k),
+        ])}
         <span />
-        {cols.map(k => <span key={k} className={`g3-cell g3-num${hl(k)}`}>{k < String(a).length ? digitAt(a, k) : ''}</span>)}
+        {cols.flatMap(k => [
+          <span key={k} className={`g3-cell g3-num${hl(k)}${faded(k, aPlaces)}`}>{showDigit(a, k) ? digitAt(a, k) : ''}</span>,
+          pt(k, '.'),
+        ])}
         <span className="g3-op">{op === '+' ? '+' : '−'}</span>
-        {cols.map(k => <span key={k} className={`g3-cell g3-num${hl(k)}`}>{k < String(b).length ? digitAt(b, k) : ''}</span>)}
+        {cols.flatMap(k => [
+          <span key={k} className={`g3-cell g3-num${hl(k)}${faded(k, bPlaces)}`}>{showDigit(b, k) ? digitAt(b, k) : ''}</span>,
+          pt(k, '.'),
+        ])}
         <span className="g3-rule" />
         <span />
-        {cols.map(k => (
+        {cols.flatMap(k => [
           <span key={k} className={`g3-cell g3-res${k === cur && !locked ? ' cur' : ''}${hl(k)}`}>
             {k < cur ? typed[k] : ''}
-          </span>
-        ))}
+          </span>,
+          pt(k, '.'),
+        ])}
       </div>
       <p className="g3-sum digi" dir="ltr" role="status">{aid && !locked && cur < n ? sums[cur] : ''}</p>
       <DigitPad onDigit={digit} onBack={back} onGo={submit} disabled={locked} />
