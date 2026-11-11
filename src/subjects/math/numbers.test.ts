@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { NUMBER_PHRASES, PRICE_PHRASES } from './content/numbers'
-import { numberPhrase, pricePhrase } from './numbers'
+import { fmt, fractionText, numberPhrase, numberText, pricePhrase, spokenNumber } from './numbers'
 
 const say = (n: number) => numberPhrase(n).map(id => NUMBER_PHRASES[id]).join(' ')
 
@@ -62,5 +62,44 @@ describe('pricePhrase', () => {
     expect(PRICE_PHRASES[pricePhrase(3)]).toBe('שְׁלוֹשָׁה שְׁקָלִים')
     expect(() => pricePhrase(0)).toThrow()
     expect(() => pricePhrase(21)).toThrow()
+  })
+})
+
+describe('grade 4 numbers', () => {
+  it('shows commas from five digits on', () => {
+    expect(fmt(3456)).toBe('3456')
+    expect(fmt(10000)).toBe('10,000')
+    expect(fmt(372450)).toBe('372,450')
+  })
+
+  it('writes numbers to a million as they are counted', () => {
+    for (let n = 0; n <= 10000; n += 37) expect(numberText(n)).toBe(say(n))
+    expect(numberText(10001)).toBe('עֲשָׂרָה אֶלֶף וְאַחַת')
+    expect(numberText(11000)).toBe('אַחַד־עָשָׂר אֶלֶף')
+    expect(numberText(20000)).toBe('עֶשְׂרִים אֶלֶף')
+    expect(numberText(21500)).toBe('עֶשְׂרִים וְאֶחָד אֶלֶף וַחֲמֵשׁ מֵאוֹת')
+    expect(numberText(99999)).toBe('תִּשְׁעִים וְתִשְׁעָה אֶלֶף תְּשַׁע מֵאוֹת תִּשְׁעִים וְתֵשַׁע')
+    expect(numberText(100000)).toBe('מֵאָה אֶלֶף')
+    expect(numberText(110000)).toBe('מֵאָה וַעֲשָׂרָה אֶלֶף')
+    expect(numberText(342000)).toBe('שְׁלוֹשׁ מֵאוֹת אַרְבָּעִים וּשְׁנַיִם אֶלֶף')
+    expect(numberText(372450)).toBe('שְׁלוֹשׁ מֵאוֹת שִׁבְעִים וּשְׁנַיִם אֶלֶף אַרְבַּע מֵאוֹת וַחֲמִשִּׁים')
+    expect(numberText(1000000)).toBe('מִילְיוֹן')
+    expect(spokenNumber(372450)).toEqual([`raw:${numberText(372450)}`])
+    expect(spokenNumber(347)).toEqual(numberPhrase(347))
+  })
+
+  it('says fractions with the right gender', () => {
+    expect(fractionText(1, 2)).toBe('חֵצִי')
+    expect(fractionText(1, 4)).toBe('רֶבַע')
+    expect(fractionText(3, 4)).toBe('שְׁלוֹשָׁה רְבָעִים')
+    expect(fractionText(2, 3)).toBe('שְׁנֵי שְׁלִישִׁים')
+    expect(fractionText(3, 5)).toBe('שָׁלוֹשׁ חֲמִישִׁיּוֹת')
+    expect(fractionText(2, 7)).toBe('שְׁתֵּי שְׁבִיעִיּוֹת')
+    expect(fractionText(7, 100)).toBe('שֶׁבַע מֵאִיּוֹת')
+    expect(fractionText(5, 12)).toBe('חֲמִשָּׁה חֲלָקִים מִתּוֹךְ שְׁנֵים־עָשָׂר')
+    expect(fractionText(1, 2, 2)).toBe('שְׁתַּיִם וָחֵצִי')
+    expect(fractionText(3, 4, 2)).toBe('שְׁתַּיִם וּשְׁלוֹשָׁה רְבָעִים')
+    expect(fractionText(1, 5, 1)).toBe('אַחַת וַחֲמִישִׁית')
+    expect(fractionText(0, 4, 3)).toBe('שָׁלוֹשׁ')
   })
 })

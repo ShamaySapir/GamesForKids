@@ -167,3 +167,32 @@ describe('NumberLineGame', () => {
     expect(screen.getAllByRole('button')).toHaveLength(5)
   })
 })
+
+describe('PlaceGame with fractions', () => {
+  const quarters = (over: Partial<PlaceQ> = {}) => place({ itemKey: 'frac:3/4', answer: 3, target: 3, line: { min: 0, max: 8, step: 1, labelEvery: 1, den: 4 }, ...over })
+
+  it('labels 0 and whole numbers as integers and the rest as stacked fractions', () => {
+    const { container } = render(<PlaceGame question={quarters()} aid={false} onAttempt={vi.fn()} />)
+    const labels = Array.from(container.querySelectorAll('.ml-num'))
+    expect(labels).toHaveLength(9)
+    expect(labels.map(l => l.textContent)).toEqual(['0', '14', '24', '34', '1', '54', '64', '74', '2'])
+    expect(container.querySelectorAll('.ml-fbar')).toHaveLength(6)
+  })
+
+  it('shows the target as a stacked fraction', () => {
+    const { container } = render(<PlaceGame question={quarters()} aid={false} onAttempt={vi.fn()} />)
+    expect(container.querySelector('.pk-expr .frac')).toHaveTextContent('34')
+  })
+
+  it('snaps per unit and checks the unit value', async () => {
+    const onAttempt = vi.fn()
+    render(<PlaceGame question={quarters()} aid onAttempt={onAttempt} />)
+    slider().focus()
+    expect(slider()).toHaveAttribute('aria-valuetext', '0')
+    for (let i = 0; i < 3; i++) await userEvent.keyboard('{ArrowRight}')
+    expect(slider()).toHaveAttribute('aria-valuenow', '3')
+    expect(slider()).toHaveAttribute('aria-valuetext', '3 חלקי 4')
+    await userEvent.keyboard('{Enter}')
+    expect(onAttempt).toHaveBeenCalledWith(true)
+  })
+})

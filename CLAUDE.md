@@ -40,23 +40,23 @@ computer-first with touch support.
 | Hebrew letters island | ✅ built, ⏳ awaiting user play-test | 13 skills, 3 game components, 190 words; spec `docs/specs/hebrew-letters.md`; 0 of 324 phrases recorded |
 | Reading island | ✅ built, ⏳ awaiting user play-test | 11 skills (5 nikud signs, build, word/sentence reading, cloze, story order, 5 read-along books); spec `docs/specs/reading.md`; ~273 phrases to record |
 | Shared pick UI | ✅ | `src/ui/pick/` — `PickGame`, `SayButton`, `Objects`, `PickQ` (D14) |
-| Numbers island (K–3) | ✅ built, ⏳ awaiting user play-test | 28 skills (K–1: `docs/specs/math-k2.md`, grade 2: `math-grade2.md`, grade 3: `math-grade3.md`), 15 game components and an angle/triangle art kit; numbers spoken 0–10,000; the optional timed multiplication arena (sprint rounds, personal records, D23); ~245 phrases to record |
+| Numbers island (K–4) | ✅ built, ⏳ awaiting user play-test | 41 skills (K–1: `docs/specs/math-k2.md`, grade 2: `math-grade2.md`, grade 3: `math-grade3.md`, grade 4: `math-grade4.md`), 18 game components, art kits for angles, fractions and quadrilaterals; stacked fractions (`src/ui/pick/MathText.tsx`); numbers recorded to 10,000 and spoken by the browser voice to a million; the optional timed multiplication arena (D23); ~300 phrases to record |
 | Thinking island | ✅ built, ⏳ awaiting user play-test | 12 skills, 53 original SVG drawings (`art/`), 4 new games; pre-kindergarten level (Grade −1); ~190 phrases to record |
 | Parents' page | ✅ built, ⏳ awaiting user play-test | `#/parents` behind a number-in-words gate (D18): summary, what to practise, settings, backup; soft locks with "start here" by grade and a parent's "already knows this" (D19); spec `docs/specs/parents.md` |
 | Coding island (K–2) | ✅ built, ⏳ awaiting user play-test | 7 skills (story algorithms, follow, arrow programs, debug, loops), `ProgramGame` + `program.ts` simulator; spec `docs/specs/coding.md`; ~90 phrases to record |
 | English island | ✅ built, ⏳ awaiting user play-test | 13 skills (Pre-A1 → early A1), English by browser voice (D17), Andika font, LTR; 16 Hebrew instructions to record | `comingSoon` stubs in `src/subjects/*/index.ts` |
 | Legacy prototype | 📦 `legacy/` | Reference only; delete once the user approves the clock island |
 | Hosting & CI/CD | ✅ set up | GitHub Pages at https://olis-islands.github.io/ (D20, D22). `.github/workflows/ci-cd.yml`: check + E2E on every PR, deploy on merge to `main`. One-time repo setup: `scripts/setup-pages.sh` |
-| Git | ✅ | Stages 0–8a merged to `main` (PR #1–#14). Current work: `stage5a/math-grade3` |
+| Git | ✅ | Stages 0–8a merged to `main` (PR #1–#14). Current work: `stage5b/math-grade4` |
 
-Current stage: **Stage 5a built** (math, grade 3) on `stage5a/math-grade3`; Stages 1–8a await the user's play-test and recordings.
+Current stage: **Stage 5b built** (math, grade 4) on `stage5b/math-grade4`; next 5c and 5d (D24). Stages 1–8a and 5a await the user's play-test and recordings.
 
 ## Next steps
 
 Details for every open item are in **`docs/BACKLOG.md`**. In order:
 
-1. **User:** push and merge `stage5a/math-grade3` (math grade 3, the arena, the link preview image).
-2. **Planner, in the order the user set:** Stage 5b (math grade 4) → 5c → 5d, then Stage 8b (coding, grades 3–6), then the
+1. **User:** push and merge `stage5b/math-grade4` (math grade 4).
+2. **Planner, in the order the user set:** Stage 5c (math grade 5) → 5d (grade 6), then Stage 8b (coding, grades 3–6), then the
    "ask the app" help spec (a parent types a question, the app finds an answer from a fixed local set).
 3. **User:**
    - play-test all islands;

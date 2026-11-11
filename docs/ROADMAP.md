@@ -81,7 +81,8 @@ drawings** suited to the age (SVG illustrations; emoji only where unambiguous). 
 ## Stage 5 – Math: 3rd – 6th grade 🟡 (D23: 5a grade 3 → 5b → 5c → 5d)
 - **5a, grade 3 ✅ built:** spec approved 2026-11-10, `docs/specs/math-grade3.md`. T0 core (sprint rounds, records, numbers to 10,000) ✅ ·
   T1 generators ✅ · T2 games ✅ · T3 art and extensions ✅ · T4 wiring, E2E, screenshots ✅ · user play-test ⏳.
-- **5b grade 4 → 5c grade 5 → 5d grade 6:** one spec each, from the new curriculum summary in `docs/RESEARCH.md` (fractions start
+- **5b grade 4 ✅ built** (`stage5b/math-grade4`): T0 ✅ · T1–T3 ✅ · T4 wiring, E2E, screenshots ✅ · user play-test ⏳.
+- **5c grade 5 → 5d grade 6 (D24, back to back):** specs drafted 2026-11-11 (`math-grade4/5/6.md`), one spec each, from the new curriculum summary in `docs/RESEARCH.md` (fractions start
   in grade 4; decimals in 5; percent, decimal ×/÷ and the mean in 6; ratio is no longer taught).
 
 ## Stage 6 – English (mainly 3rd grade and up) ✅ built

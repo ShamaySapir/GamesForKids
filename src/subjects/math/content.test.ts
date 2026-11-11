@@ -78,9 +78,11 @@ describe('math content', () => {
       for (const w of hebrewWords(text)) {
         if (!hasVowel(w)) problems.push(`${id}: ${w} has no vowel`)
         if (/ש(?![ְ-ֽ]*[ׁׂ])/.test(w)) problems.push(`${id}: ${w} has a ש without a dot`)
-        // every letter except a final one, a vav, or a yod needs a mark of its own
-        const bare = [...w.replace(/[ְ-ׇ]/g, '')].length - [...w.matchAll(/[א-ת][ְ-ׇ]+/g)].length
-        if (bare > 3) problems.push(`${id}: ${w} looks mostly unpointed`)
+        // every letter needs a mark of its own, except the last one, a vav, a yod, a silent alef, and a letter whose
+        // vowel is the vav after it (מוֹ, שׁוּ)
+        const bare = [...w.matchAll(/[א-ת](?![ְ-ׇ])/g)]
+          .filter(m => m.index < w.length - 1 && !'ויא'.includes(m[0]) && !/^ו[ֹּ]/.test(w.slice(m.index + 1))).length
+        if (bare > 1) problems.push(`${id}: ${w} looks mostly unpointed`)
       }
     }
     expect(problems).toEqual([])

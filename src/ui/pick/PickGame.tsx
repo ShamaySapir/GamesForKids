@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } f
 import { phrases, say } from '../../core/audio/audio'
 import type { GameProps, PhraseRef } from '../../core/engine/types'
 import { ArtView } from './art'
+import { MathText, mathLabel } from './MathText'
 import { Objects } from './Objects'
 import { SayButton } from './SayButton'
 import type { PickOption, PickPrompt, PickQ } from './types'
@@ -39,7 +40,7 @@ function PromptView({ prompt }: { prompt: PickPrompt }) {
           {objects.map((g, i) => <Objects key={i} group={g} />)}
         </div>
       )}
-      {expr && <div className="pk-expr digi" dir="ltr">{expr}</div>}
+      {expr && <div className="pk-expr digi" dir="ltr"><MathText text={expr} /></div>}
       {art && (
         // Patterns read in the page's direction (RTL): the first item is on the right.
         <div className="pk-art-row">{art.map((a, i) => <ArtView key={i} art={a} size={prompt.artSize ?? (art.length > 4 ? 72 : 120)} />)}</div>
@@ -68,7 +69,7 @@ function optionFace(o: PickOption, speaker = false) {
     case 'text': return o.lang === 'en'
       ? <span className="en-text pk-opt-name" dir="ltr">{o.label}</span>
       : <span className="he-text pk-opt-name" dir="rtl">{o.label}</span>
-    case 'number': return <span className={`pk-opt-number digi${o.label.length >= 4 ? ' long' : ''}`} dir="ltr">{o.label}</span>
+    case 'number': return <span className={`pk-opt-number digi${o.label.length >= 4 && !o.label.includes('/') ? ' long' : ''}`} dir="ltr"><MathText text={o.label} /></span>
     case 'objects': return <Objects group={o.group} size={30} />
     case 'art': return <ArtView art={o.art} size={96} />
     case 'letter': return <span className={`${o.lang === 'en' ? 'en-letter' : 'he-letter'} pk-opt-letter`} dir={o.lang === 'en' ? 'ltr' : undefined}>{o.label}</span>
@@ -86,6 +87,7 @@ function optionLabel(o: PickOption): string {
       const ref = o.say ?? o.art.say
       return typeof ref === 'string' ? (phrases[ref] ?? o.art.name) : o.art.name
     }
+    case 'number': return mathLabel(o.label)
     default: return o.label
   }
 }

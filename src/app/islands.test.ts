@@ -11,3 +11,14 @@ describe('island names on the map', () => {
     }
   })
 })
+
+describe('names inside an island', () => {
+  it('no skill has the same name as a game in another skill (a child looking for "לוּחַ הַכֶּפֶל" must find one place)', () => {
+    for (const island of islands) {
+      for (const skill of island.skills) {
+        const elsewhere = island.skills.filter(s => s !== skill).flatMap(s => s.games.map(g => g.title))
+        expect(elsewhere.includes(skill.title), `${island.id}: ${skill.title}`).toBe(false)
+      }
+    }
+  })
+})
