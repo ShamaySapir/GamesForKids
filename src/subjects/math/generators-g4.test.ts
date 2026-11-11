@@ -620,7 +620,7 @@ describe('fraction line', () => {
   it('puts num/den on a 0–1 line cut into den parts; the answer is in units of 1/den', () => {
     each(fractionLineQuestion, q => {
       const [, num, den] = /^fline:(\d+):(\d+)$/.exec(q.itemKey)!.map(Number)
-      expect(q.line).toEqual({ min: 0, max: den, step: 1, labelEvery: 1, den })
+      expect(q.line).toEqual({ min: 0, max: den, step: 1, labelEvery: den, den })
       expect(q.target).toBe(num)
       expect(q.answer).toBe(num)
       expect(num).toBeGreaterThan(0)

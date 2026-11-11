@@ -1,7 +1,8 @@
-import { MathText } from '../../ui/pick/MathText'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { phrases, say } from '../../core/audio/audio'
 import type { GameProps, PhraseRef } from '../../core/engine/types'
+import { ArtView } from '../../ui/pick/art'
+import { MathText } from '../../ui/pick/MathText'
 import { Objects } from '../../ui/pick/Objects'
 import type { PickPrompt } from '../../ui/pick/types'
 import type { PadQ } from './types'
@@ -53,10 +54,11 @@ export function useWidth(fallback: number) {
 }
 
 export function PromptBlock({ prompt }: { prompt: PickPrompt }) {
-  const { picture, objects, expr } = prompt
+  const { picture, objects, expr, art } = prompt
   return (
     <div className="pk-prompt">
       {picture && <div className="pk-picture" aria-hidden="true">{picture}</div>}
+      {art && <div className="pk-art-row">{art.map((a, i) => <ArtView key={i} art={a} size={prompt.artSize ?? 160} />)}</div>}
       {objects && <div className="pk-groups">{objects.map((g, i) => <Objects key={i} group={g} />)}</div>}
       {expr && <div className="pk-expr digi" dir="ltr"><MathText text={expr} /></div>}
     </div>
@@ -106,7 +108,7 @@ export function NumberPadGame({ question, aid, onAttempt }: GameProps<PadQ>) {
   const [locked, setLocked] = useState(false)
   const [shaking, shake] = useShake()
   const done = useRef(false)
-  const { maxDigits, aidLine, prompt, hint, answer } = question
+  const { maxDigits, aidLine, aidArt, prompt, hint, answer } = question
   useHintOnAid(aid, hint)
 
   const digit = useCallback((d: string) => {
@@ -140,6 +142,7 @@ export function NumberPadGame({ question, aid, onAttempt }: GameProps<PadQ>) {
       <p className="pk-q">{phrases[question.instruction]}</p>
       <PromptBlock prompt={prompt} />
       {aid && aidLine && <AidLine {...aidLine} />}
+      {aid && aidArt && <div className="pk-art-row">{aidArt.map((a, i) => <ArtView key={i} art={a} size={prompt.artSize ?? 160} />)}</div>}
       <HintButton aid={aid} hint={hint} />
       <div className={`pd-answer digi${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="status">
         {value || <span className="pd-caret" aria-hidden="true">?</span>}

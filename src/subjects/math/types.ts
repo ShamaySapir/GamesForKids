@@ -1,5 +1,5 @@
 import type { PhraseRef, Question } from '../../core/engine/types'
-import type { ObjectGroup, PickPrompt, PickQ } from '../../ui/pick/types'
+import type { ArtRef, ObjectGroup, PickPrompt, PickQ } from '../../ui/pick/types'
 
 // Shared by content (T1), generators (T2) and games (T3a, T3b) — fixed before parallel work starts.
 // Spec: docs/specs/math-k2.md. Pick questions use the shared PickQ (DECISIONS D14).
@@ -20,6 +20,8 @@ export interface PadQ extends MathQ<number> {
   maxDigits: number
   /** Aid: draw a number line from 0 to this value with the exercise's jumps (within-20 skills). */
   aidLine?: { max: number; from: number; jumps: readonly number[] }
+  /** Aid: drawings shown while the aid is on (grade 4: the polygon with its diagonals). */
+  aidArt?: readonly ArtRef[]
 }
 
 /**
@@ -256,7 +258,12 @@ export const MATH_ART_4 = { fraction: 'math.fraction', strips: 'math.strips', li
 export type QuadKind = 'square' | 'rectangle' | 'rhombus' | 'parallelogram' | 'trapezoid'
 
 /** "How many do we need?" word problems where a remainder rounds up (buses): `{n}` the total, `{d}` per vehicle/box. */
-export type RoundUpStory = RemainderStory
+export interface RoundUpStory extends RemainderStory {
+  /** How many fit in one, sensible for the story (a car seats 4–5, a bus 40–55). */
+  sizes: readonly number[]
+  /** The largest total that still sounds real. */
+  max: number
+}
 
 /** "How long is a door?" — the right length and three absurd ones, each as [number, unit]. */
 export interface SensibleLength {

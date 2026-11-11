@@ -1,6 +1,6 @@
 # Spec: Numbers island, 6th grade (Stage 5d)
 
-- **Status:** Draft, awaiting user approval
+- **Status:** Approved by user on 2026-11-11 (with grades 4–6, D24)
 - **Stage:** 5d (docs/ROADMAP.md). Built after Stage 5c (`docs/specs/math-grade5.md`), continuing its numbering
 - **Relies on:** DECISIONS D7, D14, D19, D23, D24 · docs/RESEARCH.md § "Math, grades 3–6", grade 6 (cited `[G6 p.N]`)
 

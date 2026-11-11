@@ -1,6 +1,6 @@
 # Spec: Numbers island, 4th grade (Stage 5b)
 
-- **Status:** Draft, awaiting user approval
+- **Status:** Built 2026-11-11, awaiting user play-test. Approved by user on 2026-11-11 (with grades 5 and 6, D24)
 - **Stage:** 5b (docs/ROADMAP.md). Continues `docs/specs/math-grade3.md` (skills 18–28, built)
 - **Relies on:** DECISIONS D7, D14, D19, **D23**, **D24** · docs/RESEARCH.md § "Math, grades 3–6: NEW curriculum", grade 4 (cited `[G4 p.N]`)
 

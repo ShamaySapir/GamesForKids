@@ -547,19 +547,21 @@ export function divideRemainderQuestion(ctx: GenContext): PickQ {
 }
 
 interface Bus { id: string; n: number; d: number }
-const BUS_D = [12, 15, 20, 24, 25, 30, 32, 35, 36, 40, 45, 48, 50]
+const storyOf = (id: string) => ROUND_UP_STORIES.find(s => s.id === id)
 const busKey = (b: Bus) => `bus:${b.id}:${b.n}:${b.d}`
 function parseBus(key: string): Bus | null {
   const m = /^bus:([a-z]+):([1-9]\d*):([1-9]\d*)$/.exec(key)
   if (!m) return null
   const [n, d] = [Number(m[2]), Number(m[3])]
-  const ok = ROUND_UP_STORIES.some(s => s.id === m[1]) && BUS_D.includes(d) && n >= 2 * d + 1 && n <= Math.min(520, 20 * d) && n % d !== 0
+  const ok = !!storyOf(m[1]!) && storyOf(m[1]!)!.sizes.includes(d) && n >= d + 1 && n <= storyOf(m[1]!)!.max && n % d !== 0
   return ok ? { id: m[1]!, n, d } : null
 }
 export const busStoryAccepts = (key: string) => parseBus(key) !== null
 const busSampler = (id: string) => (rng: Rng): Bus | null => {
-  const d = pick(rng, BUS_D)
-  const n = randInt(rng, 2 * d + 1, Math.min(520, 20 * d))
+  const story = storyOf(id)!
+  const d = pick(rng, story.sizes)
+  if (story.max < d + 1) return null
+  const n = randInt(rng, d + 1, story.max)
   return n % d === 0 ? null : { id, n, d }
 }
 const busText = (b: Bus) => ROUND_UP_STORIES.find(s => s.id === b.id)!.text.split('{n}').join(str(b.n)).split('{d}').join(str(b.d))
@@ -845,7 +847,8 @@ export const fractionLineAccepts = keyIn(FLINES.flat(), flineKey)
 export function fractionLineQuestion(ctx: GenContext): PlaceQ {
   return make(ctx, oneGroup(ctx, FLINES, flineKey), flineKey, ({ num, den }) => ({
     itemKey: flineKey({ num, den }), answer: num, say: [M.place, raw(fractionText(num, den))], instruction: M.place, hint: M4.fractionLineHint, target: num, tolerance: 0,
-    line: { min: 0, max: den, step: 1, labelEvery: 1, den },
+    // Only 0 and 1 are labelled: the child counts the parts (labelled ticks would give the answer away).
+    line: { min: 0, max: den, step: 1, labelEvery: den, den },
   }))
 }
 
