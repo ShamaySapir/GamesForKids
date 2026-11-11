@@ -404,7 +404,7 @@ function MathRects(p: ArtProps) {
 
 /* ---------- decimal house ---------- */
 
-const PLACE_NAMES: Record<number, string> = { 5: 'מ׳ אלפים', 4: 'ע׳ אלפים', 3: 'אלפים', 2: 'מאות', 1: 'עשרות', 0: 'אחדות', [-1]: 'עשיריות', [-2]: 'מאיות', [-3]: 'אלפיות', [-4]: 'ע׳ אלפיות' }
+const PLACE_NAMES: Record<number, string> = { 5: 'מ׳ אֲלָפִים', 4: 'ע׳ אֲלָפִים', 3: 'אֲלָפִים', 2: 'מֵאוֹת', 1: 'עֲשָׂרוֹת', 0: 'אֲחָדוֹת', [-1]: 'עֲשִׂירִיּוֹת', [-2]: 'מֵאִיּוֹת', [-3]: 'אַלְפִּיּוֹת', [-4]: 'ע׳ אַלְפִּיּוֹת' }
 
 interface Parsed { int: string; frac: string; point: boolean }
 const splitNum = (s: string): Parsed => {

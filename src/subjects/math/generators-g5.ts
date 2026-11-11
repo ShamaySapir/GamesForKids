@@ -357,7 +357,8 @@ export function mixedImproperQuestion(ctx: GenContext): FractionPadQ {
     return toMixed
       ? {
         itemKey: mixKey({ toMixed, whole, r, den }), answer: { whole, num: r, den }, say: [M5.asMixed, raw(fractionText(num, den))], instruction: M5.asMixed, hint: M5.mixedHint,
-        prompt: { expr: `${num}/${den}` }, mixed: true,
+        // simplest: only the real mixed form counts here (not 0 11/4, not 2 6/8)
+        prompt: { expr: `${num}/${den}` }, mixed: true, simplest: true,
       }
       : {
         itemKey: mixKey({ toMixed, whole, r, den }), answer: { num, den }, say: [M5.asImproper, raw(fractionText(r, den, whole))], instruction: M5.asImproper, hint: M5.mixedHint,
