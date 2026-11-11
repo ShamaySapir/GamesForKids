@@ -97,3 +97,45 @@ describe('ColumnGame with seven digits', () => {
     expect(document.querySelector('.g3-col')).not.toHaveClass('wide')
   })
 })
+
+describe('ColumnGame with decimals', () => {
+  const dec: ColumnQ = { itemKey: 'col:3.5+2.25', answer: 5.75, say: 'x', instruction: M3.column, a: 3.5, b: 2.25, op: '+', places: 2 }
+  const pts = () => [...document.querySelectorAll('.g5-pt')].map(c => c.textContent)
+
+  it('aligns the points, fades the padded zero and fixes the point in the result', () => {
+    setup(dec)
+    expect(pts()).toEqual(['', '.', '.', '.'])
+    const nums = [...document.querySelectorAll('.g3-num')]
+    expect(nums.map(c => c.textContent).join('')).toBe('350225')
+    const faded = nums.filter(c => c.classList.contains('faded'))
+    expect(faded).toHaveLength(1)
+    expect(faded[0]).toHaveTextContent('0')
+    expect(cells()).toHaveLength(3)
+  })
+
+  it('types from the rightmost decimal place leftward, and carries across the point', async () => {
+    const onAttempt = setup(dec)
+    await key('5')
+    await key('7')
+    expect(cells()).toEqual(['', '7', '5'])
+    await key('5')
+    expect(cells()).toEqual(['5', '7', '5'])
+    await key('✓')
+    expect(onAttempt.mock.calls).toEqual([[true]])
+  })
+
+  it('a wrong sum is a miss', async () => {
+    const onAttempt = setup(dec)
+    await key('5')
+    await key('6')
+    await key('5')
+    await key('✓')
+    expect(onAttempt.mock.calls).toEqual([[false]])
+  })
+
+  it('subtracts with a borrow over the point and a zero before it', async () => {
+    const onAttempt = setup({ itemKey: 'x', answer: 0.75, say: 'x', instruction: M3.column, a: 1.2, b: 0.45, op: '-', places: 2 })
+    await userEvent.keyboard('570{Enter}')
+    expect(onAttempt.mock.calls).toEqual([[true]])
+  })
+})
