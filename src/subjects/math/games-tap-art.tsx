@@ -20,6 +20,8 @@ export function TapArtGame({ question, aid, onAttempt }: GameProps<TapArtQ>) {
 
   // The art owns its drawing; make each [data-part] a button after every render.
   useEffect(() => {
+    // Art is drawn aria-hidden; here its parts are the buttons, so the drawing must be reachable by screen readers.
+    box.current?.querySelectorAll('svg[aria-hidden]').forEach(svg => svg.removeAttribute('aria-hidden'))
     box.current?.querySelectorAll<Element>('[data-part]').forEach(el => {
       const part = el.getAttribute('data-part') ?? ''
       const off = locked || wrong.has(part)

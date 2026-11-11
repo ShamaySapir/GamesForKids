@@ -14,6 +14,9 @@ import { PlaceValueGame } from './games-place'
 import { registerMathArt } from './art-g3'
 import { registerMathArt4 } from './art-g4'
 import { registerMathArt5 } from './art-g5'
+import { registerMathArt6 } from './art-g6'
+import { MeanGame } from './games-mean'
+import { TapArtGame } from './games-tap-art'
 import { BinsGame } from './games-bins'
 import { FactorTreeGame } from './games-factor'
 import { SlantAreaGame } from './games-slant'
@@ -31,6 +34,7 @@ import * as g2 from './generators-g2'
 import * as g3 from './generators-g3'
 import * as g4 from './generators-g4'
 import * as g5 from './generators-g5'
+import * as g6 from './generators-g6'
 import { fmt } from './numbers'
 import { phrases } from './phrases'
 import type { PadQ } from './types'
@@ -40,10 +44,12 @@ import type { PadQ } from './types'
 // Skills 18–28: docs/specs/math-grade3.md (the new 3rd-grade curriculum).
 // Skills 29–41: docs/specs/math-grade4.md (the new 4th-grade curriculum).
 // Skills 42–52: docs/specs/math-grade5.md (the new 5th-grade curriculum).
+// Skills 53–63: docs/specs/math-grade6.md (the new 6th-grade curriculum).
 
 registerMathArt()
 registerMathArt4()
 registerMathArt5()
+registerMathArt6()
 
 const sign = (op: string) => (op === '+' ? '+' : '−')
 const skipLabel = (step: string, start: string) => (Number(step) < 0 ? `ספירה לאחור בקפיצות של ${-Number(step)} מ-${start}` : `ספירה בקפיצות של ${step} מ-${start}`)
@@ -67,6 +73,12 @@ const SOLID_ASK: Record<string, string> = { faces: 'פאות', edges: 'מקצו�
 const HEIGHT_SHAPE: Record<string, string> = { acute: 'משולש חד זוויות', right: 'משולש ישר זווית', obtuse: 'משולש קהה זווית', parallelogram: 'מקבילית' }
 const SURVEY: Record<string, string> = { fruit: 'פרי אהוב', pet: 'חיה אהובה', color: 'צבע אהוב', sport: 'משחק בהפסקה' }
 const SHARE: Record<string, string> = { pizza: 'פיצות', cake: 'עוגות', chocolate: 'חפיסות שוקולד' }
+const OPWORD: Record<string, string> = { x: '×', d: ':', p: '+', m: '−' }
+const rule = (r: string) => r.split(',').map(s => `${OPWORD[s[0]!] ?? s[0]} ${s.slice(1)}`).join(' ')
+const STORY6: Record<string, string> = { shirt: 'חולצה', ball: 'כדור', book: 'ספר', ticket: 'כרטיס', class: 'כיתה', savings: 'חיסכון' }
+const PART: Record<string, string> = { radius: 'רדיוס', diameter: 'קוטר', chord: 'מיתר', arc: 'קשת' }
+const VOLUME: Record<string, string> = { pool: 'בריכה', cup: 'כוס', bottle: 'בקבוק', room: 'חדר', spoon: 'כפית' }
+const TRUTH: Record<string, string> = { in: 'האם הממוצע הוא אחד המספרים', wh: 'האם הממוצע שלם', ad: 'האם מספר נוסף משנה את הממוצע' }
 const frac = (n: string, d: string) => (d === '1' ? n : `${n}/${d}`)
 const nearLabel = (n: number, p: number) => `האם ${n} קרוב יותר ל-${Math.floor(n / p) * p} או ל-${(Math.floor(n / p) + 1) * p}`
 const exercise = (s: string) => s.replace(/x/g, ' × ').replace(/([+\-:=])/g, ' $1 ').replace(/\s+/g, ' ').trim()
@@ -199,6 +211,39 @@ const RULES: Rule[] = [
   [/^sn:([\w-]+)$/, m => `פריסה של ${SOLID[m[1]!] ?? m[1]}`],
   [/^fe:([\w-]+):(\w+)$/, m => `${SOLID_ASK[m[2]!] ?? m[2]} של ${SOLID[m[1]!] ?? m[1]}`],
   [/^mode:(\w+):([\d.,]+)$/, m => `השכיח בטבלה (${SURVEY[m[1]!] ?? m[1]}): ${m[2]}`],
+  // Grade 6
+  [/^mo:([\w,]+):(\d+)$/, m => `מכונה ${rule(m[1]!)}, קלט ${m[2]}`],
+  [/^mr:([\w,]+)$/, m => `הכלל של המכונה: ${rule(m[1]!)}`],
+  [/^rom:(\d+):([ab])$/, m => `ספרות רומיות: ${m[1]} (${m[2] === 'a' ? 'לקרוא' : 'לכתוב'})`],
+  [/^gem:(\d+):([ab])$/, m => `גימטריה: ${m[1]} (${m[2] === 'a' ? 'לקרוא' : 'לכתוב'})`],
+  [/^fo:(\d+):(\d+):(\d+)$/, m => `${m[1]}/${m[2]} מתוך ${m[3]}`],
+  [/^fg:(\d+):(\d+):(\d+):(\d+)$/, m => `${m[1]}/${m[2]} × ${m[3]}/${m[4]} על רשת`],
+  [/^bs:([xd]):(\d+):(\d+):(\d+)$/, m => `האם ${m[1] === 'x' ? `${m[4]} × ${m[2]}/${m[3]}` : `${m[4]} : ${m[2]}/${m[3]}`} גדול או קטן מ-${m[4]}`],
+  [/^hf:w:(\d+):(\d+)$/, m => `כמה 1/${m[2]} נכנסים ב-${m[1]}`],
+  [/^hf:f:(\d+):(\d+)$/, m => `כמה 1/${m[2]} נכנסים ב-${m[1]}/${m[2]}`],
+  [/^du:(\d+):(\d+)$/, m => `${m[1]} : 1/${m[2]}`],
+  [/^df:(\d+):(\d+):(\d+):(\d+)$/, m => `${m[1]}/${m[2]} : ${m[3]}/${m[4]}`],
+  [/^wp:([\d.]+):([\d.]+)$/, m => `איפה הנקודה: ${m[1]} × ${m[2]}`],
+  [/^dm:([xd]):([\d.]+):([\d.]+)$/, m => `${m[2]} ${m[1] === 'x' ? '×' : ':'} ${m[3]}`],
+  [/^ep:([xd]):([\d.]+):(\d+)$/, m => `אומדן: ${m[3]} ${m[1] === 'x' ? '×' : ':'} ${m[2]}`],
+  [/^po:(\d+):(\d+)$/, m => `${m[1]}% מתוך ${m[2]}`],
+  [/^pm:(\d+):(f|d|pf|pd)$/, m => `${m[1]}% ${m[2] === 'f' || m[2] === 'pf' ? 'כשבר' : 'כעשרוני'}${m[2]!.startsWith('p') ? ' (מהשבר לאחוזים)' : ''}`],
+  [/^pwh:(\w+):(\d+):(\d+)$/, m => `מציאת השלם (${STORY6[m[1]!] ?? m[1]}): ${m[3]} הם ${m[2]}%`],
+  [/^pdi:(\w+):(\d+):(\d+)$/, m => `הנחה של ${m[2]}% על ${m[3]} (${STORY6[m[1]!] ?? m[1]})`],
+  [/^pri:(\w+):(\d+):(\d+)$/, m => `התייקרות של ${m[2]}% על ${m[3]} (${STORY6[m[1]!] ?? m[1]})`],
+  [/^ca:(\w+):([\w.,-]+):(\d+)$/, m => `שטח של צורה מורכבת (${m[1] === 'L' ? 'ר' : m[1] === 'T' ? 'ט' : 'ח'}, ${m[2]}, ${m[3]})`],
+  [/^cpm:(\w+):([\w.,-]+):(\d+)$/, m => `היקף של צורה מורכבת (${m[1] === 'L' ? 'ר' : m[1] === 'T' ? 'ט' : 'ח'}, ${m[2]}, ${m[3]})`],
+  [/^se:(\d+):(\d+)(:1)?$/, m => `${m[3] ? 'רק האורך גדל פי 2' : 'הצלעות גדלו פי 2'}: מלבן ${m[1]} על ${m[2]}`],
+  [/^cpt:(\w+)$/, m => `חלקי המעגל: ${PART[m[1]!] ?? m[1]}`],
+  [/^circ:(\d+)$/, m => `היקף מעגל ברדיוס ${m[1]}`],
+  [/^carea:(\d+)$/, m => `שטח עיגול ברדיוס ${m[1]}`],
+  [/^cub:(\d+):(\d+):(\d+)$/, m => `ספירת קוביות בתיבה ${m[1]} על ${m[2]} על ${m[3]}`],
+  [/^bv:(\d+):(\d+):(\d+)$/, m => `נפח תיבה ${m[1]} על ${m[2]} על ${m[3]}`],
+  [/^vu:(\w+)$/, m => `יחידת נפח הגיונית: ${VOLUME[m[1]!] ?? m[1]}`],
+  [/^lb:([\d,]+)$/, m => `השוואת עמודות לממוצע: ${m[1]!.split(',').join(', ')}`],
+  [/^fm:([\d,]+)$/, m => `הממוצע של ${m[1]!.split(',').join(', ')}`],
+  [/^mt:(in|wh):([\d,]+)$/, m => `${TRUTH[m[1]!]}: ${m[2]!.split(',').join(', ')}`],
+  [/^mt:ad:([\d,]+):(\d+)$/, m => `${TRUTH.ad}: ${m[1]!.split(',').join(', ')} ועוד ${m[2]}`],
 ]
 
 /** Adult-readable label for a practice item key, plain Hebrew without nikud (D18). */
@@ -610,6 +655,92 @@ export const island: IslandDef = {
     {
       id: 'math.mode', title: 'הַשָּׁכִיחַ', grade: 5, requires: [], sticker: '📊',
       games: [pick('mode-table', 'מָה הֲכִי שָׁכִיחַ?', '📊', g5.modeTableQuestion, g5.modeTableAccepts)],
+    },
+    {
+      id: 'math.machines', title: 'מְכוֹנַת מִסְפָּרִים', grade: 6, requires: ['math.order-ops-2'], sticker: '⚙️',
+      games: [
+        pad('machine-output', 'מָה יוֹצֵא?', '⚙️', g6.machineOutputQuestion, g6.machineOutputAccepts),
+        pick('machine-rule', 'מָה הַכְּלָל?', '🔍', g6.machineRuleQuestion, g6.machineRuleAccepts),
+      ],
+    },
+    {
+      id: 'math.numerals', title: 'סְפָרוֹת רוֹמִיּוֹת וְאוֹתִיּוֹת', grade: 6, requires: ['math.huge'], sticker: '🏛️',
+      games: [
+        pick('roman', 'סְפָרוֹת רוֹמִיּוֹת', '🏛️', g6.romanQuestion, g6.romanAccepts),
+        pick('gematria', 'גִּימַטְרִיָּה', '📜', g6.gematriaQuestion, g6.gematriaAccepts),
+      ],
+    },
+    {
+      id: 'math.fraction-times', title: 'כֶּפֶל שְׁבָרִים', grade: 6, requires: ['math.fraction-add-2'], sticker: '✖️',
+      games: [
+        pad('fraction-of', 'חֵלֶק מִמִּסְפָּר', '🍎', g6.fractionOfQuestion, g6.fractionOfAccepts),
+        game({ id: 'fraction-grid', title: 'שֶׁבֶר כָּפוּל שֶׁבֶר', icon: '🟪', component: ShadeGame, generate: g6.fractionGridQuestion, accepts: g6.fractionGridAccepts }),
+        pick('bigger-smaller', 'גָּדֵל אוֹ קָטֵן?', '↕️', g6.biggerSmallerQuestion, g6.biggerSmallerAccepts),
+      ],
+    },
+    {
+      id: 'math.fraction-divide', title: 'חִלּוּק שְׁבָרִים', grade: 6, requires: ['math.fraction-times'], sticker: '➗',
+      games: [
+        pad('how-many-fit', 'כַּמָּה נִכְנָסִים?', '🧩', g6.howManyFitQuestion, g6.howManyFitAccepts),
+        pad('divide-unit', 'חִלּוּק בִּשְׁבַר יְחִידָה', '➗', g6.divideUnitQuestion, g6.divideUnitAccepts),
+        game({ id: 'divide-fraction', title: 'שֶׁבֶר לְחַלֵּק לְשֶׁבֶר', icon: '🔄', component: FractionPadGame, generate: g6.divideFractionQuestion, accepts: g6.divideFractionAccepts }),
+      ],
+    },
+    {
+      id: 'math.decimal-times', title: 'כֶּפֶל וְחִלּוּק עֶשְׂרוֹנִיִּים', grade: 6, requires: ['math.decimal-add'], sticker: '🎯',
+      games: [
+        pick('where-point', 'אֵיפֹה הַנְּקֻדָּה?', '🎯', g6.wherePointQuestion, g6.wherePointAccepts),
+        pad('decimal-mental', 'חֶשְׁבּוֹן בְּעַל פֶּה', '🧠', g6.decimalMentalQuestion, g6.decimalMentalAccepts),
+        pick('estimate-product', 'יוֹתֵר אוֹ פָּחוֹת?', '⚖️', g6.estimateProductQuestion, g6.estimateProductAccepts),
+      ],
+    },
+    {
+      id: 'math.percent', title: 'אֲחוּזִים', grade: 6, requires: ['math.decimal-order', 'math.fraction-times'], sticker: '💯',
+      games: [
+        pad('percent-of', 'אֲחוּזִים מִמִּסְפָּר', '💯', g6.percentOfQuestion, g6.percentOfAccepts),
+        pick('percent-match', 'אָחוּז, שֶׁבֶר וְעֶשְׂרוֹנִי', '🔗', g6.percentMatchQuestion, g6.percentMatchAccepts),
+        defineGame({ id: 'percent-arena', title: 'זִירַת הָאֲחוּזִים', icon: '⏱️', component: NumberPadGame, sprint: { seconds: 60 }, generate: g6.percentArenaQuestion, accepts: g6.percentArenaAccepts }),
+      ],
+    },
+    {
+      id: 'math.percent-whole', title: 'הֲנָחוֹת וְהַשָּׁלֵם', grade: 6, requires: ['math.percent'], sticker: '🏷️',
+      games: [
+        pad('find-whole', 'מוֹצְאִים אֶת הַשָּׁלֵם', '🧩', g6.findWholeQuestion, g6.findWholeAccepts),
+        pad('discount', 'הֲנָחָה', '🏷️', g6.discountQuestion, g6.discountAccepts),
+        pad('price-rise', 'הִתְיַקְּרוּת', '📈', g6.priceRiseQuestion, g6.priceRiseAccepts),
+      ],
+    },
+    {
+      id: 'math.composite-area', title: 'שֶׁטַח וְהֶקֵּף שֶׁל צוּרוֹת', grade: 6, requires: ['math.heights'], sticker: '🧩',
+      games: [
+        game({ id: 'composite-area', title: 'שֶׁטַח צוּרָה מֻרְכֶּבֶת', icon: '🟩', component: GridAreaGame, roundLength: 4, generate: g6.compositeAreaQuestion, accepts: g6.compositeAreaAccepts }),
+        game({ id: 'composite-perimeter', title: 'הֶקֵּף צוּרָה מֻרְכֶּבֶת', icon: '🔲', component: GridAreaGame, roundLength: 4, generate: g6.compositePerimeterQuestion, accepts: g6.compositePerimeterAccepts }),
+        pick('scale-effect', 'מָה קָרָה לַשֶּׁטַח?', '🔍', g6.scaleEffectQuestion, g6.scaleEffectAccepts),
+      ],
+    },
+    {
+      id: 'math.circle', title: 'הַמַּעְגָּל', grade: 6, requires: ['math.composite-area'], sticker: '⭕',
+      games: [
+        game({ id: 'circle-parts', title: 'חֶלְקֵי הַמַּעְגָּל', icon: '⭕', component: TapArtGame, generate: g6.circlePartsQuestion, accepts: g6.circlePartsAccepts }),
+        pick('circumference', 'הֶקֵּף הַמַּעְגָּל', '📏', g6.circumferenceQuestion, g6.circumferenceAccepts),
+        pick('circle-area', 'שֶׁטַח הָעִגּוּל', '🟠', g6.circleAreaQuestion, g6.circleAreaAccepts),
+      ],
+    },
+    {
+      id: 'math.volume', title: 'נֶפַח', grade: 6, requires: ['math.solids'], sticker: '🧊',
+      games: [
+        pad('count-cubes', 'סוֹפְרִים קֻבִּיּוֹת', '🧊', g6.countCubesQuestion, g6.countCubesAccepts),
+        pad('box-volume', 'נֶפַח תֵּבָה', '📦', g6.boxVolumeQuestion, g6.boxVolumeAccepts),
+        pick('volume-unit', 'אֵיזוֹ יְחִידָה?', '🤔', g6.volumeUnitQuestion, g6.volumeUnitAccepts),
+      ],
+    },
+    {
+      id: 'math.mean', title: 'הַמְּמֻצָּע', grade: 6, requires: ['math.mode'], sticker: '⚖️',
+      games: [
+        game({ id: 'level-bars', title: 'מַשְׁוִים עַמּוּדוֹת', icon: '📊', component: MeanGame, roundLength: 4, generate: g6.levelBarsQuestion, accepts: g6.levelBarsAccepts }),
+        pad('find-mean', 'מָה הַמְּמֻצָּע?', '🧮', g6.findMeanQuestion, g6.findMeanAccepts),
+        pick('mean-truths', 'נָכוֹן אוֹ לֹא?', '🤔', g6.meanTruthsQuestion, g6.meanTruthsAccepts),
+      ],
     },
   ]),
 }

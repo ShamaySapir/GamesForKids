@@ -276,6 +276,10 @@ export const M6 = {
   levelBars: 'math.q.levelBars', // "הַעֲבִירוּ קֻבִּיּוֹת עַד שֶׁכָּל הָעַמּוּדוֹת שָׁווֹת"
   levelHint: 'math.hint.level', // "קְחוּ מֵהָעַמּוּד הַגָּבוֹהַּ, וּתְנוּ לַנָּמוּךְ"
   findMean: 'math.q.findMean', // "מָה הַמְּמֻצָּע?"
+  scaleLength: 'math.q.scaleLength', // "רַק הָאֹרֶךְ גָּדַל פִּי שְׁנַיִם. מָה קָרָה לַשֶּׁטַח?"
+  romanWrite: 'math.q.romanWrite', // "אֵיךְ כּוֹתְבִים אֶת הַמִּסְפָּר בְּסִפְרוֹת רוֹמִיּוֹת?"
+  gematriaWrite: 'math.q.gematriaWrite', // "אֵיךְ כּוֹתְבִים אֶת הַמִּסְפָּר בְּאוֹתִיּוֹת?"
+  trueOrNot: 'math.q.trueOrNot', // "הַאִם זֶה נָכוֹן?"
   meanHint: 'math.hint.mean', // "מְחַבְּרִים אֶת כָּל הַמִּסְפָּרִים, וּמְחַלְּקִים בְּמִסְפַּר הַמִּסְפָּרִים"
 } as const
 

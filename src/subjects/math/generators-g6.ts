@@ -212,7 +212,7 @@ export function romanQuestion(ctx: GenContext): PickQ {
     return dir === 'a'
       ? { itemKey: romanKey({ n, dir }), answer: str(n), say: [M6.roman], instruction: M6.roman, hint: M6.romanHint, prompt: { expr: roman }, options: all.map(numOption) }
       : {
-        itemKey: romanKey({ n, dir }), answer: roman, say: [M6.roman, ...spokenNumber(n)], instruction: M6.roman, hint: M6.romanHint, prompt: { expr: fmt(n) },
+        itemKey: romanKey({ n, dir }), answer: roman, say: [M6.romanWrite, ...spokenNumber(n)], instruction: M6.romanWrite, hint: M6.romanHint, prompt: { expr: fmt(n) },
         options: all.map(v => ({ id: toRoman(v), kind: 'number' as const, label: toRoman(v) })),
       }
   })
@@ -242,7 +242,7 @@ export function gematriaQuestion(ctx: GenContext): PickQ {
     return dir === 'a'
       ? { itemKey: gemKey({ n, dir }), answer: str(n), say: [M6.gematria], instruction: M6.gematria, hint: M6.gematriaHint, prompt: { word: { text: letters } }, options: all.map(numOption) }
       : {
-        itemKey: gemKey({ n, dir }), answer: letters, say: [M6.gematria, ...spokenNumber(n)], instruction: M6.gematria, hint: M6.gematriaHint, prompt: { expr: fmt(n) },
+        itemKey: gemKey({ n, dir }), answer: letters, say: [M6.gematriaWrite, ...spokenNumber(n)], instruction: M6.gematriaWrite, hint: M6.gematriaHint, prompt: { expr: fmt(n) },
         options: all.map(v => ({ id: toGematria(v), kind: 'text' as const, label: toGematria(v) })),
       }
   })
@@ -678,16 +678,17 @@ export const compositeAreaQuestion = (ctx: GenContext): GridAreaQ => compositeQu
 /** The same shapes; count the outside edges in cm. */
 export const compositePerimeterQuestion = (ctx: GenContext): GridAreaQ => compositeQuestion(ctx, 'perimeter')
 
-interface Scale { a: number; b: number }
-const scaleKey = (s: Scale) => `se:${s.a}:${s.b}`
-const SCALES: Scale[] = range(1, 6).flatMap(a => range(1, 6).map(b => ({ a, b })))
+interface Scale { a: number; b: number; one?: boolean }
+const scaleKey = (s: Scale) => `se:${s.a}:${s.b}${s.one ? ':1' : ''}`
+const SCALES: Scale[] = range(1, 6).flatMap(a => range(1, 6).flatMap(b => [{ a, b }, { a, b, one: true }]))
 export const scaleEffectAccepts = keyIn(SCALES, scaleKey)
 
-/** `3 × 2 → 6 × 4`: both sides doubled; what happened to the area? Always ×4 (the one-side-doubled version needs more phrases; see docs/requests/math-g6-T1.md). */
+/** `3 × 2 → 6 × 4`: both sides doubled → the area ×4 (G6 p.15); or only the length doubled (`3 × 2 → 6 × 2`) → ×2. */
 export function scaleEffectQuestion(ctx: GenContext): PickQ {
-  return make(ctx, SCALES, scaleKey, ({ a, b }) => ({
-    itemKey: scaleKey({ a, b }), answer: 'times4', say: [M6.scaleEffect], instruction: M6.scaleEffect, hint: M6.scaleHint,
-    prompt: { expr: `${a} ${TIMES} ${b} → ${2 * a} ${TIMES} ${2 * b}` },
+  return make(ctx, SCALES, scaleKey, ({ a, b, one }) => ({
+    itemKey: scaleKey({ a, b, one }), answer: one ? 'times2' : 'times4', say: [one ? M6.scaleLength : M6.scaleEffect],
+    instruction: one ? M6.scaleLength : M6.scaleEffect, hint: M6.scaleHint,
+    prompt: { expr: `${a} ${TIMES} ${b} → ${2 * a} ${TIMES} ${one ? b : 2 * b}` },
     options: shuffle(ctx.rng, [
       { id: 'times2', kind: 'text' as const, label: phrases[M6.times2]!, say: M6.times2 },
       { id: 'times4', kind: 'text' as const, label: phrases[M6.times4]!, say: M6.times4 },
@@ -874,7 +875,7 @@ export function meanTruthsQuestion(ctx: GenContext): PickQ {
     : t.kind === 'wh' ? [`${head} הַאִם הַמְּמֻצָּע הוּא מִסְפָּר שָׁלֵם?`, Number.isInteger(mean)]
     : [`${head} מוֹסִיפִים עוֹד ${t.x}. הַאִם הַמְּמֻצָּע יִשְׁתַּנֶּה?`, t.x !== mean] as const
   return {
-    itemKey: truthKey(t), answer: yes ? 'yes' : 'no', say: [raw(text)], instruction: M6.findMean, hint: M6.meanHint, prompt: { sentence: { text, say: raw(text) } },
+    itemKey: truthKey(t), answer: yes ? 'yes' : 'no', say: [M6.trueOrNot, raw(text)], instruction: M6.trueOrNot, hint: M6.meanHint, prompt: { sentence: { text, say: raw(text) } },
     options: [textOption(M4.yes), textOption(M4.no)].map(o => ({ ...o, id: o.id === M4.yes ? 'yes' : 'no' })),
   }
 }

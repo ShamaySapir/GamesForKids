@@ -168,7 +168,7 @@ describe('roman', () => {
         expect(romanValue(q.answer)).toBe(+n!)
         expect(q.options.filter(o => romanValue(o.id) === +n!)).toHaveLength(1)
       }
-      expect(q.instruction).toBe(M6.roman)
+      expect(q.instruction).toBe(dir === 'a' ? M6.roman : M6.romanWrite)
       expect(q.hint).toBe(M6.romanHint)
     })
     expect([...dirs].sort()).toEqual(['a', 'b'])
@@ -534,15 +534,19 @@ describe('composite shapes', () => {
 })
 
 describe('scale effect', () => {
-  it('doubled sides: the area grew ×4, shown as a × b → 2a × 2b with three options', () => {
+  it('both sides doubled → ×4, only the length doubled → ×2, with three options', () => {
+    const seen = new Set<string>()
     each(scaleEffectQuestion, q => {
       expectPick(q, 3)
-      const [, a, b] = /^se:(\d+):(\d+)$/.exec(q.itemKey)!.map(Number) as [string, number, number]
-      expect(q.prompt.expr).toBe(`${a} × ${b} → ${2 * a} × ${2 * b}`)
-      expect(q.answer).toBe('times4')
+      const m = /^se:(\d+):(\d+)(:1)?$/.exec(q.itemKey)!
+      const [a, b, one] = [Number(m[1]), Number(m[2]), !!m[3]]
+      const [a2, b2] = [2 * a, one ? b : 2 * b]
+      expect(q.prompt.expr).toBe(`${a} × ${b} → ${a2} × ${b2}`)
+      expect(q.answer).toBe((a2 * b2) / (a * b) === 4 ? 'times4' : 'times2')
       expect(q.options.map(o => o.id).sort()).toEqual(['same', 'times2', 'times4'])
-      expect((2 * a * 2 * b) / (a * b)).toBe(4)
+      seen.add(q.answer)
     })
+    expect(seen).toEqual(new Set(['times2', 'times4']))
   })
   it('honors review and avoid', () => expectReviewAndAvoid(scaleEffectQuestion, scaleEffectAccepts, 20))
 })
@@ -704,7 +708,7 @@ describe('mean truths', () => {
       expect(text).toMatch(/הַמְּמֻצָּע/)
       expect(text).toContain(`הוּא ${Number(mean.toFixed(3))}.`)
       expect(text).not.toMatch(/[{}]/)
-      expect(ids(q.say)).toEqual([`raw:${text}`])
+      expect(ids(q.say)).toEqual([M6.trueOrNot, `raw:${text}`])
       expect(q.prompt.sentence!.say).toBe(`raw:${text}`)
       seen.add(`${kind}${yes}`)
     })
