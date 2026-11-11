@@ -275,7 +275,7 @@ export const island: IslandDef = {
       ],
     },
     {
-      id: 'math.table', title: 'לוּחַ הַכֶּפֶל', grade: 3, requires: ['math.times'], sticker: '🏅',
+      id: 'math.table', title: 'לוּחַ הַכֶּפֶל הַמָּלֵא', grade: 3, requires: ['math.times'], sticker: '🏅',
       games: [
         pad('table-new', 'הַלּוּחַ הַמָּלֵא', '✖️', g3.tableNewQuestion, g3.tableNewAccepts),
         pad('missing-factor', 'מָה חָסֵר?', '❔', g3.missingFactorQuestion, g3.missingFactorAccepts),
