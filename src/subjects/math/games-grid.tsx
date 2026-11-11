@@ -5,6 +5,7 @@ import { HintButton, useHintOnAid, useShake } from './games-pad'
 import type { CellRect, GridAreaQ } from './types'
 import './math-g3-art.css'
 import './math-g4-art.css'
+import './math-g6-art.css'
 
 // GridAreaGame (grade 3, skill 28): a shape on a square-centimetre grid; type its area in סמ״ר on a pad.
 // count mode draws every square; sides mode draws only the outline and the side lengths, and the inner
@@ -41,11 +42,41 @@ function outlinePath(filled: ReadonlySet<string>): string {
   return seg.join('')
 }
 
+type Edge = { a: readonly [number, number]; b: readonly [number, number]; n: readonly [number, number] }
+
+/** Every boundary unit side, directed clockwise and ordered by walking around each outline (outer edge, then holes). */
+export function boundaryEdges(filled: ReadonlySet<string>): Edge[] {
+  const all: Edge[] = []
+  for (const key of filled) {
+    const [c, r] = key.split(',').map(Number) as [number, number]
+    const x = c * U
+    const y = r * U
+    if (!filled.has(cellKey(c, r - 1))) all.push({ a: [x, y], b: [x + U, y], n: [0, -1] })
+    if (!filled.has(cellKey(c + 1, r))) all.push({ a: [x + U, y], b: [x + U, y + U], n: [1, 0] })
+    if (!filled.has(cellKey(c, r + 1))) all.push({ a: [x + U, y + U], b: [x, y + U], n: [0, 1] })
+    if (!filled.has(cellKey(c - 1, r))) all.push({ a: [x, y + U], b: [x, y], n: [-1, 0] })
+  }
+  const used = new Set<Edge>()
+  const out: Edge[] = []
+  for (const first of all) {
+    let e: Edge | undefined = first
+    while (e && !used.has(e)) {
+      used.add(e)
+      out.push(e)
+      const end: Edge['b'] = e.b
+      e = all.find(o => !used.has(o) && o.a[0] === end[0] && o.a[1] === end[1])
+    }
+  }
+  return out
+}
+
 function Board({ q, aid }: { q: GridAreaQ; aid: boolean }) {
   const { cols, rows, rects, mode } = q
   const filled = useMemo(() => filledCells(rects), [rects])
   const outline = useMemo(() => outlinePath(filled), [filled])
-  const showCells = mode === 'count' || aid
+  const perimeter = q.ask === 'perimeter'
+  const edges = useMemo(() => (perimeter ? boundaryEdges(filled) : []), [perimeter, filled])
+  const showCells = mode === 'count' || (aid && !perimeter)
   // Box nets with the aid: the faces that are opposite each other share a tint.
   const tint = (i: number) => (aid && q.faces?.[i] !== undefined ? `g3a-shape face face-${Math.abs(Math.round(q.faces[i]!)) % 3}` : 'g3a-shape')
   const w = cols * U + PAD_L + PAD_R
@@ -72,7 +103,17 @@ function Board({ q, aid }: { q: GridAreaQ; aid: boolean }) {
               </g>
             )
           })}
-          {aid && rowCounts.map((n, r) => n > 0 && (
+          {aid && perimeter && edges.map((e, i) => {
+            const mx = (e.a[0] + e.b[0]) / 2
+            const my = (e.a[1] + e.b[1]) / 2
+            return (
+              <g key={i} className="g3a-step">
+                <line className="g3a-tick" x1={mx} y1={my} x2={mx + e.n[0] * 6} y2={my + e.n[1] * 6} />
+                <text className="g3a-stepnum" textAnchor="middle" dominantBaseline="central" x={mx + e.n[0] * 13} y={my + e.n[1] * 13}>{i + 1}</text>
+              </g>
+            )
+          })}
+          {aid && !perimeter && rowCounts.map((n, r) => n > 0 && (
             <text key={r} className="g3a-rowcount" x={cols * U + 10} y={r * U + U / 2} dominantBaseline="central">{n}</text>
           ))}
         </g>
@@ -123,7 +164,7 @@ export function GridAreaGame({ question, aid, onAttempt }: GameProps<GridAreaQ>)
         <div className={`pd-answer digi${shaking ? ' bad' : ''}${locked ? ' ok' : ''}`} dir="ltr" role="status">
           {value || <span className="pd-caret" aria-hidden="true">?</span>}
         </div>
-        <span className="g3a-unit">סמ״ר</span>
+        <span className="g3a-unit">{question.ask === 'perimeter' ? 'ס״מ' : 'סמ״ר'}</span>
       </div>
       <div className="pd-pad" dir="ltr">
         {KEYS.map(k => (
