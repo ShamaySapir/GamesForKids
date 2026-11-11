@@ -155,3 +155,34 @@ export function decimalText(x: number): string {
   const part = fractionText(Number(f), 10 ** f.length)
   return wholeText ? `${wholeText} ${withAnd(part)}` : part
 }
+
+/* ---------- grade 6: other numeral systems (G6 p.1–5) ---------- */
+
+const ROMAN: readonly (readonly [number, string])[] = [
+  [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+]
+
+/** 1–3,999 in Roman numerals: 14 → XIV, 1900 → MCM. */
+export function toRoman(n: number): string {
+  if (!Number.isInteger(n) || n < 1 || n > 3999) throw new Error(`toRoman: ${n} is out of range 1–3,999`)
+  let out = ''
+  for (const [v, s] of ROMAN) while (n >= v) { out += s; n -= v }
+  return out
+}
+
+const ONES = ['', 'א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט']
+const TENS = ['', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ']
+const HUNDREDS = ['', 'ק', 'ר', 'ש', 'ת', 'תק', 'תר', 'תש', 'תת', 'תתק']
+
+/**
+ * 1–999 in Hebrew letters (gematria), as years and verses are written: 123 → קכ״ג, 786 → תשפ״ו, 5 → ה׳. 15 and 16 are
+ * ט״ו and ט״ז, never י״ה and י״ו (they spell the divine name), also inside bigger numbers (115 → קט״ו).
+ */
+export function toGematria(n: number): string {
+  if (!Number.isInteger(n) || n < 1 || n > 999) throw new Error(`toGematria: ${n} is out of range 1–999`)
+  const h = HUNDREDS[Math.floor(n / 100)]!
+  const r = n % 100
+  const rest = r === 15 ? 'טו' : r === 16 ? 'טז' : TENS[Math.floor(r / 10)]! + ONES[r % 10]!
+  const letters = h + rest
+  return letters.length === 1 ? `${letters}׳` : `${letters.slice(0, -1)}״${letters.slice(-1)}`
+}

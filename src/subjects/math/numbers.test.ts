@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { NUMBER_PHRASES, PRICE_PHRASES } from './content/numbers'
-import { decimalText, fmt, fmtDec, fractionText, numberPhrase, numberText, pricePhrase, spokenNumber } from './numbers'
+import { decimalText, fmt, fmtDec, fractionText, numberPhrase, numberText, pricePhrase, spokenNumber, toGematria, toRoman } from './numbers'
 
 const say = (n: number) => numberPhrase(n).map(id => NUMBER_PHRASES[id]).join(' ')
 
@@ -121,5 +121,22 @@ describe('grade 5 numbers', () => {
     expect(decimalText(1.37)).toBe('שָׁלֵם אֶחָד וּשְׁלוֹשִׁים וְשֶׁבַע מֵאִיּוֹת')
     expect(decimalText(0.125)).toBe('מֵאָה עֶשְׂרִים וְחָמֵשׁ אַלְפִּיּוֹת')
     expect(decimalText(2)).toBe('שְׁנֵי שְׁלֵמִים')
+  })
+})
+
+describe('grade 6 numeral systems', () => {
+  it('writes Roman numerals', () => {
+    expect([1, 4, 9, 14, 40, 90, 400, 1900, 2026].map(toRoman)).toEqual(['I', 'IV', 'IX', 'XIV', 'XL', 'XC', 'CD', 'MCM', 'MMXXVI'])
+  })
+
+  it('writes gematria with geresh, gershayim and the ט״ו / ט״ז rule', () => {
+    expect(toGematria(5)).toBe('ה׳')
+    expect(toGematria(300)).toBe('ש׳')
+    expect(toGematria(15)).toBe('ט״ו')
+    expect(toGematria(16)).toBe('ט״ז')
+    expect(toGematria(115)).toBe('קט״ו')
+    expect(toGematria(123)).toBe('קכ״ג')
+    expect(toGematria(786)).toBe('תשפ״ו')
+    expect(toGematria(900)).toBe('תת״ק')
   })
 })

@@ -191,6 +191,8 @@ export interface GridAreaQ extends MathQ<number> {
   mode: 'count' | 'sides'
   /** Grade 4 box nets: a colour group per rect (opposite faces share one, 0–2), shown with the aid. */
   faces?: readonly number[]
+  /** Grade 6 composite shapes: ask for the perimeter (in cm, "ס״מ") instead of the area. */
+  ask?: 'area' | 'perimeter'
 }
 
 /**
@@ -235,6 +237,13 @@ export interface AreaModelQ extends MathQ<number> {
 export interface ShadeQ extends MathQ<number> {
   shape: 'strip' | 'circle' | 'rect'
   parts: number
+  /**
+   * Grade 6 fraction × fraction: a rect of rows × cols (parts = rows·cols). The first `bands` rows and columns are tinted
+   * ([rows tinted, cols tinted]) so the child shades the overlap; correct is still the count.
+   */
+  rows?: number
+  cols?: number
+  bands?: readonly [number, number]
   /** The fraction to shade, shown stacked above the shape ("3/5"). */
   show: string
 }
@@ -337,5 +346,52 @@ export interface Survey {
 
 /** "3 pizzas shared by 4 children" (fraction as division, G5 p.8). `{n}` items, `{d}` children; spoken by the browser voice. */
 export type ShareStory = RemainderStory
+
+/* ---------- 6th grade (Stage 5d, docs/specs/math-grade6.md) ---------- */
+
+/**
+ * Level the bars: blocks stacked in columns of `values` heights; the child moves blocks (drag, or tap a block then a bar,
+ * or keyboard) until every bar has the same height. Answer = the mean (the values are chosen so it is whole).
+ */
+export interface MeanQ extends MathQ<number> {
+  values: readonly number[]
+}
+
+/**
+ * Tap a part of a drawing. The art draws its tappable parts with `data-part="<id>"` (e.g. the circle's radius, diameter,
+ * chord, arc); the game makes them focusable buttons. Answer = the part id to tap.
+ */
+export interface TapArtQ extends MathQ<string> {
+  art: ArtRef
+  /** Part ids the drawing offers, in tab order. */
+  parts: readonly string[]
+}
+
+/**
+ * Art kit for grade 6 (registerMathArt6 in art-g6.tsx):
+ *  - 'math.machine' props { rule: '×3+1', input?: n, output?: n }  a number machine; a missing side shows '?'
+ *  - 'math.circle'  props { parts: 'radius,diameter,chord,arc', r?: n }  a circle with its centre and the listed parts,
+ *                   each drawn as a thick tappable element with data-part; `r` labels the radius ("r = 5")
+ *  - 'math.cubes'   props { l, w, h }  a box built of unit cubes, isometric
+ *  - 'math.percent' props { p }  a 10×10 grid with p squares shaded (percent as hundredths)
+ *  - 'math.strips'  (grade 4) is reused for "how many 1/4 in 3"
+ */
+export const MATH_ART_6 = { machine: 'math.machine', circle: 'math.circle', cubes: 'math.cubes', percent: 'math.percent' } as const
+
+export type CirclePart = 'radius' | 'diameter' | 'chord' | 'arc'
+
+/** A discount or price-rise story (G6 p.11–12): `{p}` percent, `{x}` price; read by the browser voice (D23). */
+export interface PercentStory {
+  id: string
+  kind: 'discount' | 'rise' | 'whole'
+  text: string
+}
+
+/** "A pool: 50 m³ or 50 mL?" (G6 p.20). */
+export interface SensibleVolume {
+  id: string
+  right: string
+  wrong: readonly string[]
+}
 
 export type { ObjectGroup }
