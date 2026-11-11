@@ -94,3 +94,7 @@ Why: native-quality English TTS exists on every device and saves ~250 recordings
 - **Recordings:** the user records only the short instructions. Large numbers and word problems are read by the browser voice and replayed with 🔊.
 - **Nikud:** child-facing text keeps full nikud in every grade, the same across the app. The curriculum phases nikud out during grade 3, but the user chose to keep it.
 
+
+**D24 · 2026-11-11 · user** — Math grades 4–6 back to back (refines D23): the three specs (`docs/specs/math-grade4.md`,
+`math-grade5.md`, `math-grade6.md`) are written and approved together, then built one grade after another (5b → 5c → 5d)
+without waiting for a play-test between them. The user plays them after. Each grade still gets its own branch and merge.
