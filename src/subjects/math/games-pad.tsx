@@ -1,3 +1,4 @@
+import { MathText } from '../../ui/pick/MathText'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { phrases, say } from '../../core/audio/audio'
 import type { GameProps, PhraseRef } from '../../core/engine/types'
@@ -57,7 +58,7 @@ export function PromptBlock({ prompt }: { prompt: PickPrompt }) {
     <div className="pk-prompt">
       {picture && <div className="pk-picture" aria-hidden="true">{picture}</div>}
       {objects && <div className="pk-groups">{objects.map((g, i) => <Objects key={i} group={g} />)}</div>}
-      {expr && <div className="pk-expr digi" dir="ltr">{expr}</div>}
+      {expr && <div className="pk-expr digi" dir="ltr"><MathText text={expr} /></div>}
     </div>
   )
 }

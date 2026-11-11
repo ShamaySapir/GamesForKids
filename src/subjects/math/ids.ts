@@ -110,12 +110,66 @@ export const M3 = {
 } as const
 
 /** "round to the nearest 10 / 100 / 1,000". */
-export const roundTo = (place: 10 | 100 | 1000) => `math.q.roundTo.${place}`
+export const roundTo = (place: 10 | 100 | 1000 | 10000 | 100000) => `math.q.roundTo.${place}`
 /** "which number divides by 2 / 5 / 10 with nothing left?" */
-export const whichDivides = (d: 2 | 5 | 10) => `math.q.whichDivides.${d}`
+export const whichDivides = (d: 2 | 3 | 5 | 6 | 9 | 10) => `math.q.whichDivides.${d}`
 /** Bin label "divides by 2 / 5 / 10". */
-export const divisibleBy = (d: 2 | 5 | 10) => `math.ui.divisibleBy.${d}`
+export const divisibleBy = (d: 2 | 3 | 5 | 6 | 9 | 10) => `math.ui.divisibleBy.${d}`
 /** Angle names: "acute angle", … (option labels and their 🔊). */
 export const angleName = (k: 'acute' | 'right' | 'obtuse' | 'straight') => `math.angle.${k}`
 /** "which triangle is right-angled?" and so on, by angles or by sides. */
 export const findTriangle = (k: 'acute' | 'right' | 'obtuse' | 'equilateral' | 'isosceles' | 'scalene') => `math.q.triangle.${k}`
+
+/**
+ * 4th grade (Stage 5b, docs/specs/math-grade4.md). Reused: M.compare, M.place, M.missing, M.solve, M.estimate (+ moreThan/
+ * lessThan), M.whichExercise, M3.firstStep, M3.opsHint, M3.lastDigitHint, M3.leftover, M3.sortNumbers, M3.notDivisible,
+ * roundTo, whichDivides, divisibleBy. Numbers above 10,000: spokenNumber(n); fractions: raw(fractionText(…)) (D23).
+ */
+export const M4 = {
+  inNumber: 'math.q.inNumber', //           "בַּמִּסְפָּר הַזֶּה" (after digitValue)
+  compensateHint: 'math.hint.compensate', // "אִם מוֹרִידִים אֶחָד מִשְּׁנֵי הַמִּסְפָּרִים, הַהֶפְרֵשׁ לֹא מִשְׁתַּנֶּה"
+  areaModel: 'math.q.areaModel', //         "מַלְּאוּ כָּל חֵלֶק, וְאַחַר כָּךְ אֶת הַסְּכוּם"
+  areaModelHint: 'math.hint.areaModel', //  "כּוֹפְלִים כָּל חֵלֶק בְּנִפְרָד, וּמְחַבְּרִים"
+  total: 'math.ui.total', //                "סַךְ הַכֹּל"
+  canItBe: 'math.q.canItBe', //             "הַאִם זֹאת יְכוֹלָה לִהְיוֹת הַתּוֹצָאָה?"
+  yes: 'math.ui.yes', //                    "כֵּן"
+  no: 'math.ui.no', //                      "לֹא"
+  helpfulSplit: 'math.q.helpfulSplit', //   "אֵיזֶה פֵּרוּק עוֹזֵר לְחַלֵּק?"
+  splitDivideHint: 'math.hint.splitDivide', // "מְפָרְקִים לְמִסְפָּרִים שֶׁקַּל לְחַלֵּק"
+  howManyNeeded: 'math.q.howManyNeeded', // "כַּמָּה צָרִיךְ?"
+  roundUpHint: 'math.hint.roundUp', //      "אִם נִשְׁאַר מִישֶׁהוּ, צָרִיךְ עוֹד אֶחָד"
+  digitSumHint: 'math.hint.digitSum', //    "חַבְּרוּ אֶת כָּל הַסְּפָרוֹת"
+  nameFraction: 'math.q.nameFraction', //   "אֵיזֶה חֵלֶק צָבוּעַ?"
+  shade: 'math.q.shade', //                 "צִבְעוּ" (+ the fraction, spoken)
+  partOf: 'math.q.partOf', //               "כַּמָּה זֶה?" over objects and a stacked fraction ("1/3 of the group")
+  partOfHint: 'math.hint.partOf', //        "חַלְּקוּ לִקְבוּצוֹת שָׁווֹת, וְסִפְרוּ בִּקְבוּצָה אַחַת"
+  fractionLineHint: 'math.hint.fractionLine', // "סִפְרוּ אֶת הַחֲלָקִים מֵהָאֶפֶס"
+  compareFractionHint: 'math.hint.compareFraction', // "כְּכָל שֶׁיֵּשׁ יוֹתֵר חֲלָקִים, כָּל חֵלֶק קָטָן יוֹתֵר"
+  sameDenHint: 'math.hint.sameDen', //      "כְּשֶׁהַמְּכַנִּים שָׁוִים, מְחַבְּרִים רַק אֶת הַמּוֹנִים"
+  commonDenHint: 'math.hint.commonDen', //  "הָפְכוּ אֶת שְׁנֵי הַשְּׁבָרִים לְאוֹתוֹ מְכַנֶּה"
+  numerator: 'math.ui.numerator', //        "מוֹנֶה"
+  denominator: 'math.ui.denominator', //    "מְכַנֶּה"
+  whole: 'math.ui.whole', //                "שָׁלֵם"
+  diagonals: 'math.q.diagonals', //         "כַּמָּה אֲלַכְסוֹנִים יוֹצְאִים מִקָּדְקֹד אֶחָד?"
+  diagonalsHint: 'math.hint.diagonals', //  "לֹא לְקָדְקוֹד עַצְמוֹ, וְלֹא לַשְּׁכֵנִים שֶׁלּוֹ"
+  nameQuad: 'math.q.nameQuad', //           "אֵיךְ קוֹרְאִים לַצּוּרָה?"
+  quadHint: 'math.hint.quad', //            "בִּדְקוּ אֶת הַצְּלָעוֹת וְאֶת הַזָּוִיּוֹת"
+  convert: 'math.q.convert', //             "הַשְׁלִימוּ אֶת הַמִּדָּה"
+  convertHint: 'math.hint.convert', //      "בְּמֶטֶר יֵשׁ מֵאָה סֶנְטִימֶטְרִים, וּבְסֶנְטִימֶטֶר עֲשָׂרָה מִילִימֶטְרִים"
+  boxNet: 'math.q.boxNet', //               "זוֹ פְּרִיסָה שֶׁל תֵּבָה. מָה הַשֶּׁטַח שֶׁלָּהּ?"
+  boxHint: 'math.hint.box', //              "כָּל שְׁתֵּי פֵּאוֹת זוֹ מוּל זוֹ שָׁווֹת"
+} as const
+
+/** "What is the digit 7 worth in this number?" — the digit is said in the phrase, so it is one recording per digit. */
+export const digitValue = (d: number) => `math.q.digitValue.${d}`
+/** "Where are the lines parallel / perpendicular?" */
+export const findLines = (k: 'parallel' | 'perpendicular') => `math.q.lines.${k}`
+/** Quadrilateral names (option labels and their 🔊). */
+export const quadName = (k: 'square' | 'rectangle' | 'rhombus' | 'parallelogram' | 'trapezoid') => `math.quad.${k}`
+/** "Which shape has …?" — one property question per shape, each fitting exactly one of the five (no inclusion, G4 p.18). */
+export const quadQuestion = (k: 'square' | 'rectangle' | 'rhombus' | 'parallelogram' | 'trapezoid') => `math.q.quad.${k}`
+/** "How long is a door?" and the like (content/lengths.ts). */
+export const sensiblePhrase = (id: string) => `math.q.sensible.${id}`
+
+/** Length units as written on screen (abbreviations take no nikud, Academy punctuation rules). */
+export const UNIT_LABEL = { mm: 'מ״מ', cm: 'ס״מ', dm: 'דצ״מ', m: 'מ׳', km: 'ק״מ' } as const

@@ -26,7 +26,11 @@ export interface PadQ extends MathQ<number> {
  * A number line drawn left-to-right from `min` to `max`, ticks every `step`, labels every `labelEvery`.
  * The marker moves in units of `snap` (default `step`), so 0–100 can have ticks every 10 but reach 45.
  */
-export interface Line { min: number; max: number; step: number; labelEvery: number; snap?: number }
+export interface Line {
+  min: number; max: number; step: number; labelEvery: number; snap?: number
+  /** Grade 4 fractions: every value is in units of 1/den (0–4 with den 4 is 0 to 1), labelled as fractions (1/4, 2/4…). */
+  den?: number
+}
 
 /** Drag the marker to where `target` belongs. Correct within `tolerance`. */
 export interface PlaceQ extends MathQ<number> {
@@ -122,7 +126,8 @@ export interface ShareQ extends MathQ<number> {
 
 /**
  * A column exercise `a op b`, laid out left-to-right like written math. The child types the result digit by digit
- * from the ones column leftward; carries/borrows appear as small digits above. Answer = a + b or a − b (0–10,000).
+ * from the ones column leftward; carries/borrows appear as small digits above. Answer = a + b or a − b
+ * (0–10,000 in grade 3, up to 1,000,000 in grade 4, shown with commas from five digits).
  */
 export interface ColumnQ extends MathQ<number> {
   a: number
@@ -176,6 +181,8 @@ export interface GridAreaQ extends MathQ<number> {
    * the inner squares appear only with the aid.
    */
   mode: 'count' | 'sides'
+  /** Grade 4 box nets: a colour group per rect (opposite faces share one, 0–2), shown with the aid. */
+  faces?: readonly number[]
 }
 
 /**
@@ -200,5 +207,64 @@ export interface RemainderStory {
   id: string
   text: string
 }
+
+/* ---------- 4th grade (Stage 5b, docs/specs/math-grade4.md) ---------- */
+
+/** A fraction, with a whole part for mixed numbers (2 3/4). Shown through MathText as "2 3/4". */
+export interface Fraction { whole?: number; num: number; den: number }
+
+/**
+ * The area model for `a × b`: a rectangle split by place value (34 × 6 → 30 | 4 by 6; 23 × 45 → 20 | 3 by 40 | 5).
+ * The child types each part's product, then the total. Answer = a × b; the parts come from splitting each factor
+ * into its non-zero place values.
+ */
+export interface AreaModelQ extends MathQ<number> {
+  a: number
+  b: number
+}
+
+/** Tap parts of a shape to shade them. Correct = exactly `answer` parts shaded (which parts doesn't matter). */
+export interface ShadeQ extends MathQ<number> {
+  shape: 'strip' | 'circle' | 'rect'
+  parts: number
+  /** The fraction to shade, shown stacked above the shape ("3/5"). */
+  show: string
+}
+
+/**
+ * Type a fraction: numerator over denominator, and a whole-number box when `mixed`. Correct = the same value as
+ * `answer` (2/4 = 1/2, 1 1/4 = 5/4); with `simplest`, only the simplest form counts (grade 5 simplifying).
+ */
+export interface FractionPadQ extends MathQ<Fraction> {
+  prompt: PickPrompt
+  mixed: boolean
+  simplest?: boolean
+  /** Aid: strips for these fractions, drawn one above the other ("1/2", "1/4"). */
+  aidStrips?: readonly string[]
+}
+
+/**
+ * Art kit for grade 4 (registerMathArt4 in art-g4.tsx), used in PickQ prompts, options and aidArt:
+ *  - 'math.fraction' props { shape: 'circle' | 'rect' | 'strip', parts: 2–12, shaded: 0–parts }
+ *  - 'math.strips'   props { a: 'n/d', b?: 'n/d' }  one or two fraction strips of equal length, one above the other
+ *  - 'math.lines'    props { kind: 'parallel' | 'perpendicular' | 'crossing', rot: 0–359 }  two line segments
+ *  - 'math.polygon'  props { sides: 4–8, diagonals?: true }  a convex polygon; diagonals from one vertex, dashed
+ *  - 'math.quad'     props { kind: QuadKind, rot: 0–359 }  never only in the textbook position
+ */
+export const MATH_ART_4 = { fraction: 'math.fraction', strips: 'math.strips', lines: 'math.lines', polygon: 'math.polygon', quad: 'math.quad' } as const
+
+export type QuadKind = 'square' | 'rectangle' | 'rhombus' | 'parallelogram' | 'trapezoid'
+
+/** "How many do we need?" word problems where a remainder rounds up (buses): `{n}` the total, `{d}` per vehicle/box. */
+export type RoundUpStory = RemainderStory
+
+/** "How long is a door?" — the right length and three absurd ones, each as [number, unit]. */
+export interface SensibleLength {
+  id: string
+  right: readonly [number, LengthUnit]
+  wrong: readonly (readonly [number, LengthUnit])[]
+}
+
+export type LengthUnit = 'mm' | 'cm' | 'dm' | 'm' | 'km'
 
 export type { ObjectGroup }
