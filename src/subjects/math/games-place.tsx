@@ -1,20 +1,29 @@
-import { useRef, useState, type KeyboardEvent } from 'react'
+import { Fragment, useRef, useState, type KeyboardEvent } from 'react'
 import { phrases } from '../../core/audio/audio'
 import type { GameProps } from '../../core/engine/types'
 import { HintButton, useHintOnAid, useShake } from './games-pad'
-import { M, M3 } from './ids'
+import { M, M3, M5 } from './ids'
 import type { PlaceValueQ } from './types'
 import './math-g2.css'
 import './math-g3-art.css'
+import './math-g5.css'
 
 // Per-question state; PlayScreen remounts this component for every question.
 // The running value is never written as digits: the child has to read the pieces (counts show only with the aid).
 
 const MAX_PER_COLUMN = 9
 
-type Kind = 'thousand' | 'hundred' | 'ten' | 'one'
-const LABELS: Record<Kind, string> = { thousand: M3.thousands, hundred: M.hundreds, ten: M.tens, one: M.ones }
-const WORTH: Record<Kind, number> = { thousand: 1000, hundred: 100, ten: 10, one: 1 }
+type Kind = 'thousand' | 'hundred' | 'ten' | 'one' | 'tenth' | 'hundredth' | 'thousandth'
+const LABELS: Record<Kind, string> = {
+  thousand: M3.thousands, hundred: M.hundreds, ten: M.tens, one: M.ones,
+  tenth: M5.tenths, hundredth: M5.hundredths, thousandth: M5.thousandths,
+}
+/** Worth in thousandths, so decimal sums are exact integers. */
+const WORTH: Record<Kind, number> = { thousand: 1e6, hundred: 1e5, ten: 1e4, one: 1e3, tenth: 100, hundredth: 10, thousandth: 1 }
+const DECIMAL_KINDS: Kind[] = ['tenth', 'hundredth', 'thousandth']
+const SHOWN: Record<Kind, string> = {
+  thousand: '1000', hundred: '100', ten: '10', one: '1', tenth: '0.1', hundredth: '0.01', thousandth: '0.001',
+}
 const KINDS: Record<PlaceValueQ['columns'], Kind[]> = {
   2: ['ten', 'one'],
   3: ['hundred', 'ten', 'one'],
@@ -22,6 +31,9 @@ const KINDS: Record<PlaceValueQ['columns'], Kind[]> = {
 }
 
 function Piece({ kind }: { kind: Kind }) {
+  if (kind === 'tenth' || kind === 'hundredth' || kind === 'thousandth') {
+    return <span className={`pv-piece pv-dec pv-dec-${kind}`} aria-hidden="true" />
+  }
   if (kind === 'thousand') {
     // A cube: front face plus top and side, so it reads as "a big block" next to the flat hundred.
     return (
@@ -61,7 +73,9 @@ function Piece({ kind }: { kind: Kind }) {
 }
 
 export function PlaceValueGame({ question, aid, onAttempt }: GameProps<PlaceValueQ>) {
-  const kinds = KINDS[question.columns]
+  const { decimals } = question
+  const kinds = [...KINDS[question.columns], ...DECIMAL_KINDS.slice(0, decimals ?? 0)]
+  const whole = kinds.length - (decimals ?? 0)
   const [counts, setCounts] = useState<number[]>(() => kinds.map(() => 0))
   const [done, setDone] = useState(false)
   const [shaking, shake] = useShake()
@@ -80,7 +94,7 @@ export function PlaceValueGame({ question, aid, onAttempt }: GameProps<PlaceValu
   const check = () => {
     if (finished.current || empty) return
     const value = counts.reduce((s, n, i) => s + n * WORTH[kinds[i]!], 0)
-    if (value === question.answer) {
+    if (value === Math.round(question.answer * 1000)) {
       finished.current = true
       setDone(true)
       onAttempt(true)
@@ -95,16 +109,18 @@ export function PlaceValueGame({ question, aid, onAttempt }: GameProps<PlaceValu
       <p className="pk-q">{phrases[question.instruction]}</p>
       <div className="pv-show digi" dir="ltr">{question.show}</div>
       <HintButton aid={aid} hint={question.hint} />
-      <div className={`pv-house pv-house-${question.columns}${shaking ? ' bad' : ''}${done ? ' ok' : ''}`} dir="ltr">
+      <div className={`pv-house pv-house-${question.columns}${decimals ? ' pv-dec-house' : ''}${shaking ? ' bad' : ''}${done ? ' ok' : ''}`} dir="ltr">
         <div className="pv-roof" aria-hidden="true" />
-        <div className="pv-cols">
+        <div className="pv-cols" style={decimals ? { gridTemplateColumns: `repeat(${whole}, minmax(0, 1fr)) 14px repeat(${decimals}, minmax(0, 1fr))` } : undefined}>
           {kinds.map((kind, i) => (
-            <div key={kind} className="pv-col" role="group" aria-label={phrases[LABELS[kind]]} tabIndex={0} onKeyDown={onKey(i)}>
+            <Fragment key={kind}>
+            {i === whole && <div className="pv-point digi" aria-hidden="true">.</div>}
+            <div className="pv-col" role="group" aria-label={phrases[LABELS[kind]]} tabIndex={0} onKeyDown={onKey(i)}>
               <div className="pv-label">{phrases[LABELS[kind]]}</div>
               <div className={`pv-pieces pv-pieces-${kind}`} aria-hidden="true">
                 {Array.from({ length: counts[i]! }, (_, k) => <Piece key={k} kind={kind} />)}
               </div>
-              <div className="pv-count digi" dir="ltr" aria-hidden={!aid}>{aid ? (question.columns === 4 ? `${counts[i]} × ${WORTH[kind]}` : counts[i]) : ''}</div>
+              <div className="pv-count digi" dir="ltr" aria-hidden={!aid}>{aid ? (decimals ? <>{counts[i]}<br />×{SHOWN[kind]}</> : question.columns === 4 ? `${counts[i]} × ${SHOWN[kind]}` : counts[i]) : ''}</div>
               <div className="pv-btns">
                 <button type="button" className="pv-btn" aria-label={`− ${phrases[LABELS[kind]]}`} tabIndex={-1}
                   disabled={done || counts[i] === 0} onClick={() => change(i, -1)}>−</button>
@@ -112,6 +128,7 @@ export function PlaceValueGame({ question, aid, onAttempt }: GameProps<PlaceValu
                   disabled={done || counts[i] === MAX_PER_COLUMN} onClick={() => change(i, 1)}>+</button>
               </div>
             </div>
+            </Fragment>
           ))}
         </div>
       </div>

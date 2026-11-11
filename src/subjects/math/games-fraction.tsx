@@ -21,6 +21,16 @@ export function sameFraction(got: Required<Fraction>, want: Fraction): boolean {
   return (got.whole * got.den + got.num) * want.den === (w * want.den + want.num) * got.den
 }
 
+/** Is `got` strictly between the two fractions (either order)? Cross-multiplied, so 3/8 sits between 1/4 and 1/2. */
+export function strictlyBetween(got: Required<Fraction>, [x, y]: readonly [Fraction, Fraction]): boolean {
+  const top = (f: Fraction) => (f.whole ?? 0) * f.den + f.num
+  const g = got.whole * got.den + got.num
+  const cmp = (f: Fraction) => g * f.den - top(f) * got.den // sign of got - f
+  const a = cmp(x)
+  const b = cmp(y)
+  return (a > 0 && b < 0) || (a < 0 && b > 0)
+}
+
 /** A strip of `den` cells with `num` shaded, for the aid ("3/4"). */
 function Strip({ text }: { text: string }) {
   const [n, d] = text.split('/').map(Number) as [number, number]
@@ -35,7 +45,7 @@ function Strip({ text }: { text: string }) {
 }
 
 export function FractionPadGame({ question, aid, onAttempt }: GameProps<FractionPadQ>) {
-  const { mixed, simplest, answer } = question
+  const { mixed, simplest, answer, between } = question
   const [vals, setVals] = useState<Record<Box, string>>({ whole: '', num: '', den: '' })
   const [active, setActive] = useState<Box>(mixed ? 'whole' : 'num')
   const [locked, setLocked] = useState(false)
@@ -53,11 +63,11 @@ export function FractionPadGame({ question, aid, onAttempt }: GameProps<Fraction
   const check = useCallback(() => {
     if (done.current || vals.num === '' || vals.den === '' || Number(vals.den) === 0) return
     const got = { whole: Number(vals.whole), num: Number(vals.num), den: Number(vals.den) }
-    let ok = sameFraction(got, answer)
+    let ok = between ? strictlyBetween(got, between) : sameFraction(got, answer)
     if (ok && simplest) ok = gcd(got.num, got.den) === 1 && (!mixed || got.num < got.den)
     if (ok) { done.current = true; setLocked(true) } else shake()
     onAttempt(ok)
-  }, [vals, answer, simplest, mixed, onAttempt, shake])
+  }, [vals, answer, between, simplest, mixed, onAttempt, shake])
 
   const order: Box[] = mixed ? ['whole', 'num', 'den'] : ['num', 'den']
   const move = useCallback((to: Box) => { if (order.includes(to)) setActive(to) }, [mixed]) // eslint-disable-line react-hooks/exhaustive-deps

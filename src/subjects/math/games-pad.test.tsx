@@ -94,3 +94,52 @@ describe('NumberPadGame', () => {
     expect(say).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('NumberPadGame with a decimal point', () => {
+  const dq = (over: Partial<PadQ> = {}) => q({ answer: 3.5, maxDigits: 3, decimal: true, ...over })
+
+  it('has no point key unless the question is decimal', () => {
+    render(<NumberPadGame question={q()} aid={false} onAttempt={vi.fn()} />)
+    expect(screen.queryByRole('button', { name: '.' })).toBeNull()
+    cleanup()
+    render(<NumberPadGame question={dq()} aid={false} onAttempt={vi.fn()} />)
+    expect(key('.')).toBeInTheDocument()
+  })
+
+  it('takes one point only, and maxDigits counts digits not the point', async () => {
+    render(<NumberPadGame question={dq()} aid={false} onAttempt={vi.fn()} />)
+    await userEvent.keyboard('3..5,')
+    expect(answer()).toHaveTextContent('3.5')
+    await userEvent.keyboard('9')
+    expect(answer()).toHaveTextContent('3.59')
+    await userEvent.keyboard('1')
+    expect(answer()).toHaveTextContent('3.59')
+  })
+
+  it('accepts 3,50 for 3.5 from the keyboard', async () => {
+    const onAttempt = vi.fn()
+    render(<NumberPadGame question={dq()} aid={false} onAttempt={onAttempt} />)
+    await userEvent.keyboard('3,50{Enter}')
+    expect(onAttempt.mock.calls).toEqual([[true]])
+  })
+
+  it('a wrong decimal is a miss, then the pad (with the point key) completes it', async () => {
+    const onAttempt = vi.fn()
+    render(<NumberPadGame question={dq()} aid={false} onAttempt={onAttempt} />)
+    await userEvent.keyboard('35{Enter}')
+    await userEvent.click(key('3'))
+    await userEvent.click(key('.'))
+    await userEvent.click(key('5'))
+    await userEvent.click(key('✓'))
+    expect(onAttempt.mock.calls).toEqual([[false], [true]])
+  })
+
+  it('a leading point means 0. (so .5 is 0.5)', async () => {
+    const onAttempt = vi.fn()
+    render(<NumberPadGame question={dq({ answer: 0.5 })} aid={false} onAttempt={onAttempt} />)
+    await userEvent.keyboard('.')
+    expect(answer()).toHaveTextContent('0.')
+    await userEvent.keyboard('5{Enter}')
+    expect(onAttempt.mock.calls).toEqual([[true]])
+  })
+})

@@ -7,6 +7,7 @@ import { Objects } from '../../ui/pick/Objects'
 import type { PickPrompt } from '../../ui/pick/types'
 import type { PadQ } from './types'
 import './math.css'
+import './math-g5.css'
 
 // Shared helpers (hint, shake, width) live here and are reused by games-line and games-build.
 
@@ -102,40 +103,51 @@ function AidLine({ max, from, jumps }: NonNullable<PadQ['aidLine']>) {
 }
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', '✓'] as const
+const DECIMAL_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', '.', '✓'] as const
+type PadKey = (typeof DECIMAL_KEYS)[number]
+
+/** The pad's value as typed ("3.", ".5" and "3.50" are all fine) compared to the answer at 3 places. */
+export const sameDecimal = (value: string, answer: number) =>
+  value !== '' && value !== '.' && Math.round(Number(value) * 1000) === Math.round(answer * 1000)
 
 export function NumberPadGame({ question, aid, onAttempt }: GameProps<PadQ>) {
   const [value, setValue] = useState('')
   const [locked, setLocked] = useState(false)
   const [shaking, shake] = useShake()
   const done = useRef(false)
-  const { maxDigits, aidLine, aidArt, prompt, hint, answer } = question
+  const { maxDigits, aidLine, aidArt, prompt, hint, answer, decimal } = question
   useHintOnAid(aid, hint)
 
   const digit = useCallback((d: string) => {
     if (done.current) return
-    setValue(v => (v.length < maxDigits ? v + d : v))
+    setValue(v => (v.replace('.', '').length < maxDigits ? v + d : v))
   }, [maxDigits])
+  const point = useCallback(() => {
+    if (done.current || !decimal) return
+    setValue(v => (v.includes('.') ? v : (v === '' ? '0' : v) + '.'))
+  }, [decimal])
   const back = useCallback(() => { if (!done.current) setValue(v => v.slice(0, -1)) }, [])
   const submit = useCallback(() => {
     if (done.current || value === '') return
-    const ok = Number(value) === answer
+    const ok = decimal ? sameDecimal(value, answer) : Number(value) === answer
     if (ok) { done.current = true; setLocked(true) } else { shake(); setValue('') }
     onAttempt(ok)
-  }, [value, answer, onAttempt, shake])
+  }, [value, answer, decimal, onAttempt, shake])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return
       if (/^[0-9]$/.test(e.key)) digit(e.key)
+      else if (e.key === '.' || e.key === ',') point()
       else if (e.key === 'Backspace') back()
       // A focused button turns Enter into its own click; handling it here too would submit twice.
       else if (e.key === 'Enter' && !(e.target instanceof HTMLButtonElement)) submit()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [digit, back, submit])
+  }, [digit, point, back, submit])
 
-  const press = (k: (typeof KEYS)[number]) => (k === '⌫' ? back() : k === '✓' ? submit() : digit(k))
+  const press = (k: PadKey) => (k === '⌫' ? back() : k === '✓' ? submit() : k === '.' ? point() : digit(k))
 
   return (
     <div className="pk-stage pd-stage">
@@ -148,8 +160,8 @@ export function NumberPadGame({ question, aid, onAttempt }: GameProps<PadQ>) {
         {value || <span className="pd-caret" aria-hidden="true">?</span>}
       </div>
       <div className="pd-pad" dir="ltr">
-        {KEYS.map(k => (
-          <button key={k} type="button" className={`pd-key${k === '✓' ? ' go' : ''}`} aria-label={k} disabled={locked}
+        {(decimal ? DECIMAL_KEYS : KEYS).map(k => (
+          <button key={k} type="button" className={`pd-key${k === '✓' ? ` go${decimal ? ' wide' : ''}` : ''}`} aria-label={k} disabled={locked}
             onClick={() => press(k)}>{k}</button>
         ))}
       </div>
