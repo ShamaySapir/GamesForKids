@@ -150,7 +150,7 @@ export const M4 = {
   numerator: 'math.ui.numerator', //        "מוֹנֶה"
   denominator: 'math.ui.denominator', //    "מְכַנֶּה"
   whole: 'math.ui.whole', //                "שָׁלֵם"
-  diagonals: 'math.q.diagonals', //         "כַּמָּה אֲלַכְסוֹנִים יוֹצְאִים מִקָּדְקֹד אֶחָד?"
+  diagonals: 'math.q.diagonals', //         "כַּמָּה אֲלַכְסוֹנִים יוֹצְאִים מִקָּדְקוֹד אֶחָד?"
   diagonalsHint: 'math.hint.diagonals', //  "לֹא לְקָדְקוֹד עַצְמוֹ, וְלֹא לַשְּׁכֵנִים שֶׁלּוֹ"
   nameQuad: 'math.q.nameQuad', //           "אֵיךְ קוֹרְאִים לַצּוּרָה?"
   quadHint: 'math.hint.quad', //            "בִּדְקוּ אֶת הַצְּלָעוֹת וְאֶת הַזָּוִיּוֹת"
