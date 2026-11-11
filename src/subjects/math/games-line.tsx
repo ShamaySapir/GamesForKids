@@ -15,7 +15,8 @@ const PAD_END = 52
 
 /** Snap to the nearest step and keep inside the line. */
 export function snap(v: number, { min, max, step, snap: unit = step }: Line) {
-  const s = min + Math.round((v - min) / unit) * unit
+  // Rounded so decimal steps show as 0.3, not 0.30000000000000004 (grade 5 decimal lines).
+  const s = Number((min + Math.round((v - min) / unit) * unit).toFixed(6))
   return Math.min(max, Math.max(min, s))
 }
 

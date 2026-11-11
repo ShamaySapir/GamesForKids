@@ -8,6 +8,7 @@ import type { PlaceValueQ } from './types'
 vi.mock('../../core/audio/audio', () => ({
   phrases: {
     'math.q.build': 'build', 'math.ui.check': 'check', 'math.ui.reset': 'reset',
+    'math.ui.tenths': 'tenths', 'math.ui.hundredths': 'hundredths', 'math.ui.thousandths': 'thousandths',
     'math.ui.thousands': 'K', 'math.ui.hundreds': 'H', 'math.ui.tens': 'T', 'math.ui.ones': 'O',
   },
   say: vi.fn(() => Promise.resolve()),
@@ -117,5 +118,41 @@ describe('PlaceValueGame', () => {
     await build(3, 0, 0)
     await userEvent.click(screen.getByRole('button', { name: 'check' }))
     expect(onAttempt).toHaveBeenCalledWith(false)
+  })
+})
+
+describe('PlaceValueGame with decimals', () => {
+  const dq = (over: Partial<PlaceValueQ> = {}): PlaceValueQ => ({
+    itemKey: 'pv:3.05', answer: 3.05, say: 'x', instruction: M.build, show: '3.05', columns: 2, decimals: 2, ...over,
+  })
+  const check = () => userEvent.click(screen.getByRole('button', { name: 'check' }))
+
+  it('adds the decimal columns after a point', () => {
+    render(<PlaceValueGame question={dq()} aid={false} onAttempt={vi.fn()} />)
+    const names = screen.getAllByRole('group').map(g => g.getAttribute('aria-label'))
+    expect(names).toEqual(['T', 'O', 'tenths', 'hundredths'])
+    expect(document.querySelectorAll('.pv-point')).toHaveLength(1)
+  })
+
+  it('builds 3.05 as 3 ones and 5 hundredths; 3.5 is a miss', async () => {
+    const onAttempt = vi.fn()
+    render(<PlaceValueGame question={dq()} aid={false} onAttempt={onAttempt} />)
+    for (let i = 0; i < 3; i++) await userEvent.click(btn('+', 'O'))
+    await userEvent.click(btn('+', 'tenths'))
+    await check()
+    expect(onAttempt).toHaveBeenLastCalledWith(false)
+    await userEvent.click(btn('−', 'tenths'))
+    for (let i = 0; i < 5; i++) await userEvent.click(btn('+', 'hundredths'))
+    await check()
+    expect(onAttempt.mock.calls).toEqual([[false], [true]])
+  })
+
+  it('three decimals add up exactly (0.307)', async () => {
+    const onAttempt = vi.fn()
+    render(<PlaceValueGame question={dq({ answer: 0.307, show: '0.307', decimals: 3 })} aid={false} onAttempt={onAttempt} />)
+    for (let i = 0; i < 3; i++) await userEvent.click(btn('+', 'tenths'))
+    for (let i = 0; i < 7; i++) await userEvent.click(btn('+', 'thousandths'))
+    await check()
+    expect(onAttempt.mock.calls).toEqual([[true]])
   })
 })

@@ -1,6 +1,6 @@
 import type { PhraseMap } from '../../core/engine/types'
 import { NUMBER_PHRASES, PRICE_PHRASES } from './content/numbers'
-import { M, M3, M4, OP, angleName, digitValue, divisibleBy, findLines, findTriangle, quadName, quadQuestion, roundTo, sensiblePhrase, whichDivides, shopPhrase, storyPart, thingPhrase } from './ids'
+import { M, M3, M4, M5, OP, surveyPhrase, angleName, digitValue, divisibleBy, findLines, findTriangle, quadName, quadQuestion, roundTo, sensiblePhrase, whichDivides, shopPhrase, storyPart, thingPhrase } from './ids'
 
 // Feminine plural nouns: the number blocks are feminine counting forms (שָׁלוֹשׁ בָּנָנוֹת).
 const THING_WORDS: Record<string, string> = {
@@ -244,6 +244,57 @@ const INSTRUCTIONS: Record<string, string> = {
   [sensiblePhrase('pool')]: 'מָה הָאֹרֶךְ שֶׁל בְּרֵכָה?',
   [M4.boxNet]: 'זוֹ פְּרִיסָה שֶׁל תֵּבָה. מָה הַשֶּׁטַח שֶׁלָּהּ?',
   [M4.boxHint]: 'כָּל שְׁתֵּי פֵּאוֹת זוֹ מוּל זוֹ שָׁווֹת',
+  // 5th grade (Stage 5c)
+  [M5.primeOrNot]: 'מַיְּנוּ אֶת הַמִּסְפָּרִים: רִאשׁוֹנִי, פָּרִיק, אוֹ אַף אֶחָד מֵהֶם',
+  [M5.prime]: 'רִאשׁוֹנִי',
+  [M5.composite]: 'פָּרִיק',
+  [M5.neither]: 'לֹא זֶה וְלֹא זֶה',
+  [M5.primeHint]: 'לְמִסְפָּר רִאשׁוֹנִי יֵשׁ בְּדִיּוּק שְׁנֵי מְחַלְּקִים: אֶחָד, וְהַמִּסְפָּר עַצְמוֹ',
+  [M5.rectangles]: 'כַּמָּה מַלְבֵּנִים שׁוֹנִים אֶפְשָׁר לִבְנוֹת מֵהַמִּשְׁבָּצוֹת?',
+  [M5.rectanglesHint]: 'נַסּוּ כָּל רֹחַב: אֶחָד, שְׁתַּיִם, שָׁלוֹשׁ, וְכָךְ הָלְאָה',
+  [M5.factorTree]: 'פָּרְקוּ לְגוֹרְמִים, עַד שֶׁנִּשְׁאָרִים רַק מִסְפָּרִים רִאשׁוֹנִיִּים',
+  [M5.factorHint]: 'חַפְּשׂוּ מִסְפָּר שֶׁמְּחַלֵּק בְּלִי שְׁאֵרִית',
+  [M5.asMixed]: 'כִּתְבוּ כְּמִסְפָּר מְעֹרָב',
+  [M5.asImproper]: 'כִּתְבוּ כְּשֶׁבֶר אֶחָד',
+  [M5.mixedHint]: 'כַּמָּה שְׁלֵמִים יֵשׁ, וְכַמָּה חֲלָקִים נִשְׁאֲרוּ?',
+  [M5.eachGets]: 'כַּמָּה מְקַבֵּל כָּל אֶחָד?',
+  [M5.shareHint]: 'כָּל אֶחָד מְקַבֵּל חֵלֶק מִכָּל אַחַת',
+  [M5.simplify]: 'צַמְצְמוּ כְּכָל שֶׁאֶפְשָׁר',
+  [M5.simplifyHint]: 'חַלְּקוּ אֶת הַמּוֹנֶה וְאֶת הַמְּכַנֶּה בְּאוֹתוֹ מִסְפָּר',
+  [M5.expand]: 'הַרְחִיבוּ אֶת הַשֶּׁבֶר',
+  [M5.expandHint]: 'כִּפְלוּ אֶת הַמּוֹנֶה וְאֶת הַמְּכַנֶּה בְּאוֹתוֹ מִסְפָּר',
+  [M5.between]: 'כִּתְבוּ שֶׁבֶר שֶׁנִּמְצָא בֵּין שְׁנֵי הַשְּׁבָרִים',
+  [M5.betweenHint]: 'הַרְחִיבוּ אֶת שְׁנֵי הַשְּׁבָרִים, וְיִהְיֶה מָקוֹם בָּאֶמְצַע',
+  [M5.closest]: 'לְאֵיזֶה מִסְפָּר הַתּוֹצָאָה הֲכִי קְרוֹבָה?',
+  [M5.closestHint]: 'הַשְׁווּ כָּל שֶׁבֶר לְחֵצִי וּלְאֶחָד',
+  [M5.tenths]: 'עֲשִׂירִיּוֹת',
+  [M5.hundredths]: 'מֵאִיּוֹת',
+  [M5.thousandths]: 'אַלְפִּיּוֹת',
+  [M5.slideHint]: 'הַסְּפָרוֹת זָזוֹת, וְהַנְּקֻדָּה נִשְׁאֶרֶת בִּמְקוֹמָהּ',
+  [M5.sameValue]: 'אֵיזֶה מִסְפָּר שָׁוֶה לָזֶה?',
+  [M5.roundWhole]: 'עַגְּלוּ לַשָּׁלֵם הַקָּרוֹב',
+  [M5.roundTenth]: 'עַגְּלוּ לָעֲשִׂירִיּוֹת',
+  [M5.decimalCompareHint]: 'הַשְׁווּ קֹדֶם אֶת הַשְּׁלֵמִים, וְאַחַר כָּךְ אֶת הָעֲשִׂירִיּוֹת',
+  [M5.columnDecimal]: 'פִּתְרוּ בִּמְאֻנָּךְ: הַנְּקֻדּוֹת זוֹ מִתַּחַת לָזוֹ',
+  [M5.change]: 'כַּמָּה עֹדֶף מְקַבְּלִים מֵעֶשְׂרִים שְׁקָלִים?',
+  [M5.pickHeight]: 'אֵיפֹה הַגֹּבַהּ לַצֶּלַע הַמְּסֻמֶּנֶת?',
+  [M5.heightHint]: 'הַגֹּבַהּ יוֹצֵא מֵהַקָּדְקוֹד, וּפוֹגֵשׁ אֶת הַצֶּלַע בְּזָוִית יְשָׁרָה',
+  [M5.triangleArea]: 'מָה הַשֶּׁטַח שֶׁל הַמְּשֻׁלָּשׁ?',
+  [M5.parallelogramArea]: 'מָה הַשֶּׁטַח שֶׁל הַמַּקְבִּילִית?',
+  [M5.triangleAreaHint]: 'הַמְּשֻׁלָּשׁ הוּא חֲצִי מֵהַמַּלְבֵּן שֶׁסְּבִיבוֹ',
+  [M5.parallelogramHint]: 'בָּסִיס כָּפוּל גֹּבַהּ',
+  [M5.whichNet]: 'אֵיזוֹ פְּרִיסָה מַתְאִימָה לַגּוּף?',
+  [M5.netHint]: 'סִפְרוּ אֶת הַפֵּאוֹת, וּבִדְקוּ אֵיזוֹ צוּרָה יֵשׁ לְכָל פֵּאָה',
+  [M5.faces]: 'כַּמָּה פֵּאוֹת יֵשׁ לַגּוּף?',
+  [M5.edges]: 'כַּמָּה מִקְצוֹעוֹת יֵשׁ לַגּוּף?',
+  [M5.vertices]: 'כַּמָּה קָדְקוֹדִים יֵשׁ לַגּוּף?',
+  [M5.mode]: 'מָה הַשָּׁכִיחַ?',
+  [M5.modeHint]: 'הַשָּׁכִיחַ הוּא מָה שֶׁמּוֹפִיעַ הֲכִי הַרְבֵּה פְּעָמִים',
+  [M5.both]: 'שְׁנֵיהֶם',
+  [surveyPhrase('fruit')]: 'אֵיזֶה פְּרִי אוֹהֲבִים הֲכִי הַרְבֵּה יְלָדִים בַּכִּתָּה?',
+  [surveyPhrase('pet')]: 'אֵיזוֹ חַיָּה רוֹצִים הֲכִי הַרְבֵּה יְלָדִים?',
+  [surveyPhrase('color')]: 'אֵיזֶה צֶבַע אוֹהֲבִים הֲכִי הַרְבֵּה יְלָדִים?',
+  [surveyPhrase('sport')]: 'אֵיזֶה מִשְׂחָק מְשַׂחֲקִים הֲכִי הַרְבֵּה יְלָדִים בַּהַפְסָקָה?',
 }
 
 export const phrases: PhraseMap = {

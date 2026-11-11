@@ -63,8 +63,9 @@ function masc99(n: number, and: boolean): string {
   return `${block(`math.n.${n - (n % 10)}`)} ${M_AND_UNITS[n % 10]}`
 }
 
-/** 11–999 in the masculine form (the number of thousands). */
+/** 1–999 in the masculine form (the number of thousands or millions). */
 function masc(n: number): string {
+  if (n < 10) return M_UNITS[n]!
   if (n < 100) return masc99(n, false)
   const h = block(`math.h.${Math.floor(n / 100)}`)
   const r = n % 100
@@ -76,9 +77,17 @@ function masc(n: number): string {
  * (numberPhrase), above it the thousands in the masculine form + אֶלֶף, then the rest with "and" before its last part.
  */
 export function numberText(n: number): string {
-  if (!Number.isInteger(n) || n < 0 || n > 1000000) throw new Error(`numberText: ${n} is out of range 0–1,000,000`)
+  if (!Number.isInteger(n) || n < 0 || n >= 1e9) throw new Error(`numberText: ${n} is out of range 0–999,999,999`)
   if (n <= 10000) return blocks(numberPhrase(n))
-  if (n === 1000000) return 'מִילְיוֹן'
+  if (n >= 1000000) {
+    // Grade 5: millions in the masculine form (שְׁלוֹשָׁה מִילְיוֹן), the rest as below with "and" before its last part.
+    const m = Math.floor(n / 1000000)
+    const head = m === 1 ? 'מִילְיוֹן' : m === 2 ? 'שְׁנֵי מִילְיוֹן' : `${masc(m)} מִילְיוֹן`
+    const r = n % 1000000
+    if (r === 0) return head
+    const rest = numberText(r)
+    return r < 1000 && (r < 100 || r % 100 === 0) ? `${head} ${withAnd(rest)}` : `${head} ${rest}`
+  }
   const head = `${masc(Math.floor(n / 1000))} אֶלֶף`
   const r = n % 1000
   if (r === 0) return head
@@ -101,6 +110,7 @@ const FRACTION_NAMES: Record<number, { one: string; many: string; masculine: boo
   9: { one: 'תְּשִׁיעִית', many: 'תְּשִׁיעִיּוֹת', masculine: false },
   10: { one: 'עֲשִׂירִית', many: 'עֲשִׂירִיּוֹת', masculine: false },
   100: { one: 'מֵאִית', many: 'מֵאִיּוֹת', masculine: false },
+  1000: { one: 'אַלְפִּית', many: 'אַלְפִּיּוֹת', masculine: false },
 }
 const M_COUNT = ['', 'אֶחָד', 'שְׁנֵי', 'שְׁלוֹשָׁה', 'אַרְבָּעָה', 'חֲמִשָּׁה', 'שִׁשָּׁה', 'שִׁבְעָה', 'שְׁמוֹנָה', 'תִּשְׁעָה', 'עֲשָׂרָה']
 const F_COUNT = ['', 'אַחַת', 'שְׁתֵּי', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע', 'עֶשֶׂר']
@@ -115,7 +125,7 @@ export function fractionText(num: number, den: number, whole = 0): string {
   if (num === 0) part = ''
   else if (!name) part = `${num <= 10 ? M_COUNT[num] : num} ${num === 1 ? 'חֵלֶק' : 'חֲלָקִים'} מִתּוֹךְ ${den === 12 ? 'שְׁנֵים־עָשָׂר' : den}`
   else if (num === 1) part = name.one
-  else part = `${num <= 10 ? (name.masculine ? M_COUNT : F_COUNT)[num] : num} ${name.many}`
+  else part = `${num <= 10 ? (name.masculine ? M_COUNT : F_COUNT)[num] : numberText(num)} ${name.many}`
   if (!whole) return part || block('math.n.0')
   const w = whole <= 10000 ? blocks(numberPhrase(whole)) : numberText(whole)
   if (!part) return w
@@ -128,4 +138,20 @@ function withAnd(word: string): string {
   if (second === '\u05B0' || 'במפ'.includes(word[0] ?? '')) return `וּ${word}`
   if (second === '\u05B2') return `וַ${word}`
   return `וְ${word}`
+}
+
+/** How a decimal is shown: up to `places` digits after the point, trailing zeros kept only when asked (13.60 for money). */
+export const fmtDec = (x: number, places?: number) => (places === undefined ? String(Number(x.toFixed(3))) : x.toFixed(places))
+
+/**
+ * A decimal said as schools read it: 3.05 → שְׁלוֹשָׁה שְׁלֵמִים וְחָמֵשׁ מֵאִיּוֹת · 0.6 → שֵׁשׁ עֲשִׂירִיּוֹת · 1.375 → שָׁלֵם אֶחָד
+ * וּשְׁלוֹשׁ מֵאוֹת שִׁבְעִים וְחָמֵשׁ אַלְפִּיּוֹת. Up to three places; the fraction part is named by its last place.
+ */
+export function decimalText(x: number): string {
+  const [w, f = ''] = fmtDec(x).split('.')
+  const whole = Number(w)
+  const wholeText = whole === 0 ? '' : whole === 1 ? 'שָׁלֵם אֶחָד' : `${whole <= 10 ? M_COUNT[whole] : masc(whole)} שְׁלֵמִים`
+  if (!f) return wholeText || block('math.n.0')
+  const part = fractionText(Number(f), 10 ** f.length)
+  return wholeText ? `${wholeText} ${withAnd(part)}` : part
 }

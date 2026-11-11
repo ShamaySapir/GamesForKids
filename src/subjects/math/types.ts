@@ -22,6 +22,8 @@ export interface PadQ extends MathQ<number> {
   aidLine?: { max: number; from: number; jumps: readonly number[] }
   /** Aid: drawings shown while the aid is on (grade 4: the polygon with its diagonals). */
   aidArt?: readonly ArtRef[]
+  /** Grade 5: the pad has a decimal-point key and `answer` may be a decimal (compared to 3 places: 0.50 = 0.5). */
+  decimal?: boolean
 }
 
 /**
@@ -104,6 +106,8 @@ export interface PlaceValueQ extends MathQ<number> {
   show: string
   /** Columns offered, from the left: 4 = thousands/hundreds/tens/ones (grade 3), 3 = hundreds/tens/ones, 2 = tens/ones. */
   columns: 2 | 3 | 4
+  /** Grade 5: columns after the decimal point (tenths, hundredths, thousandths). `answer` is then a decimal (3.05). */
+  decimals?: 1 | 2 | 3
 }
 
 /** A 10×10 hundred chart starting at `start` (1, 101, …, 901) with some cells blank. Answer: the blank cells' values. */
@@ -135,6 +139,8 @@ export interface ColumnQ extends MathQ<number> {
   a: number
   b: number
   op: '+' | '-'
+  /** Grade 5: digits after the point (1–3); a, b and answer are decimals, laid out with the points one under the other. */
+  places?: 1 | 2 | 3
 }
 
 /** A number sequence (left to right) with blanks to type on the number pad, left blank first. Answer = the blanks' values. */
@@ -243,6 +249,8 @@ export interface FractionPadQ extends MathQ<Fraction> {
   simplest?: boolean
   /** Aid: strips for these fractions, drawn one above the other ("1/2", "1/4"). */
   aidStrips?: readonly string[]
+  /** Grade 5 "between": any fraction strictly between these two is correct (`answer` is one example). */
+  between?: readonly [Fraction, Fraction]
 }
 
 /**
@@ -273,5 +281,61 @@ export interface SensibleLength {
 }
 
 export type LengthUnit = 'mm' | 'cm' | 'dm' | 'm' | 'km'
+
+/* ---------- 5th grade (Stage 5c, docs/specs/math-grade5.md) ---------- */
+
+/** Drag each number into one of several bins (prime / composite / neither). Answer[i] = the bin index of items[i]. */
+export interface BinsQ extends MathQ<readonly number[]> {
+  items: readonly number[]
+  /** Bin labels: phrase IDs, shown as text. */
+  bins: readonly string[]
+}
+
+/**
+ * Break `n` into primes: the child picks a composite leaf and types one factor; the tree splits it into that factor and
+ * the co-factor. A typed number that doesn't divide the leaf (or is 1 or the leaf itself) is a miss. Done when every leaf
+ * is prime. Answer = the prime factors, ascending (the same for every tree).
+ */
+export interface FactorTreeQ extends MathQ<readonly number[]> {
+  n: number
+}
+
+/**
+ * Area of a slanted shape on a square grid (vertices in grid units, x right, y down). The base and the height are drawn
+ * and labelled; the height may fall outside an obtuse triangle (G5 p.22). Answer = the area in squares.
+ */
+export interface SlantAreaQ extends MathQ<number> {
+  cols: number
+  rows: number
+  points: readonly (readonly [number, number])[]
+  /** The base, as two vertex indexes. */
+  base: readonly [number, number]
+  /** The height: from this vertex down to the base line at `foot` (grid units). */
+  apex: number
+  foot: readonly [number, number]
+}
+
+/**
+ * Art kit for grade 5 (registerMathArt5 in art-g5.tsx):
+ *  - 'math.solid'  props { kind: SolidKind, rot?: 0–359 }  a solid in a simple oblique/isometric drawing, hidden edges dashed
+ *  - 'math.net'    props { kind: SolidKind, wrong?: 0 | 1 | 2 }  a net; wrong 1–2 = a near-miss that does not fold
+ *  - 'math.height' props { shape: 'acute' | 'right' | 'obtuse' | 'parallelogram', seg: 'height' | 'median' | 'slant', rot }
+ *                  the shape with its marked base and one dashed segment from the opposite vertex
+ *  - 'math.freq'   props { rows: 'label:count,label:count,…' }  a two-column frequency table (labels are Hebrew words)
+ *  - 'math.rects'  props { n }  every rectangle of area n on a grid (the aid for rectangles-of-n)
+ *  - 'math.house'  props { before: '3.45', after: '345' }  a place-value table with both numbers (digits slide, point stays)
+ */
+export const MATH_ART_5 = { solid: 'math.solid', net: 'math.net', height: 'math.height', freq: 'math.freq', rects: 'math.rects', house: 'math.house' } as const
+
+export type SolidKind = 'cube' | 'box' | 'tri-prism' | 'square-pyramid' | 'tri-pyramid' | 'hex-prism'
+
+/** A frequency table for the mode (content/surveys.ts): a question phrase and the categories (Hebrew words). */
+export interface Survey {
+  id: string
+  categories: readonly string[]
+}
+
+/** "3 pizzas shared by 4 children" (fraction as division, G5 p.8). `{n}` items, `{d}` children; spoken by the browser voice. */
+export type ShareStory = RemainderStory
 
 export type { ObjectGroup }
