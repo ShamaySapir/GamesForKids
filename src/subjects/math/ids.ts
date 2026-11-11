@@ -103,7 +103,7 @@ export const M3 = {
   triangleHint: 'math.hint.triangle', //  "הִסְתַּכְּלוּ עַל הַזָּוִית הַגְּדוֹלָה בְּיוֹתֵר"
   sidesHint: 'math.hint.sides', //        "הַקַּוִּים הַקְּטַנִּים מְסַמְּנִים צְלָעוֹת שָׁווֹת"
   countSquares: 'math.q.countSquares', // "כַּמָּה מִשְׁבָּצוֹת יֵשׁ בַּצּוּרָה?"
-  area: 'math.q.area', //                 "מָה הַשֶּׁטַח? כַּמָּה סַנְטִימֶטְרִים רְבוּעִים?"
+  area: 'math.q.area', //                 "מָה הַשֶּׁטַח? כַּמָּה סֶנְטִימֶטְרִים רְבוּעִים?"
   areaHint: 'math.hint.area', //          "כַּמָּה שׁוּרוֹת יֵשׁ, וְכַמָּה מִשְׁבָּצוֹת בְּכָל שׁוּרָה?"
   thousands: 'math.ui.thousands', //      "אֲלָפִים"
   leftover: 'math.ui.leftover', //        "שְׁאֵרִית" (the left-over bowl, and "3, שְׁאֵרִית 2")

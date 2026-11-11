@@ -58,7 +58,7 @@ All of it lives on the same island, after the grade 2 skills.
 | 19 | `math.skip-10000` | קְפִיצוֹת גְּדוֹלוֹת | 3 | count-1000, place-10000 | 🦘 | skip-big, find-mistake |
 | 20 | `math.round` | מְעַגְּלִים | 3 | place-10000 | 🎯 | closer-to, round-pick |
 | 21 | `math.add-10000` | חִבּוּר וְחִסּוּר עַד 10000 | 3 | within-100, place-10000 | 🧱 | column, missing-left, estimate-big |
-| 22 | `math.table` | לוּחַ הַכֶּפֶל | 3 | times | 🏅 | table-new, missing-factor, array-big, **arena** |
+| 22 | `math.table` | לוּחַ הַכֶּפֶל הַמָּלֵא | 3 | times | 🏅 | table-new, missing-factor, array-big, **arena** |
 | 23 | `math.remainder` | חִלּוּק עִם שְׁאֵרִית | 3 | divide, table | 🧁 | share-left, remainder-pick, remainder-story |
 | 24 | `math.divisible` | מִתְחַלֵּק בְּ‑2, 5, 10 | 3 | table | 🔍 | which-divides, sort-divides |
 | 25 | `math.times-10` | כּוֹפְלִים בְּ‑10, 100, 1000 | 3 | table, place-10000 | 🚀 | times-ten, round-times |
