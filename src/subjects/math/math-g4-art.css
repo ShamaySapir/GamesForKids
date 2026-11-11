@@ -1,0 +1,26 @@
+/* Grade 4 drawings (fractions, strips, lines, polygons, quadrilaterals), box-net face tints and fraction tick labels. Tokens only. */
+.g4a-art { display: block; overflow: visible; }
+.g4a-part { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+.g4a-part.on { fill: var(--num); fill-opacity: .8; }
+.g4a-outer { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linejoin: round; }
+.g4a-label { font-weight: 800; fill: var(--ink); font-size: 11px; text-anchor: middle; dominant-baseline: central; }
+.g4a-seg { stroke: var(--ink); stroke-width: 5; stroke-linecap: round; fill: none; }
+.g4a-seg.alt { stroke: var(--num); }
+.g4a-shape { fill: var(--num); fill-opacity: .25; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
+.g4a-diag { stroke: var(--mute); stroke-width: 2.5; stroke-dasharray: 5 4; stroke-linecap: round; fill: none; }
+.g4a-dot { fill: var(--ink); }
+
+/* ---- box nets: one tint per face group (opposite faces share one) ---- */
+.g3a-shape.face { fill-opacity: .4; }
+.g3a-shape.face-0 { --c: var(--num); }
+.g3a-shape.face-1 { --c: var(--eng); }
+.g3a-shape.face-2 { --c: var(--abc); }
+
+/* ---- fractions on a number line ---- */
+.ml-fnum { font-weight: 800; fill: var(--ink); text-anchor: middle; }
+.ml-fbar { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+
+/* ---- written columns with up to seven digits ---- */
+.g3-col.wide .g3-cell { font-size: clamp(22px, 6.4vw, 40px); }
+.g3-col.wide { padding-inline: 8px; column-gap: 3px; }
+.g3-col.wide .g3-op { padding-inline-end: 2px; }
