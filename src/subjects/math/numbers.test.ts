@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { NUMBER_PHRASES, PRICE_PHRASES } from './content/numbers'
-import { fmt, fractionText, numberPhrase, numberText, pricePhrase, spokenNumber } from './numbers'
+import { decimalText, fmt, fmtDec, fractionText, numberPhrase, numberText, pricePhrase, spokenNumber } from './numbers'
 
 const say = (n: number) => numberPhrase(n).map(id => NUMBER_PHRASES[id]).join(' ')
 
@@ -101,5 +101,25 @@ describe('grade 4 numbers', () => {
     expect(fractionText(3, 4, 2)).toBe('שְׁתַּיִם וּשְׁלוֹשָׁה רְבָעִים')
     expect(fractionText(1, 5, 1)).toBe('אַחַת וַחֲמִישִׁית')
     expect(fractionText(0, 4, 3)).toBe('שָׁלוֹשׁ')
+  })
+})
+
+describe('grade 5 numbers', () => {
+  it('says millions', () => {
+    expect(numberText(1000000)).toBe('מִילְיוֹן')
+    expect(numberText(2000000)).toBe('שְׁנֵי מִילְיוֹן')
+    expect(numberText(3400000)).toBe('שְׁלוֹשָׁה מִילְיוֹן אַרְבַּע מֵאוֹת אֶלֶף')
+    expect(numberText(52000007)).toBe('חֲמִשִּׁים וּשְׁנַיִם מִילְיוֹן וְשֶׁבַע')
+    expect(numberText(1000300)).toBe('מִילְיוֹן וּשְׁלוֹשׁ מֵאוֹת')
+  })
+
+  it('says decimals as schools read them', () => {
+    expect(fmtDec(0.5)).toBe('0.5')
+    expect(fmtDec(13.6, 2)).toBe('13.60')
+    expect(decimalText(0.6)).toBe('שֵׁשׁ עֲשִׂירִיּוֹת')
+    expect(decimalText(3.05)).toBe('שְׁלוֹשָׁה שְׁלֵמִים וְחָמֵשׁ מֵאִיּוֹת')
+    expect(decimalText(1.37)).toBe('שָׁלֵם אֶחָד וּשְׁלוֹשִׁים וְשֶׁבַע מֵאִיּוֹת')
+    expect(decimalText(0.125)).toBe('מֵאָה עֶשְׂרִים וְחָמֵשׁ אַלְפִּיּוֹת')
+    expect(decimalText(2)).toBe('שְׁנֵי שְׁלֵמִים')
   })
 })

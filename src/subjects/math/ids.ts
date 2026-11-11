@@ -173,3 +173,59 @@ export const sensiblePhrase = (id: string) => `math.q.sensible.${id}`
 
 /** Length units as written on screen (abbreviations take no nikud, Academy punctuation rules). */
 export const UNIT_LABEL = { mm: 'מ״מ', cm: 'ס״מ', dm: 'דצ״מ', m: 'מ׳', km: 'ק״מ' } as const
+
+/**
+ * 5th grade (Stage 5c, docs/specs/math-grade5.md). Decimals are shown with fmtDec and spoken with raw(decimalText(x));
+ * numbers above 10,000 with spokenNumber (millions too). Reused: M.solve, M.compare, M.place, M.build, M4.convert, digitValue.
+ */
+export const M5 = {
+  primeOrNot: 'math.q.primeOrNot', // "מַיְּנוּ אֶת הַמִּסְפָּרִים: רִאשׁוֹנִי, פָּרִיק, אוֹ אַף אֶחָד מֵהֶם"
+  prime: 'math.ui.prime', // "רִאשׁוֹנִי"
+  composite: 'math.ui.composite', // "פָּרִיק"
+  neither: 'math.ui.neither', // "לֹא זֶה וְלֹא זֶה"
+  primeHint: 'math.hint.prime', // "לְמִסְפָּר רִאשׁוֹנִי יֵשׁ בְּדִיּוּק שְׁנֵי מְחַלְּקִים: אֶחָד, וְהַמִּסְפָּר עַצְמוֹ"
+  rectangles: 'math.q.rectangles', // "כַּמָּה מַלְבֵּנִים שׁוֹנִים אֶפְשָׁר לִבְנוֹת מֵהַמִּשְׁבָּצוֹת?"
+  rectanglesHint: 'math.hint.rectangles', // "נַסּוּ כָּל רֹחַב: אֶחָד, שְׁתַּיִם, שָׁלוֹשׁ, וְכָךְ הָלְאָה"
+  factorTree: 'math.q.factorTree', // "פָּרְקוּ לְגוֹרְמִים, עַד שֶׁנִּשְׁאָרִים רַק מִסְפָּרִים רִאשׁוֹנִיִּים"
+  factorHint: 'math.hint.factor', // "חַפְּשׂוּ מִסְפָּר שֶׁמְּחַלֵּק בְּלִי שְׁאֵרִית"
+  asMixed: 'math.q.asMixed', // "כִּתְבוּ כְּמִסְפָּר מְעֹרָב"
+  asImproper: 'math.q.asImproper', // "כִּתְבוּ כְּשֶׁבֶר אֶחָד"
+  mixedHint: 'math.hint.mixed', // "כַּמָּה שְׁלֵמִים יֵשׁ, וְכַמָּה חֲלָקִים נִשְׁאֲרוּ?"
+  eachGets: 'math.q.eachGets', // "כַּמָּה מְקַבֵּל כָּל אֶחָד?"
+  shareHint: 'math.hint.shareFraction', // "כָּל אֶחָד מְקַבֵּל חֵלֶק מִכָּל אַחַת"
+  simplify: 'math.q.simplify', // "צַמְצְמוּ כְּכָל שֶׁאֶפְשָׁר"
+  simplifyHint: 'math.hint.simplify', // "חַלְּקוּ אֶת הַמּוֹנֶה וְאֶת הַמְּכַנֶּה בְּאוֹתוֹ מִסְפָּר"
+  expand: 'math.q.expand', // "הַרְחִיבוּ אֶת הַשֶּׁבֶר"
+  expandHint: 'math.hint.expand', // "כִּפְלוּ אֶת הַמּוֹנֶה וְאֶת הַמְּכַנֶּה בְּאוֹתוֹ מִסְפָּר"
+  between: 'math.q.fractionBetween', // "כִּתְבוּ שֶׁבֶר שֶׁנִּמְצָא בֵּין שְׁנֵי הַשְּׁבָרִים"
+  betweenHint: 'math.hint.between', // "הַרְחִיבוּ אֶת שְׁנֵי הַשְּׁבָרִים, וְיִהְיֶה מָקוֹם בָּאֶמְצַע"
+  closest: 'math.q.closest', // "לְאֵיזֶה מִסְפָּר הַתּוֹצָאָה הֲכִי קְרוֹבָה?"
+  closestHint: 'math.hint.closest', // "הַשְׁווּ כָּל שֶׁבֶר לְחֵצִי וּלְאֶחָד"
+  tenths: 'math.ui.tenths', // "עֲשִׂירִיּוֹת"
+  hundredths: 'math.ui.hundredths', // "מֵאִיּוֹת"
+  thousandths: 'math.ui.thousandths', // "אַלְפִּיּוֹת"
+  slideHint: 'math.hint.slideDecimal', // "הַסְּפָרוֹת זָזוֹת, וְהַנְּקֻדָּה נִשְׁאֶרֶת בִּמְקוֹמָהּ"
+  sameValue: 'math.q.sameValue', // "אֵיזֶה מִסְפָּר שָׁוֶה לָזֶה?"
+  roundWhole: 'math.q.roundWhole', // "עַגְּלוּ לַשָּׁלֵם הַקָּרוֹב"
+  roundTenth: 'math.q.roundTenth', // "עַגְּלוּ לָעֲשִׂירִיּוֹת"
+  decimalCompareHint: 'math.hint.decimalCompare', // "הַשְׁווּ קֹדֶם אֶת הַשְּׁלֵמִים, וְאַחַר כָּךְ אֶת הָעֲשִׂירִיּוֹת"
+  columnDecimal: 'math.q.columnDecimal', // "פִּתְרוּ בִּמְאֻנָּךְ: הַנְּקֻדּוֹת זוֹ מִתַּחַת לָזוֹ"
+  change: 'math.q.change20', // "כַּמָּה עֹדֶף מְקַבְּלִים מֵעֶשְׂרִים שְׁקָלִים?"
+  pickHeight: 'math.q.pickHeight', // "אֵיפֹה הַגֹּבַהּ לַצֶּלַע הַמְּסֻמֶּנֶת?"
+  heightHint: 'math.hint.height', // "הַגֹּבַהּ יוֹצֵא מֵהַקָּדְקוֹד, וּפוֹגֵשׁ אֶת הַצֶּלַע בְּזָוִית יְשָׁרָה"
+  triangleArea: 'math.q.triangleArea', // "מָה הַשֶּׁטַח שֶׁל הַמְּשֻׁלָּשׁ?"
+  parallelogramArea: 'math.q.parallelogramArea', // "מָה הַשֶּׁטַח שֶׁל הַמַּקְבִּילִית?"
+  triangleAreaHint: 'math.hint.triangleArea', // "הַמְּשֻׁלָּשׁ הוּא חֲצִי מֵהַמַּלְבֵּן שֶׁסְּבִיבוֹ"
+  parallelogramHint: 'math.hint.parallelogram', // "בָּסִיס כָּפוּל גֹּבַהּ"
+  whichNet: 'math.q.whichNet', // "אֵיזוֹ פְּרִיסָה מַתְאִימָה לַגּוּף?"
+  netHint: 'math.hint.net', // "סִפְרוּ אֶת הַפֵּאוֹת, וּבִדְקוּ אֵיזוֹ צוּרָה יֵשׁ לְכָל פֵּאָה"
+  faces: 'math.q.faces', // "כַּמָּה פֵּאוֹת יֵשׁ לַגּוּף?"
+  edges: 'math.q.edges', // "כַּמָּה מִקְצוֹעוֹת יֵשׁ לַגּוּף?"
+  vertices: 'math.q.vertices', // "כַּמָּה קָדְקוֹדִים יֵשׁ לַגּוּף?"
+  mode: 'math.q.mode', // "מָה הַשָּׁכִיחַ?"
+  modeHint: 'math.hint.mode', // "הַשָּׁכִיחַ הוּא מָה שֶׁמּוֹפִיעַ הֲכִי הַרְבֵּה פְּעָמִים"
+  both: 'math.ui.both', // "שְׁנֵיהֶם"
+} as const
+
+/** "Which do most children like?" — the question for each survey (content/surveys.ts). */
+export const surveyPhrase = (id: string) => `math.q.survey.${id}`
