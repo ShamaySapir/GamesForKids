@@ -147,6 +147,26 @@ describe('ShadeGame', () => {
   })
 })
 
+describe('ShadeGame in 2D', () => {
+  const q: ShadeQ = { itemKey: 'shade:2d', answer: 2, say: 'x', instruction: M4.shade, hint: M4.areaModelHint, shape: 'rect', parts: 12, rows: 3, cols: 4, bands: [2, 1], show: '2/3 x 1/4' }
+  it('draws rows x cols, tints the bands (overlap has both) and counts the shaded cells', async () => {
+    const onAttempt = vi.fn()
+    render(<ShadeGame question={q} aid={false} onAttempt={onAttempt} />)
+    const cells = document.querySelectorAll<HTMLElement>('.g4-part-btn')
+    expect(cells).toHaveLength(12)
+    expect(document.querySelector<HTMLElement>('.g4-shape')!.style.gridTemplateColumns).toBe('repeat(4, 1fr)')
+    expect(document.querySelectorAll('.br')).toHaveLength(8) // first 2 rows of 4
+    expect(document.querySelectorAll('.bc')).toHaveLength(3) // first column of 3 rows
+    expect(document.querySelectorAll('.br.bc')).toHaveLength(2)
+    await userEvent.click(cells[0]!)
+    await userEvent.click(checkBtn())
+    expect(onAttempt).toHaveBeenLastCalledWith(false)
+    await userEvent.click(cells[4]!)
+    await userEvent.click(checkBtn())
+    expect(onAttempt).toHaveBeenLastCalledWith(true)
+  })
+})
+
 describe('FractionPadGame', () => {
   const mk = (over: Partial<FractionPadQ> = {}): FractionPadQ => ({
     itemKey: 'frac:1/2', answer: { num: 1, den: 2 }, say: 'x', instruction: M4.areaModel, hint: M4.areaModelHint,
