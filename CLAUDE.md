@@ -56,7 +56,7 @@ Current stage: **Stage 5 built** (math, grades 3–6): PRs #16 (grade 4), #17 (g
 Details for every open item are in **`docs/BACKLOG.md`**. In order:
 
 1. **User:** merge PR #16 (grade 4), then #17 (grade 5), then the grade 6 PR, in that order (each is stacked on the one before).
-2. **Planner, in the order the user set:** then Stage 8b (coding, grades 3–6), then the
+2. **Planner, in the order the user set:** Stage 8b (coding, grades 3–6), then the
    "ask the app" help spec (a parent types a question, the app finds an answer from a fixed local set).
 3. **User:**
    - play-test all islands;
